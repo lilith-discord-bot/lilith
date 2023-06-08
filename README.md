@@ -4,13 +4,9 @@ A [Discord.js](https://discord.js.org/#/) bot for Diablo 4 that allows tracking 
 
 ## Contributing
 
----
-
 If you want to contribute to this project, please mind joining the [Discord server](https://discord.gg/Ht9TMDfgw8) first.
 
 ## Installation
-
----
 
 ### Requirements
 
@@ -52,8 +48,6 @@ npm run start
 
 ## Roadmap
 
----
-
 - [ ] Handle interactions (commands)
 - [ ] Create a database (redis or mongodb or both ?)
 - [ ] Add the worker to fetch data 
@@ -61,7 +55,5 @@ npm run start
 
 
 ## License
-
----
 
 This project is licensed under the [MIT License](LICENSE).
