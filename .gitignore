@@ -1,0 +1,12 @@
+# Folders
+node_modules/
+
+# Environments
+.env
+.env.production
+
+# Build
+dist/
+
+# Logs
+logs/

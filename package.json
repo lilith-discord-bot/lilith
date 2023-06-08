@@ -1,0 +1,39 @@
+{
+  "name": "lilith",
+  "description": "A Diablo 4 Discord bot.",
+  "version": "1.0.0",
+  "main": "dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glazk0/lilith.git"
+  },
+  "bugs": {
+    "url": "https://github.com/glazk0/lilith/issues"
+  },
+  "homepage": "https://github.com/glazk0/lilith",
+  "keywords": [
+    "discord",
+    "bot",
+    "diablo 4",
+    "lilith"
+  ],
+  "author": "glazk0",
+  "contributors": [
+    "glazk0 <glazk0@peerat.dev> (https://github.com/glazk0)"
+  ],
+  "dependencies": {
+    "discord-hybrid-sharding": "^2.1.3",
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.1.4",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.3"
+  },
+  "license": "MIT"
+}
