@@ -4,7 +4,7 @@ A [Discord.js](https://discord.js.org/#/) bot for Diablo 4 that allows tracking 
 
 ## Contributing
 
-If you want to contribute to this project, please mind joining the [Discord server](https://discord.gg/Ht9TMDfgw8) first.
+If you want to contribute to this project, please mind joining the [Discord server](https://discord.gg/Mv2yCrJK87) first.
 
 ## Installation
 
