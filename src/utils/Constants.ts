@@ -25,7 +25,7 @@ export const presence: PresenceData = {
   status: 'online',
   activities: [
     {
-      name: 'the hell',
+      name: 'hell',
       type: ActivityType.Watching,
     },
   ],
