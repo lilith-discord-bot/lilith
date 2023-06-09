@@ -53,9 +53,9 @@ export const modesChoices: ModesChoices[] = [
 
 export default class API {
   /**
-   * Gets the leaderboard.
+   * Gets the events.
    *
-   * @returns {Promise<Events | null>} The leaderboard.
+   * @returns {Promise<Events | null>} The event.
    */
   async getEvents(): Promise<Events | null> {
     const res = await request(
@@ -66,13 +66,13 @@ export default class API {
   }
 
   /**
-   * Gets the leaderboard.
+   * Gets the stats.
    *
-   * @returns {Promise<Stats | null>} The leaderboard.
+   * @returns {Promise<Stats | null>} The stats.
    */
   async getStats(): Promise<Stats | null> {
     const res = await request(
-      `${process.env.API_URL}/stats`,
+      `${process.env.ARMORY_API_URL}/stats`,
       true,
     );
     return res;
@@ -91,7 +91,7 @@ export default class API {
     mode: Modes = 'allmodes',
   ): Promise<Player[] | null> {
     const res = await request(
-      `${process.env.API_URL}/leaderboard/${classe}/${mode}`,
+      `${process.env.ARMORY_API_URL}/leaderboard/${classe}/${mode}`,
       true,
     );
     return res;
@@ -109,20 +109,20 @@ export default class API {
     heroId: string,
   ): Promise<PlayerDetails | null> {
     const res = await request(
-      `${process.env.API_URL}/${battleTag}/${heroId}`,
+      `${process.env.ARMORY_API_URL}/${battleTag}/${heroId}`,
       true,
     );
     return res;
   }
 
   /**
-   * Gets the leaderboard.
+   * Gets the status.
    *
-   * @returns {Promise<Status | null>} The leaderboard.
+   * @returns {Promise<Status | null>} The status.
    */
   async getStatus(): Promise<Status | null> {
     const res = await request(
-      `${process.env.API_URL}/status`,
+      `${process.env.ARMORY_URL}/status`,
       true,
     );
     return res;
