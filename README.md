@@ -31,7 +31,7 @@ npm install
 
 ```env
 TOKEN=your_token_here
-WORKER_URL=your_worker_url_here (optional)
+API_URL=your_api_url_here
 ```
 
 4. Build the bot
@@ -48,11 +48,10 @@ npm run start
 
 ## Roadmap
 
-- [ ] Handle interactions (commands)
+- [x] Handle interactions (commands)
 - [ ] Create a database (redis or mongodb or both ?)
-- [ ] Add the worker to fetch data 
+- [ ] Add the worker to fetch data
 - [ ] Create Scheduled event Discord system
-
 
 ## License
 
