@@ -1,25 +1,5 @@
 import { request } from '../utils/Commons';
-
-/**
- * The class type.
- * @type {Classe}
- */
-export type Classes =
-  | 'allclasses'
-  | 'Barbarian'
-  | 'Druid'
-  | 'Necromancer'
-  | 'Rogue'
-  | 'Sorcerer';
-
-/**
- * The class choices.
- * @type {ClassesChoices}
- */
-export type ClassesChoices = {
-  name: string;
-  value: Classes;
-};
+import { ClassesChoices, Player, Classes, PlayerDetails, ModesChoices, Modes, Events, Stats, Status } from '../types';
 
 export const classesChoices: ClassesChoices[] = [
   {
@@ -48,17 +28,6 @@ export const classesChoices: ClassesChoices[] = [
   },
 ];
 
-/**
- * The mode type.
- * @type {Mode}
- */
-export type Modes = 'allmodes' | 'softcore' | 'hardcore' | 'dead' | 'pvp';
-
-export type ModesChoices = {
-  name: string;
-  value: Modes;
-};
-
 export const modesChoices: ModesChoices[] = [
   {
     name: 'All modes',
@@ -82,68 +51,47 @@ export const modesChoices: ModesChoices[] = [
   },
 ];
 
-export type Player = {
-  battleTag: string;
-  heroId: string;
-  name: string;
-  class: string;
-  kills?: number;
-  level?: number;
-  skills: string[];
-  hardcore: boolean;
-  dead: boolean;
-  lastUpdate: number;
-};
-
-export type PlayerDetails = {
-  character: string;
-  lastUpdate: string;
-  accountLastUpdate: string;
-  class: string;
-  level: number;
-  skills: Skill[];
-  equipment: Equipment[];
-  secondsPlayed: number;
-  lastLogin: number;
-  worldTier: number;
-  createdAt: number;
-  monstersKilled: number;
-  elitesKilled: number;
-  goldCollected: number;
-  power: number;
-  hardcore: boolean;
-  dead: boolean;
-};
-
-export type Equipment = {
-  name: string;
-  tex: number;
-  itemtype: string;
-  power: number;
-  quality: string;
-  affixes: string[];
-};
-
-export type Skill = {
-  name: string;
-  desc: string;
-};
-
 export default class API {
+  /**
+   * Gets the events.
+   *
+   * @returns {Promise<Events | null>} The event.
+   */
+  async getEvents(): Promise<Events | null> {
+    const res = await request(
+      `${process.env.API_URL}/events/recent`,
+      true,
+    );
+    return res;
+  }
+
+  /**
+   * Gets the stats.
+   *
+   * @returns {Promise<Stats | null>} The stats.
+   */
+  async getStats(): Promise<Stats | null> {
+    const res = await request(
+      `${process.env.ARMORY_API_URL}/stats`,
+      true,
+    );
+    return res;
+  }
+
   /**
    * Gets the leaderboard.
    *
    * @param classe - The class.
    * @param mode - The mode.
    *
-   * @returns {Promise<any>} The leaderboard.
+   * @returns {Promise<Player[] | null>} The leaderboard.
    */
   async getLeaderboard(
     classe: Classes = 'allclasses',
     mode: Modes = 'allmodes',
   ): Promise<Player[] | null> {
     const res = await request(
-      `${process.env.API_URL}/leaderboard/${classe}/${mode}`,
+      `${process.env.ARMORY_API_URL}/leaderboard/${classe}/${mode}`,
       true,
     );
     return res;
@@ -154,14 +102,27 @@ export default class API {
    *
    * @param battleTag - The battle tag.
    * @param heroId  - The hero id.
-   * @returns - The player.
+   * @returns {PlayerDetails | null} The player.
    */
   async getPlayer(
     battleTag: string,
     heroId: string,
   ): Promise<PlayerDetails | null> {
     const res = await request(
-      `${process.env.API_URL}/${battleTag}/${heroId}`,
+      `${process.env.ARMORY_API_URL}/${battleTag}/${heroId}`,
+      true,
+    );
+    return res;
+  }
+
+  /**
+   * Gets the status.
+   *
+   * @returns {Promise<Status | null>} The status.
+   */
+  async getStatus(): Promise<Status | null> {
+    const res = await request(
+      `${process.env.ARMORY_URL}/status`,
       true,
     );
     return res;

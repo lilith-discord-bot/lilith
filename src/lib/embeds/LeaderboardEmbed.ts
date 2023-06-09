@@ -1,4 +1,4 @@
-import { Player } from '../API';
+import { Player } from '../../types';
 import { Embed } from './Embed';
 
 const getLink = (player: Player): string => {
