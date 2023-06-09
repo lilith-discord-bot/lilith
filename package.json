@@ -24,7 +24,8 @@
   ],
   "author": "glazk0",
   "contributors": [
-    "glazk0 <glazk0@peerat.dev> (https://github.com/glazk0)"
+    "glazk0 <glazk0@peerat.dev> (https://github.com/glazk0)",
+    "Marco <hi@marco.tools> (https://github.com/Mawco)"
   ],
   "dependencies": {
     "discord-hybrid-sharding": "^2.1.3",
