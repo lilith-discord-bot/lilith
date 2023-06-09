@@ -8,7 +8,7 @@ export default class Ready extends Event {
   }
 
   async run(...args: any[]): Promise<void> {
-    
+
     this.client.logger.info(`Running event ${this.id} for ${this.event}`);
 
     const shards =
@@ -16,6 +16,6 @@ export default class Ready extends Event {
         ? [...this.client.cluster.ids.keys()].join(', ')
         : [...this.client.cluster.ids.keys()];
 
-    this.client.logger.info(`${this.client.user?.tag}, ready to serve ${this.client.guilds.cache.size} servers on cluster #${this.client.cluster.id} (Shards: ${shards})`);
+    this.client.logger.info(`${this.client.user?.tag}, ready to serve ${this.client.guilds.cache.size} servers on cluster #${this.client.cluster.id} (Shards: ${shards})`,);
   }
 }

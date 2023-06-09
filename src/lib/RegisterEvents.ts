@@ -12,16 +12,20 @@ import { Events } from 'discord.js';
  */
 export function registerClientEvents(client: Client): void {
   
-  client.on(Events.ClientReady, async () => {
+  client.once(Events.ClientReady, async () => {
     client.eventHandler.run(Events.ClientReady, []);
   });
 
   client.on(Events.ShardReady, async (id: number) => {
-    client.eventHandler.run(Events.ShardReady, [id]);
+    client.logger.info(`Shard #${id} ready on cluster #${client.cluster.id}`);
   });
 
   client.on(Events.ShardDisconnect, async (event: any, id: number) => {
     client.logger.warn(`Shard #${id} disconnected with code ${event.code} for cluster #${client.cluster.id}`);
+  });
+
+  client.on(Events.InteractionCreate, async (interaction) => {
+    client.eventHandler.run(Events.InteractionCreate, interaction);
   });
 
   client.on(Events.Error, (error: any) => {
@@ -30,6 +34,10 @@ export function registerClientEvents(client: Client): void {
 
   client.on(Events.Warn, (message: string) => {
     client.logger.warn(message);
+  });
+
+  client.on(Events.Debug, (message: string) => {
+    client.logger.debug(message);
   });
 }
 
@@ -45,6 +53,7 @@ export function registerClusterEvents(
   manager: ClusterManager,
   logger: typeof Logger,
 ): ClusterManager {
+  
   if (isDev) {
     manager.on('debug', (message: string) => {
       logger.debug(message);
