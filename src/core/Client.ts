@@ -5,6 +5,8 @@ import { Logger } from '../lib/Logger';
 import { options } from '../utils/Constants';
 import EventHandler from '../events/EventHandler';
 import { registerClientEvents } from '../lib/RegisterEvents';
+import InteractionHandler from '../events/InteractionHandler';
+import API from '../lib/API';
 
 export class Client extends DiscordClient {
   /**
@@ -12,20 +14,27 @@ export class Client extends DiscordClient {
    * @type {ClusterClient<DiscordClient>}
    * @readonly
    */
-  public readonly cluster: ClusterClient<DiscordClient>;
+  readonly cluster: ClusterClient<DiscordClient>;
 
   /**
    * The logger class.
    * @type {typeof Logger}
    */
-  public readonly logger: typeof Logger;
+  readonly logger: typeof Logger;
 
   /**
    * The event handler.
    * @type {EventHandler}
    * @readonly
    */
-  public readonly eventHandler: EventHandler;
+  readonly eventHandler: EventHandler;
+
+  /**
+   * The API class.
+   * @type {API}
+   * @readonly
+   */
+  readonly api: API;
 
   /**
    * Creates a new client.
@@ -41,9 +50,11 @@ export class Client extends DiscordClient {
 
     this.cluster = new ClusterClient(this);
 
-    this.logger = Logger;
-
     this.eventHandler = new EventHandler(this);
+
+    this.api = new API();
+
+    this.logger = Logger;
   }
 
   /**
@@ -51,8 +62,7 @@ export class Client extends DiscordClient {
    *
    * @returns {Promise<this>} The client.
    */
-  public async init(): Promise<this> {
-
+  async init(): Promise<this> {
     await this.eventHandler.init();
 
     await registerClientEvents(this);
@@ -70,7 +80,7 @@ export class Client extends DiscordClient {
   /**
    * Destroys the client.
    */
-  public async destroy(): Promise<void> {
+  async destroy(): Promise<void> {
     await super.destroy();
     process.exit(0);
   }

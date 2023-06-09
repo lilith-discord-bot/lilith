@@ -7,21 +7,21 @@ export class Event {
    * @type {Client}
    * @readonly
    */
-  public readonly client: Client;
+  readonly client: Client;
 
   /**
    * Event identifier.
    * @type {string}
    * @readonly
    */
-  public readonly id: string;
+  readonly id: string;
 
   /**
    * Event to trigger.
    * @type {Events}
    * @readonly
    */
-  public readonly event: Events;
+  readonly event: Events;
 
   /**
    * Creates a new event.
