@@ -23,7 +23,7 @@ services:
   
   redis:
     container_name: cache
-    image: redis:latest
+    image: redis:7.0.11
     # TODO: configure redis properly, either by using arguments or using a separate volume for configs.
     command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
@@ -33,7 +33,7 @@ services:
 
   postgres:
     container_name: database
-    image: postgres:latest
+    image: postgres:13.11
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
