@@ -1,12 +1,14 @@
 import { ClusterClient, getInfo } from 'discord-hybrid-sharding';
 import { ClientOptions, Client as DiscordClient } from 'discord.js';
 
-import { Logger } from '../lib/Logger';
-import { options } from '../utils/Constants';
 import EventHandler from '../events/EventHandler';
-import { registerClientEvents } from '../lib/RegisterEvents';
-import InteractionHandler from '../events/InteractionHandler';
+
 import API from '../lib/API';
+import { Logger } from '../lib/Logger';
+import { registerClientEvents } from '../lib/RegisterEvents';
+
+import { options } from '../utils/Constants';
+import { redis } from '../utils/Redis';
 
 export class Client extends DiscordClient {
   /**
@@ -15,12 +17,6 @@ export class Client extends DiscordClient {
    * @readonly
    */
   readonly cluster: ClusterClient<DiscordClient>;
-
-  /**
-   * The logger class.
-   * @type {typeof Logger}
-   */
-  readonly logger: typeof Logger;
 
   /**
    * The event handler.
@@ -35,6 +31,14 @@ export class Client extends DiscordClient {
    * @readonly
    */
   readonly api: API;
+
+  readonly cache: typeof redis;
+
+  /**
+   * The logger class.
+   * @type {typeof Logger}
+   */
+  readonly logger: typeof Logger;
 
   /**
    * Creates a new client.
@@ -54,6 +58,8 @@ export class Client extends DiscordClient {
 
     this.api = new API();
 
+    this.cache = redis;
+
     this.logger = Logger;
   }
 
@@ -63,9 +69,12 @@ export class Client extends DiscordClient {
    * @returns {Promise<this>} The client.
    */
   async init(): Promise<this> {
+
     await this.eventHandler.init();
 
     await registerClientEvents(this);
+
+    await this.cache.connect();
 
     try {
       await super.login(process.env.TOKEN);

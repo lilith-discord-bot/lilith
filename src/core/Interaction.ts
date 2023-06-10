@@ -2,6 +2,8 @@ import {
   ApplicationCommandData,
   AutocompleteInteraction,
   CommandInteraction,
+  InteractionResponse,
+  StringSelectMenuInteraction,
 } from 'discord.js';
 import { Client } from './Client';
 
@@ -33,7 +35,7 @@ export class Interaction {
   static async run(
     interaction: CommandInteraction,
     context: Context,
-  ): Promise<void> {}
+  ): Promise<any> {}
 
   /**
    * Handles the interaction autocomplete.
@@ -44,5 +46,17 @@ export class Interaction {
   static async autocomplete(
     interaction: AutocompleteInteraction,
     context: Context,
-  ): Promise<void> {}
+  ): Promise<any> {}
+
+  /**
+   * Handles the interaction select menu.
+   *
+   * @param interaction - The interaction.
+   * @param context - The context.
+   */
+  static async selectMenu(
+    // TODO ADD MORE OR MAKE IT GENERIC
+    interaction: StringSelectMenuInteraction,
+    context: Context,
+  ): Promise<any> {}
 }

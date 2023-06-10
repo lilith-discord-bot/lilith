@@ -1,67 +1,24 @@
+import {
+  Classes,
+  Events,
+  Modes,
+  Player,
+  PlayerArmory,
+  PlayerResearch,
+  Stats,
+  Status,
+} from '../types';
+
 import { request } from '../utils/Commons';
-import { ClassesChoices, Player, Classes, PlayerDetails, ModesChoices, Modes, Events, Stats, Status } from '../types';
-
-export const classesChoices: ClassesChoices[] = [
-  {
-    name: 'All classes',
-    value: 'allclasses',
-  },
-  {
-    name: 'Barbarian',
-    value: 'Barbarian',
-  },
-  {
-    name: 'Druid',
-    value: 'Druid',
-  },
-  {
-    name: 'Necromancer',
-    value: 'Necromancer',
-  },
-  {
-    name: 'Rogue',
-    value: 'Rogue',
-  },
-  {
-    name: 'Sorcerer',
-    value: 'Sorcerer',
-  },
-];
-
-export const modesChoices: ModesChoices[] = [
-  {
-    name: 'All modes',
-    value: 'allmodes',
-  },
-  {
-    name: 'Softcore',
-    value: 'softcore',
-  },
-  {
-    name: 'Hardcore',
-    value: 'hardcore',
-  },
-  {
-    name: 'Hall of Valor',
-    value: 'dead',
-  },
-  {
-    name: 'PvP',
-    value: 'pvp',
-  },
-];
 
 export default class API {
   /**
    * Gets the events.
    *
-   * @returns {Promise<Events | null>} The event.
+   * @returns {Promise<Events | null>} The events.
    */
   async getEvents(): Promise<Events | null> {
-    const res = await request(
-      `${process.env.API_URL}/events/recent`,
-      true,
-    );
+    const res = await request(`${process.env.API_URL}/events/recent`, true);
     return res;
   }
 
@@ -71,10 +28,7 @@ export default class API {
    * @returns {Promise<Stats | null>} The stats.
    */
   async getStats(): Promise<Stats | null> {
-    const res = await request(
-      `${process.env.ARMORY_API_URL}/stats`,
-      true,
-    );
+    const res = await request(`${process.env.ARMORY_API_URL}/stats`, true);
     return res;
   }
 
@@ -98,16 +52,31 @@ export default class API {
   }
 
   /**
-   * Gets the player.
+   *  Gets the player using the Battle Tag.
+   *
+   * @param battleTag - The battle tag of the player.
+   *
+   * @returns {Promise<PlayerResearch | null>} The player.
+   */
+  async getPlayer(battleTag: string): Promise<PlayerResearch | null> {
+    const res = await request(
+      `${process.env.ARMORY_API_URL}/${battleTag}`,
+      true,
+    );
+    return res;
+  }
+
+  /**
+   * Gets the player details.
    *
    * @param battleTag - The battle tag.
    * @param heroId  - The hero id.
-   * @returns {PlayerDetails | null} The player.
+   * @returns {PlayerArmory | null} The player.
    */
-  async getPlayer(
+  async getPlayerArmory(
     battleTag: string,
     heroId: string,
-  ): Promise<PlayerDetails | null> {
+  ): Promise<PlayerArmory | null> {
     const res = await request(
       `${process.env.ARMORY_API_URL}/${battleTag}/${heroId}`,
       true,
@@ -121,10 +90,7 @@ export default class API {
    * @returns {Promise<Status | null>} The status.
    */
   async getStatus(): Promise<Status | null> {
-    const res = await request(
-      `${process.env.ARMORY_URL}/status`,
-      true,
-    );
+    const res = await request(`${process.env.ARMORY_URL}/status`, true);
     return res;
   }
 }
