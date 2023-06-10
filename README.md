@@ -49,23 +49,23 @@ REDIS_HOST=redis_host # Doesn't need to be set if running with Docker.
 REDIS_PASSWORD=redis_password
 ```
 
-4. Build the bot
-
-```bash
-npm run build
-```
-
 5. Start the bot
 
 ```bash
-npm run start
+npm run bot:up
 ```
+
+Other commands:
+
+- `npm run bot:down` - Stop the bot
+- `npm run bot:restart` - Restart the bot
+- `npm run bot:rebuild` - Rebuild the bot
 
 ## Roadmap
 
 - [x] Handle interactions (commands)
-- [ ] Create a database (redis or mongodb or both ?)
-- [ ] Add the worker to fetch data
+- [x] Create a database (redis or mongodb or both ?)
+- [x] Add the worker to fetch data
 - [ ] Create Scheduled event Discord system
 
 ## License
