@@ -6,6 +6,8 @@ import {
   PresenceData,
 } from 'discord.js';
 
+import { ClassesChoices, ModesChoices } from '../types';
+
 /**
  * Utility enum for admins.
  * @enum {string}
@@ -47,3 +49,55 @@ export const options: ClientOptions = {
     repliedUser: false,
   },
 };
+
+/**
+ * The choices for the classes.
+ */
+export const classesChoices: ClassesChoices[] = [
+  {
+    name: 'Barbarian',
+    value: 'Barbarian',
+  },
+  {
+    name: 'Sorcerer',
+    value: 'Sorcerer',
+  },
+  {
+    name: 'Druid',
+    value: 'Druid',
+  },
+  {
+    name: 'Rogue',
+    value: 'Rogue',
+  },
+  {
+    name: 'Necromancer',
+    value: 'Necromancer',
+  },
+];
+
+/**
+ * The choices for the modes.
+ */
+export const modesChoices: ModesChoices[] = [
+  {
+    name: 'All modes',
+    value: 'allmodes',
+  },
+  {
+    name: 'Softcore',
+    value: 'softcore',
+  },
+  {
+    name: 'Hardcore',
+    value: 'hardcore',
+  },
+  {
+    name: 'Hall of Valor',
+    value: 'dead',
+  },
+  {
+    name: 'PvP',
+    value: 'pvp',
+  },
+];

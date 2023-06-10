@@ -1,3 +1,4 @@
+import { TimestampStylesString, time } from 'discord.js';
 import { Logger } from '../lib/Logger';
 
 /**
@@ -17,21 +18,101 @@ export const duration = {
  */
 export const isDev = process.env.NODE_ENV === 'development';
 
+/**
+ * Returns a url to the armory.
+ *
+ * @param battleTag - The battle tag of the player.
+ * @param characterId - The character id.
+ *
+ * @returns - The url to the armory.
+ */
+export const getArmoryLink = (battleTag: string, characterId: string) => {
+  return `${process.env.ARMORY_URL}/?account=${battleTag}&hero=${characterId}`;
+};
+
+/**
+ * Returns a timestamp in the Discord format.
+ *
+ * @param timestamp - The timestamp to format.
+ * @param type - The type of the timestamp.
+ *
+ * @returns - The timestamp in the Discord format.
+ */
+export const getTimestamp = (
+  timestamp: number,
+  type: TimestampStylesString = 't',
+) => {
+  return time(timeStampToseconds(timestamp), type);
+};
+
+/**
+ * Returns a timestamp in seconds.
+ *
+ * @param timestamp - The timestamp to convert.
+ *
+ * @returns The timestamp in seconds.
+ */
+export const timeStampToseconds = (timestamp: number) => {
+  let divisor;
+  
+
+  if (timestamp > 1_000_000_000_000) divisor = 1_000_000_000;
+  else if (timestamp > 1_000_000_000) divisor = 1_000_000;
+  else if (timestamp > 1_000_000) divisor = 1_000;
+  else divisor = 1;
+
+  return Math.floor(timestamp / divisor);
+};
+
+/**
+ * Returns a days, hours, minutes and seconds string from seconds.
+ *
+ * @param seconds - The seconds to convert.
+ *
+ * @returns The days, hours, minutes and seconds string.
+ */
+export const secondsToDhms = (seconds: number) => {
+
+  seconds = Number(seconds);
+
+  const d = Math.floor(seconds / (3600 * 24));
+  const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+
+  const dDisplay = d > 0 ? d + (d === 1 ? ' day, ' : ' days, ') : '';
+  const hDisplay = h > 0 ? h + (h === 1 ? ' hour, ' : ' hours, ') : '';
+  const mDisplay = m > 0 ? m + (m === 1 ? ' minute, ' : ' minutes, ') : '';
+  const sDisplay = s > 0 ? s + (s === 1 ? ' second' : ' seconds') : '';
+
+  return dDisplay + hDisplay + mDisplay + sDisplay;
+};
+
+/**
+ * Fetches the data from the url.
+ *
+ * @param url - The url to fetch.
+ * @param json - If the response should be json.
+ * @param method - The method to use.
+ * @param headers - The headers to use.
+ * @param body - The body to use.
+ *
+ * @returns - Promise<any> The response or null.
+ */
 export async function request(
   url: string,
   json = false,
   method = 'GET' || 'POST' || 'PUT' || 'DELETE',
-  headers = {},
+  headers = {
+    'User-Agent': 'Lilith/DiscordBot',
+  },
   body?: RequestInit['body'],
-) {
-
+): Promise<any> {
   if (!url) throw new Error('No URL provided.');
   else {
-
     let req = null;
 
     try {
-
       let options: RequestInit = {
         method,
         headers,
@@ -43,7 +124,6 @@ export async function request(
 
       if (json) return await req.json();
       else return await req.text();
-      
     } catch (error) {
       Logger.error(error);
       req = null;

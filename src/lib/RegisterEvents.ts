@@ -20,8 +20,14 @@ export function registerClientEvents(client: Client): void {
     client.logger.info(`Shard #${id} ready on cluster #${client.cluster.id}`);
   });
 
+  client.on(Events.ShardReconnecting, async (id: number) => {
+    client.logger.warn(`Shard #${id} reconnecting for cluster #${client.cluster.id}`);
+  });
+
   client.on(Events.ShardDisconnect, async (event: any, id: number) => {
-    client.logger.warn(`Shard #${id} disconnected with code ${event.code} for cluster #${client.cluster.id}`);
+    client.logger.warn(
+      `Shard #${id} disconnected with code ${event.code} for cluster #${client.cluster.id}`,
+    );
   });
 
   client.on(Events.InteractionCreate, async (interaction) => {
@@ -37,7 +43,7 @@ export function registerClientEvents(client: Client): void {
   });
 
   client.on(Events.Debug, (message: string) => {
-    client.logger.debug(message);
+    if (isDev) client.logger.debug(message);
   });
 }
 
@@ -53,7 +59,6 @@ export function registerClusterEvents(
   manager: ClusterManager,
   logger: typeof Logger,
 ): ClusterManager {
-  
   if (isDev) {
     manager.on('debug', (message: string) => {
       logger.debug(message);

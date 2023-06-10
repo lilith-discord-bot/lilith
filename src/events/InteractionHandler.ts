@@ -1,7 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { Collection, CommandInteraction, Events } from 'discord.js';
+import {
+  AutocompleteInteraction,
+  Collection,
+  CommandInteraction,
+  Events,
+  StringSelectMenuInteraction,
+} from 'discord.js';
 
 import { Client } from '../core/Client';
 import { Event } from '../core/Event';
@@ -106,20 +112,21 @@ export default class InteractionHandler extends Event {
    * @returns {Promise<void>} - Returns nothing.
    */
   async run(interaction: CommandInteraction): Promise<void> {
+
     if (!this.client.isReady) return undefined;
     if (!interaction) return undefined;
-
-    if (!this.interactions.has(interaction.commandName)) return undefined;
-
-    const command = this.interactions.get(interaction.commandName);
-
-    if (!command) return undefined;
 
     let context = {} as Context;
 
     context.client = this.client;
 
     if (interaction.isChatInputCommand()) {
+      if (!this.interactions.has(interaction.commandName)) return undefined;
+
+      const command = this.interactions.get(interaction.commandName);
+
+      if (!command) return undefined;
+
       try {
         await command.run?.(interaction, context);
       } catch (error) {
@@ -130,11 +137,41 @@ export default class InteractionHandler extends Event {
     }
 
     if (interaction.isAutocomplete()) {
+
+      const autocomplete = interaction as AutocompleteInteraction;
+
+      if (!this.interactions.has(autocomplete.commandName)) return undefined;
+
+      const command = this.interactions.get(autocomplete.commandName);
+
+      if (!command) return undefined;
+
       try {
         await command.autocomplete?.(interaction, context);
       } catch (error) {
         this.client.logger.error(
           `Failed to run autocomplete for interaction ${command.name}: ${error}`,
+        );
+      }
+    }
+
+    if (interaction.isStringSelectMenu()) {
+      
+      const selectMenu = interaction as StringSelectMenuInteraction;
+
+      const id = selectMenu.customId.split('_')[0];
+
+      if (!this.interactions.has(id)) return undefined;
+
+      const command = this.interactions.get(id);
+
+      if (!command) return undefined;
+
+      try {
+        await command.selectMenu?.(interaction, context);
+      } catch (error) {
+        this.client.logger.error(
+          `Failed to run interaction ${selectMenu.customId}: ${error}`,
         );
       }
     }

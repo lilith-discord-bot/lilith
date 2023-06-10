@@ -1,5 +1,5 @@
 # Create the image based on the official Node 16 image from Dockerhub
-FROM node:16-alpine as builder
+FROM node:18-alpine as builder
 
 # Change directory so that our commands run inside this new directory
 WORKDIR /bot
@@ -17,7 +17,7 @@ RUN npm run build
 
 RUN npm prune --production
 
-FROM node:16-alpine
+FROM node:18-alpine
 
 WORKDIR /bot
 

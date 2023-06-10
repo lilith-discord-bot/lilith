@@ -10,8 +10,23 @@ export type Player = {
   dead: boolean;
   lastUpdate: number;
 };
-  
-export type PlayerDetails = {
+
+export type PlayerResearch = {
+  dungeons_completed: number;
+  players_killed: number;
+  bosses_killed: number;
+  characters: [
+    {
+      name: string;
+      id: string;
+      class: string;
+      level: number;
+      lastUpdate: string;
+    },
+  ];
+};
+
+export type PlayerArmory = {
   character: string;
   lastUpdate: string;
   accountLastUpdate: string;
@@ -30,7 +45,7 @@ export type PlayerDetails = {
   hardcore: boolean;
   dead: boolean;
 };
-  
+
 export type Equipment = {
   name: string;
   tex: number;
@@ -39,7 +54,7 @@ export type Equipment = {
   quality: string;
   affixes: string[];
 };
-  
+
 export type Skill = {
   name: string;
   desc: string;
