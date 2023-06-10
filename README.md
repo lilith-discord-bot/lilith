@@ -15,6 +15,8 @@ If you want to contribute to this project, please mind joining the [Discord serv
 
 ### Setup
 
+> If running using Docker, use `docker-compose -p "lilith" --env-file .env -f .docker/docker-compose.yml up --build -d` (**don't forget about the `.env` file!!**)
+
 1. Clone the repository
 
 ```bash
@@ -31,7 +33,20 @@ npm install
 
 ```env
 TOKEN=your_token_here
-API_URL=your_api_url_here
+
+#API
+ARMORY_URL=api_url
+ARMORY_API_URL=api_url
+
+#Database
+POSTGRES_HOST=postgres_database_host # Doesn't need to be set if running with Docker.
+POSTGRES_USER=postgres_database_user
+POSTGRES_PASSWORD=postgres_database_password
+POSTGRES_DATABASE=postgres_database
+
+#Cache
+REDIS_HOST=redis_host # Doesn't need to be set if running with Docker.
+REDIS_PASSWORD=redis_password
 ```
 
 4. Build the bot
