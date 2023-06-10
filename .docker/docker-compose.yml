@@ -1,0 +1,53 @@
+services:
+  bot:
+    container_name: bot
+    depends_on:
+      - postgres
+      - redis
+    build:
+      context: ../
+      dockerfile: .docker/Dockerfile
+    networks:
+      - network
+    environment:
+      - TOKEN=${TOKEN}
+      - ARMORY_API_URL=${ARMORY_API_URL}
+      - ARMORY_URL=${ARMORY_URL}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: npm start
+  
+  redis:
+    container_name: cache
+    image: redis:7.0.11
+    # TODO: configure redis properly, either by using arguments or using a separate volume for configs.
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    networks:
+      - network
+    volumes:
+      - redisdata:/data
+
+  postgres:
+    container_name: database
+    image: postgres:13.11
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+    networks:
+      - network
+    volumes: 
+      - pgdata:/var/lib/postgresql/data
+      
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  pgdata:
+  redisdata:
