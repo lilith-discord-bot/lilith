@@ -9,6 +9,8 @@ import { registerClientEvents } from '../lib/RegisterEvents';
 
 import { options } from '../utils/Constants';
 import { redis } from '../utils/Redis';
+import Database from '../lib/Database';
+import { DataSource } from 'typeorm';
 
 export class Client extends DiscordClient {
   /**
@@ -41,6 +43,12 @@ export class Client extends DiscordClient {
   readonly logger: typeof Logger;
 
   /**
+   * The datasource
+   * @type {typeof DataSource}
+   */
+  readonly database: DataSource;
+
+  /**
    * Creates a new client.
    *
    * @param options - The client options.
@@ -60,6 +68,8 @@ export class Client extends DiscordClient {
 
     this.cache = redis;
 
+    this.database = Database;
+
     this.logger = Logger;
   }
 
@@ -75,6 +85,7 @@ export class Client extends DiscordClient {
     await registerClientEvents(this);
 
     await this.cache.connect();
+    await this.database.initialize();
 
     try {
       await super.login(process.env.TOKEN);
