@@ -28,7 +28,6 @@ const armoryLink = (battleTag: string, heroId: string) =>
   );
 
 export default class Armory extends Interaction {
-  
   static enabled = true;
 
   static command: ApplicationCommandData = {
@@ -130,7 +129,6 @@ export default class Armory extends Interaction {
     interaction: AutocompleteInteraction,
     ctx: Context,
   ): Promise<any> {
-
     const value = interaction.options.getFocused();
 
     let keys = await ctx.client.cache.keys('battleTag:*');
