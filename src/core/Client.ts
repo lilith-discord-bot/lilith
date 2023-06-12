@@ -1,16 +1,17 @@
 import { ClusterClient, getInfo } from 'discord-hybrid-sharding';
 import { ClientOptions, Client as DiscordClient } from 'discord.js';
+import { DataSource } from 'typeorm';
 
 import EventHandler from '../events/EventHandler';
 
-import API from '../lib/API';
+import { API } from '../lib/API';
 import { Logger } from '../lib/Logger';
 import { registerClientEvents } from '../lib/RegisterEvents';
+import { database } from '../lib/db/postgresql/Database';
+import { redis } from '../lib/db/redis/Redis';
 
+import { GuildRepository } from '../lib/db/postgresql/repository/Guild';
 import { options } from '../utils/Constants';
-import { redis } from '../utils/Redis';
-import Database from '../lib/Database';
-import { DataSource } from 'typeorm';
 
 export class Client extends DiscordClient {
   /**
@@ -34,19 +35,33 @@ export class Client extends DiscordClient {
    */
   readonly api: API;
 
+  /**
+   * Redis cache.
+   * @type {typeof redis}
+   * @readonly
+   */
   readonly cache: typeof redis;
+
+  /**
+   * The datasource
+   * @type {DataSource}
+   */
+  readonly database: DataSource;
+
+  /**
+   * Differents repositories.
+   * @type {object}
+   * @readonly
+   */
+  readonly repository: {
+    guild: GuildRepository;
+  };
 
   /**
    * The logger class.
    * @type {typeof Logger}
    */
   readonly logger: typeof Logger;
-
-  /**
-   * The datasource
-   * @type {typeof DataSource}
-   */
-  readonly database: DataSource;
 
   /**
    * Creates a new client.
@@ -68,7 +83,11 @@ export class Client extends DiscordClient {
 
     this.cache = redis;
 
-    this.database = Database;
+    this.database = database;
+
+    this.repository = {
+      guild: new GuildRepository(this),
+    };
 
     this.logger = Logger;
   }
@@ -79,7 +98,7 @@ export class Client extends DiscordClient {
    * @returns {Promise<this>} The client.
    */
   async init(): Promise<this> {
-
+    
     await this.eventHandler.init();
 
     await registerClientEvents(this);

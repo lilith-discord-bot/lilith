@@ -2,13 +2,15 @@ import {
   ApplicationCommandData,
   AutocompleteInteraction,
   CommandInteraction,
-  InteractionResponse,
-  StringSelectMenuInteraction,
+  StringSelectMenuInteraction
 } from 'discord.js';
+
+import { Guild } from '../lib/db/postgresql/models/Guild.model';
 import { Client } from './Client';
 
 export type Context = {
   client: Client;
+  guild: Guild | null;
 };
 
 export class Interaction {

@@ -1,5 +1,6 @@
-import { TimestampStylesString, time } from 'discord.js';
+import { Guild, NewsChannel, Snowflake, TextChannel, TimestampStylesString, time } from 'discord.js';
 import { Logger } from '../lib/Logger';
+import { Client } from '../core/Client';
 
 /**
  * Duration in milliseconds for common time units.
@@ -54,7 +55,7 @@ export const getTimestamp = (
  */
 export const timeStampToseconds = (timestamp: number) => {
   let divisor;
-  
+
 
   if (timestamp > 1_000_000_000_000) divisor = 1_000_000_000;
   else if (timestamp > 1_000_000_000) divisor = 1_000_000;
@@ -132,3 +133,35 @@ export async function request(
     return req;
   }
 }
+
+/**
+ * Returns a Discord guild from the cluster.
+ * 
+ * @param client - The client.
+ * @param guildId - The guild id.
+ * 
+ * @returns - The guild.
+ */
+export const getGuild = async (client: Client, guildId: Snowflake): Promise<Guild | undefined> => {
+  const evalResult = (await client.cluster
+    .broadcastEval((c, { guildId }) => c.guilds.cache.get(guildId), {
+      context: { guildId },
+    })) as (Guild | undefined)[];
+  return evalResult.find((guild) => guild !== null);
+};
+
+/**
+ * Returns a Discord channel from the cluster.
+ * 
+ * @param client - The client.
+ * @param channelId - The channel id.
+ * 
+ * @returns - The channel.
+ */
+export const getChannel = async (client: Client, channelId: Snowflake): Promise<NewsChannel | TextChannel | undefined> => {
+  const evalResult = (await client.cluster
+    .broadcastEval((c, { channelId }) => c.channels.fetch(channelId), {
+      context: { channelId },
+    })) as (NewsChannel | TextChannel | undefined)[];
+  return evalResult.find((channel) => channel !== null);
+};

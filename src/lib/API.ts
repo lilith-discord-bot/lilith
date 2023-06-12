@@ -11,14 +11,14 @@ import {
 
 import { request } from '../utils/Commons';
 
-export default class API {
+export class API {
   /**
    * Gets the events.
    *
    * @returns {Promise<Events | null>} The events.
    */
   async getEvents(): Promise<Events | null> {
-    const res = await request(`${process.env.API_URL}/events/recent`, true);
+    const res = await request(`${process.env.ARMORY_API_URL}/events/recent`, true);
     return res;
   }
 

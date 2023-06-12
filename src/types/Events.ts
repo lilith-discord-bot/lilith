@@ -1,13 +1,12 @@
 export type Events = {
-  boss: {
-    name: string,
-    timestamp: number
-  },
-  helltide: {
-    timestamp: number,
-    refresh: number
-  },
-  legion: {
-    timestamp: number
-  }
+  boss: Event;
+  helltide: Event;
+  legion: Event;
+};
+
+export type Event = {
+  name?: string;
+  timestamp: number;
+  territory?: string;
+  zone: string;
 };

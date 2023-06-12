@@ -3,6 +3,7 @@ import path from 'node:path';
 
 import {
   AutocompleteInteraction,
+  ChatInputCommandInteraction,
   Collection,
   CommandInteraction,
   Events,
@@ -12,6 +13,7 @@ import {
 import { Client } from '../core/Client';
 import { Event } from '../core/Event';
 import { Context, Interaction } from '../core/Interaction';
+// import { findOrCreateGuild } from '../lib/db/postgresql/repository/Guild';
 
 // TODO : Refactor this, it works for now
 
@@ -111,16 +113,26 @@ export default class InteractionHandler extends Event {
    *
    * @returns {Promise<void>} - Returns nothing.
    */
-  async run(interaction: CommandInteraction): Promise<void> {
+  async run(interaction: CommandInteraction): Promise<any> {
 
     if (!this.client.isReady) return undefined;
     if (!interaction) return undefined;
 
+    let guild = null;
+
+    if (interaction.inGuild())
+      guild = await this.client.repository.guild.findOrCreate(interaction.guildId);
+
     let context = {} as Context;
 
     context.client = this.client;
+    context.guild = guild;
 
     if (interaction.isChatInputCommand()) {
+
+      if (!interaction.user.id.includes('247344130798256130'))
+        return await interaction.reply('The bot is still in development, we will let you know when it is ready!');
+      
       if (!this.interactions.has(interaction.commandName)) return undefined;
 
       const command = this.interactions.get(interaction.commandName);
@@ -137,7 +149,6 @@ export default class InteractionHandler extends Event {
     }
 
     if (interaction.isAutocomplete()) {
-
       const autocomplete = interaction as AutocompleteInteraction;
 
       if (!this.interactions.has(autocomplete.commandName)) return undefined;
@@ -156,7 +167,6 @@ export default class InteractionHandler extends Event {
     }
 
     if (interaction.isStringSelectMenu()) {
-      
       const selectMenu = interaction as StringSelectMenuInteraction;
 
       const id = selectMenu.customId.split('_')[0];
