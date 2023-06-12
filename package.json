@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node main",
     "dev": "npm run build && NODE_ENV=development node dist/main.js",
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "bot:up": "docker-compose -p 'lilith' --env-file .env -f .docker/docker-compose.yml up --build -d",
     "bot:restart": "docker-compose -p 'lilith' -f .docker/docker-compose.yml restart",
     "bot:update": "docker-compose -p 'lilith' -f .docker/docker-compose.yml exec bot sh -c 'npm install'",
@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/glazk0/lilith/issues"
   },
-  "homepage": "https://github.com/glazk0/lilith",
+  "homepage": "https://github.com/glazk0/lilith#readme",
   "keywords": [
     "discord",
     "bot",
