@@ -57,7 +57,7 @@ npm run bot:up
 
 Other commands:
 
-- `npm run bot:down` - Stop the bot
+- `npm run bot:stop` - Stop the bot
 - `npm run bot:restart` - Restart the bot
 - `npm run bot:rebuild` - Rebuild the bot
 
