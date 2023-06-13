@@ -69,23 +69,7 @@ export class GuildRepository {
     await this.guilds.delete({ id: guildId });
   }
 
-  async updateChannel(guildId: string, channel: Channel): Promise<void> {
-
-    const guild = await this.findOrCreate(guildId);
-
-    if (!guild) return;
-
-    try {
-      guild.settings.events.channel = channel as any;
-      await this.guilds.save(guild);
-    } catch (error) {
-      this.client.logger.error(error);
-    }
-
-    await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
-  }
-
-  async updateEvent(guildId: string, event: keyof Guild['settings']['events'], data: { enabled: boolean, role: string, schedule: boolean }): Promise<void> {
+  async updateEvent(guildId: string, event: keyof Guild['settings']['events'], data: { enabled: boolean, channel: string | null, role: string | null, schedule: boolean }): Promise<void> {
 
     const guild = await this.findOrCreate(guildId);
 

@@ -54,11 +54,18 @@ export default class Settings extends Interaction {
                 choices: eventsChoices,
                 required: true,
               },
-              // {
-              //   type: ApplicationCommandOptionType.Role,
-              //   name: 'role',
-              //   description: 'The role to mention in the notification.',
-              // },
+              {
+                type: ApplicationCommandOptionType.Channel,
+                name: 'channel',
+                description: 'The channel to send notifications to.',
+                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
+                required: true,
+              },
+              {
+                type: ApplicationCommandOptionType.Role,
+                name: 'role',
+                description: 'The role to mention in the notification.',
+              },
               // {
               //   type: ApplicationCommandOptionType.Boolean,
               //   name: 'schedule',
@@ -90,6 +97,7 @@ export default class Settings extends Interaction {
     interaction: CommandInteraction,
     ctx: Context,
   ): Promise<any> {
+
     const options = interaction.options as CommandInteractionOptionResolver;
 
     const group = options.getSubcommandGroup();
@@ -103,39 +111,10 @@ export default class Settings extends Interaction {
     switch (group) {
       case 'notifications':
         switch (subcommand) {
-          case 'setup':
-
-            if (ctx.guild?.settings.events.channel) {
-
-              const oldChannel = ctx.guild?.settings.events.channel as any as Channel;
-
-              if (channel?.id === oldChannel.id) return await interaction.reply({content: `Notifications channel is already set to ${channel}.`, ephemeral: true });
-
-              let channelToDeleteMessage = ctx.client.channels.cache.get(oldChannel.id) as TextChannel | NewsChannel;
-
-              const messageId = await ctx.client.cache.get(`events:message:${ctx.guild.id}`);
-
-              (await channelToDeleteMessage.messages.fetch()).filter((m: any) => m.id === messageId).first()?.delete();
-
-              await ctx.client.cache.del(`events:message:${ctx.guild.id}`);
-            }
-
-            try {
-              await ctx.client.repository.guild.updateChannel(interaction.guildId!, channel as Channel);
-            } catch (error) {
-              ctx.client.logger.error(error);
-            }
-
-            await interaction.reply({
-              content: `Notifications channel has been set to ${channel}, the embed will soon be send.`,
-              ephemeral: true,
-            });
-            break;
-
           case 'enable':
 
             try {
-              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as any, { enabled: true, role: role as any as string, schedule: schedule ? true : false });
+              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as any, { enabled: true, channel: channel as any as string, role: role as any as string, schedule: schedule ? true : false });
             } catch (error) {
               ctx.client.logger.error(error);
             }
@@ -163,7 +142,7 @@ export default class Settings extends Interaction {
             }
 
             try {
-              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as any, { enabled: false, role: '', schedule: false });
+              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as any, { enabled: false, channel: null, role: null, schedule: false });
             } catch (error) {
               ctx.client.logger.error(error);
             }
@@ -172,7 +151,6 @@ export default class Settings extends Interaction {
               content: `Notifications for **${event}** have been disabled.`,
               ephemeral: true,
             });
-
             break;
         }
         break;

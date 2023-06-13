@@ -34,6 +34,7 @@ export class EventNotifier {
   }
 
   async init() {
+
     this.client.logger.info('Event notifier has been initialized.');
 
     const status = await this.client.api.getStatus();
@@ -55,10 +56,6 @@ export class EventNotifier {
 
     for (const guild of guilds) {
 
-      let alerts: {
-        name: string;
-        value: string;
-      }[] = [];
 
       for (let [key, value] of Object.entries(events)) {
 
@@ -67,122 +64,57 @@ export class EventNotifier {
         if (!isCached)
           await this.client.cache.set(`events:${key}`, JSON.stringify(value));
 
-        //@ts-ignore
-        if (guild.settings.events[key as keyof typeof guild.settings.events].enabled) {
+        let cache = await this.client.cache.get(`events:${key}`);
 
-          const now = new Date().getTime();
-          const start = value.timestamp * 1000;
-          const end = start + 3600000;
+        const cachedEvent = JSON.parse(cache!) as Event;
 
-          if (start >= now && now <= end) {
-            alerts.push({
-              name: this.getKeyName(key, value, true),
-              value: `Ending in ${time(end / 1000, 'R')}`
-            });
-          } else if (now >= start) {
-            alerts.push({
-              name: this.getKeyName(key, value, true),
-              value: `Starting in ${time(start / 1000, 'R')}`
-            });
-          } else if (now >= end) {
-            alerts.push({
-              name: this.getKeyName(key, value, false),
-              value: `No event is currently running.`
-            });
-          }
+        if (cachedEvent.timestamp !== value.timestamp) {
 
-          // @ts-ignore
-          if (guild.settings.events[key as keyof typeof guild.settings.events].role) {
+          const embed = new EventEmbed(key, value, { client: this.client, guild: guild });
 
-
-          }
-
-          // @ts-ignore
-          if (guild.settings.events[key as keyof typeof guild.settings.events].schedule) {
-
-            // const clusterGuild = await getGuild(this.client, guild.id);
-
-            // if (!clusterGuild) return;
-
-            // await this.broadcaster.scheduleEvent(clusterGuild, {
-            //   name: this.getKeyName(key, value, true),
-            //   entityType: GuildScheduledEventEntityType.External,
-            //   privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
-            //   scheduledStartTime: new Date().toLocaleString(),
-            //   scheduledEndTime: new Date().toLocaleString(),
-            //   entityMetadata: {
-            //     location: value.zone && value.territory ? `${value.zone} at ${value.territory}` : '',
-            //   }
-            // })
-          }
-        }
-
-        await this.client.cache.set(`events:${key}`, JSON.stringify(value));
-      }
-
-      if (alerts.length > 0) {
-
-        const embed = new EventEmbed(alerts, {client: this.client, guild: guild});
-
-        const messageId = await this.client.cache.get(`events:message:${guild.id}`);
-
-        //@ts-ignore
-        let channel = this.client.channels.cache.get(guild.settings.events.channel.id);
-
-        if (!channel) return;
-
-        if (![ChannelType.GuildText, ChannelType.GuildAnnouncement].includes(channel.type))
-          return;
-
-        channel = channel as TextChannel | NewsChannel;
-
-        let message;
-
-        if (!messageId) {
-
-          message = await channel.send({
+          let message = {
+            content: '',
             embeds: [embed],
-          });
+          }
 
-          await this.client.cache.set(`events:message:${guild.id}`, message.id);
+          //@ts-ignore
+          if (guild.settings.events[key as keyof typeof guild.settings.events].enabled) {
+
+            // @ts-ignore
+            if (guild.settings.events[key as keyof typeof guild.settings.events].role) {
+
+
+            }
+
+            // @ts-ignore
+            if (guild.settings.events[key as keyof typeof guild.settings.events].schedule) {
+
+              // const clusterGuild = await getGuild(this.client, guild.id);
+
+              // if (!clusterGuild) return;
+
+              // await this.broadcaster.scheduleEvent(clusterGuild, {
+              //   name: this.getKeyName(key, value, true),
+              //   entityType: GuildScheduledEventEntityType.External,
+              //   privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
+              //   scheduledStartTime: new Date().toLocaleString(),
+              //   scheduledEndTime: new Date().toLocaleString(),
+              //   entityMetadata: {
+              //     location: value.zone && value.territory ? `${value.zone} at ${value.territory}` : '',
+              //   }
+              // })
+            }
+
+            // @ts-ignore
+            let channel = this.client.channels.cache.get(guild.settings.events[key as keyof typeof guild.settings.events].channel);
+
+            if (!channel) return;
+
+            this.broadcaster.broadcast(channel, message);
+          }
+          await this.client.cache.set(`events:${key}`, JSON.stringify(value));
         }
-
-        (await channel.messages.fetch()).filter((m) => m.id === messageId).first()?.edit({
-          embeds: [embed],
-        });
       }
     }
-  }
-
-  private getKeyName(key: string, value: Event, running: boolean): string {
-
-    let message = '';
-
-    switch (key) {
-      case 'boss':
-        if (running) {
-          message = `${value.name} in ${value.zone}`
-          if (value.territory)
-            message += ` at ${value.territory}`
-        }
-        message = 'World Boss'
-        break;
-      case 'helltide':
-        message = 'Helltide'
-        break;
-      case 'legion':
-        if (running) {
-          message = `Legion in ${value.zone}`
-          if (value.territory)
-            message += ` at ${value.territory}`
-        }
-        message = 'Legion';
-        break;
-      default:
-        message = key
-        break;
-    }
-
-    return message
   }
 }

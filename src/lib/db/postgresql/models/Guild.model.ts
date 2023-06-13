@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Guild {
-  
+
   @PrimaryColumn()
   id: string;
 
@@ -10,19 +10,22 @@ export class Guild {
     nullable: false,
     default: {
       events: {
-        channel: null,
         boss: {
           enabled: false,
+          channel: null,
           role: null,
           schedule: false,
         },
         helltide: {
           enabled: false,
+          channel: null,
           role: null,
           schedule: false,
         },
         legion: {
           enabled: false,
+          channel: null,
+
           role: null,
           schedule: false,
         },
@@ -34,16 +37,19 @@ export class Guild {
       channel: null,
       boss: {
         enabled: boolean;
+        channel: string;
         role: string;
         schedule: boolean;
       };
       helltide: {
         enabled: boolean;
+        channel: string;
         role: string;
         schedule: boolean;
       };
       legion: {
         enabled: boolean;
+        channel: string;
         role: string;
         schedule: boolean;
       };
