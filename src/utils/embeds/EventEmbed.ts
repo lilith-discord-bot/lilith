@@ -40,6 +40,9 @@ function getTitle(key: string, event: Event) {
 }
 
 function getURL(key: string, event: Event) {
+
+  if (!event.territory || !event.zone) return 'https://cdn.discordapp.com/attachments/1117722541209956422/1118197134924185630/no_png.png';
+
   switch (key) {
     case 'boss':
       return `${process.env.ARMORY_URL}/img/territories/${encodeURI(event.territory!)}.webp`;
@@ -48,6 +51,6 @@ function getURL(key: string, event: Event) {
     case 'legion':
       return `${process.env.ARMORY_URL}/img/territories/${encodeURI(event.territory!)}.webp`;
     default:
-      return key;
+      return 'https://cdn.discordapp.com/attachments/1117722541209956422/1118197134924185630/no_png.png';
   }
 }

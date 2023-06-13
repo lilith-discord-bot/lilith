@@ -70,6 +70,11 @@ export class EventNotifier {
 
         if (cachedEvent.timestamp !== value.timestamp) {
 
+          const date = Date.now();
+          const event = new Date(value.timestamp * 1000).getTime();
+
+          if (date > event) return;
+
           const embed = new EventEmbed(key, value, { client: this.client, guild: guild });
 
           let message = {
