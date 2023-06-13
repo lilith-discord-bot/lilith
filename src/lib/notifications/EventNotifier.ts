@@ -71,13 +71,13 @@ export class EventNotifier {
         if (guild.settings.events[key as keyof typeof guild.settings.events].enabled) {
 
           const now = new Date().getTime();
-          const start = value.timestamp
+          const start = value.timestamp * 1000;
           const end = start + 3600000;
 
           if (start >= now && now <= end) {
             alerts.push({
               name: this.getKeyName(key, value, true),
-              value: `Ending in ${time(end, 'R')}`
+              value: `Ending in ${time(end / 1000, 'R')}`
             });
           } else if (now >= end) {
             alerts.push({
@@ -87,7 +87,7 @@ export class EventNotifier {
           } else if (now >= start && now <= end) {
             alerts.push({
               name: this.getKeyName(key, value, true),
-              value: `Starting in ${time(start, 'R')}`
+              value: `Starting in ${time(start / 1000, 'R')}`
             });
           }
 
