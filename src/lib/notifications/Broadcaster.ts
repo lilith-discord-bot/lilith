@@ -30,24 +30,20 @@ export class Broadcaster {
    * @param message - The message to broadcast.
    */
   async broadcast(channel: Channel, message: string | MessagePayload | MessageCreateOptions): Promise<void> {
-
     (await this.client.cluster
-      .broadcastEval(async (c, { channelId }) => {
+      .broadcastEval(async (c, { channelId, message }) => {
 
         let channel = c.channels.cache.get(channelId);
 
         if (!channel) return;
 
-        if (![ChannelType.GuildText, ChannelType.GuildAnnouncement].includes(channel.type))
-          return;
-
         channel = channel as TextChannel | NewsChannel;
 
-        (await channel.messages.fetch()).filter((m) => m.author.id === this.client.user?.id).map((m) => m.delete());
+        (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id).map((m) => m.delete());
 
-        channel.send(message);
+        channel.send(message as string | MessagePayload | MessageCreateOptions);
       }, {
-        context: { channelId: channel.id },
+        context: { channelId: channel.id, message },
       }));
   }
 

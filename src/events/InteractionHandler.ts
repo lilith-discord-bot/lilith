@@ -130,14 +130,13 @@ export default class InteractionHandler extends Event {
 
     if (interaction.isChatInputCommand()) {
 
-      if (!interaction.user.id.includes('247344130798256130'))
-        return await interaction.reply('The bot is still in development, we will let you know when it is ready!');
-      
       if (!this.interactions.has(interaction.commandName)) return undefined;
 
       const command = this.interactions.get(interaction.commandName);
 
       if (!command) return undefined;
+
+      this.client.logger.info(`Command ${command.name} was executed.`);
 
       try {
         await command.run?.(interaction, context);
@@ -167,6 +166,7 @@ export default class InteractionHandler extends Event {
     }
 
     if (interaction.isStringSelectMenu()) {
+
       const selectMenu = interaction as StringSelectMenuInteraction;
 
       const id = selectMenu.customId.split('_')[0];

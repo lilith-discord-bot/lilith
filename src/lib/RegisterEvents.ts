@@ -11,7 +11,7 @@ import { Events } from 'discord.js';
  * @param client - The client.
  */
 export function registerClientEvents(client: Client): void {
-  
+
   client.once(Events.ClientReady, async () => {
     client.eventHandler.run(Events.ClientReady, []);
   });
@@ -22,6 +22,14 @@ export function registerClientEvents(client: Client): void {
 
   client.on(Events.ShardReconnecting, async (id: number) => {
     client.logger.warn(`Shard #${id} reconnecting for cluster #${client.cluster.id}`);
+  });
+
+  client.on(Events.ShardResume, async (id: number, replayed: number) => {
+    client.logger.info(`Shard #${id} resumed with ${replayed} replayed events for cluster #${client.cluster.id}`);
+  });
+
+  client.on(Events.ShardError, async (error: any, id: number) => {
+    client.logger.error(`Shard #${id} error for cluster #${client.cluster.id}`, error);
   });
 
   client.on(Events.ShardDisconnect, async (event: any, id: number) => {
@@ -59,6 +67,7 @@ export function registerClusterEvents(
   manager: ClusterManager,
   logger: typeof Logger,
 ): ClusterManager {
+  
   if (isDev) {
     manager.on('debug', (message: string) => {
       logger.debug(message);

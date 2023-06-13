@@ -1,8 +1,10 @@
-import { Events } from 'discord.js';
+import { Events, TextChannel } from 'discord.js';
 
 import { Client } from '../core/Client';
 import { Event } from '../core/Event';
 import { EventNotifier } from '../lib/notifications/EventNotifier';
+import { Worker } from '../lib/Worker';
+import { Broadcaster } from '../lib/notifications/Broadcaster';
 
 export default class Ready extends Event {
   constructor(client: Client) {
@@ -13,6 +15,7 @@ export default class Ready extends Event {
 
     if (this.client.cluster.id === 0) {
       new EventNotifier(this.client);
+      new Worker(this.client);
     }
 
     const shards =

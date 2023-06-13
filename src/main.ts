@@ -24,5 +24,5 @@ manager
     timeout: -1,
   })
   .catch((...args: any[]) =>
-    console.error('Shard spawn has occured a error', ...args),
+    Logger.error('Shard spawn has occured a error', ...args),
   );

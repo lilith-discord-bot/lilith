@@ -30,20 +30,6 @@ export default class Settings extends Interaction {
         options: [
           {
             type: ApplicationCommandOptionType.Subcommand,
-            name: 'setup',
-            description: 'Setup the channel where notifications will be sent.',
-            options: [
-              {
-                type: ApplicationCommandOptionType.Channel,
-                name: 'channel',
-                description: 'The channel to send notifications to.',
-                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
-                required: true,
-              }
-            ]
-          },
-          {
-            type: ApplicationCommandOptionType.Subcommand,
             name: 'enable',
             description: 'Enable notifications for a given event.',
             options: [
@@ -103,18 +89,23 @@ export default class Settings extends Interaction {
     const group = options.getSubcommandGroup();
     const subcommand = options.getSubcommand();
 
-    const event = options.getString('event');
-    const channel = options.getChannel('channel');
-    const role = options.getRole('role');
-    const schedule = options.getBoolean('schedule');
+    let event = options.getString('event');
+    let channel = options.getChannel('channel');
+    let role = options.getRole('role');
+    let schedule = options.getBoolean('schedule');
 
     switch (group) {
       case 'notifications':
         switch (subcommand) {
           case 'enable':
 
+            // @ts-ignore
+            role = options.getRole('role') || ctx.guild?.settings?.events?.[event as string]?.role;
+            // @ts-ignore
+            schedule = options.getBoolean('schedule') || ctx.guild?.settings?.events?.[event as string]?.schedule;
+
             try {
-              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as any, { enabled: true, channel: channel as any as string, role: role as any as string, schedule: schedule ? true : false });
+              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as any, { enabled: true, channel: channel as any as string, role: role as any as string, schedule: schedule as any as boolean });
             } catch (error) {
               ctx.client.logger.error(error);
             }

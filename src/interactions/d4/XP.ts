@@ -19,6 +19,6 @@ export default class Leaderboard extends Interaction {
     interaction: CommandInteraction,
     ctx: Context,
   ): Promise<any> {
-    await interaction.reply('https://cdn.discordapp.com/attachments/1117722541209956422/1117722647959187546/xp_chart.png');
+    await interaction.reply('https://i.imgur.com/K2r2cMF.jpg');
   }
 }

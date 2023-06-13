@@ -10,6 +10,18 @@ import {
 import { ClassesChoices, ModesChoices } from '../types';
 
 /**
+ * The url of the @DevLeon map.
+ * @type {string}
+ */
+export const MAP_URL = 'https://diablo4.th.gl';
+
+/**
+ * The url of the @DevLeon map API.
+ * @type {string}
+ */
+export const MAP_API_URL = 'https://diablo4.th.gl/api/nodes';
+
+/**
  * Utility enum for admins.
  * @enum {string}
  */
@@ -48,9 +60,13 @@ export const options: ClientOptions = {
   presence: presence,
   allowedMentions: {
     repliedUser: false,
+    parse: ['roles', 'everyone']
   },
 };
 
+/**
+ * The choices for the events.
+ */
 export const eventsChoices = [
   {
     name: 'World Boss',

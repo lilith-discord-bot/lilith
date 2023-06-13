@@ -16,7 +16,7 @@ import { Context, Interaction } from '../../core/Interaction';
 
 import { ArmoryEmbed } from '../../utils/embeds/ArmoryEmbed';
 
-import { PlayerArmory } from '../../types';
+import { PlayerArmory, PlayerResearch } from '../../types';
 import { getArmoryLink } from '../../utils/Commons';
 
 const armoryLink = (battleTag: string, heroId: string) =>
@@ -68,43 +68,39 @@ export default class Armory extends Interaction {
     if (!res)
       return await interaction.reply('No player found. Please try again later.');
 
-    const cached = await ctx.client.cache.hExists(
-      `battleTag:${player}`,
-      'battleTag',
-    );
-
     if (res.characters.length <= 0)
       return await interaction.reply('No characters found for this player.');
 
-    if (!cached)
-      await ctx.client.cache.hSet(`battleTag:${player}`, {
+    const cached = await ctx.client.cache.get(`players:${player}`);
+
+    if (!cached) {
+
+      const playerObj = {
         battleTag: player,
         name: res.characters.sort((a, b) => b.level - a.level)[0].name,
-        characters: JSON.stringify(
-          res.characters.map((character) => character.name),
-        ),
-      });
+        characters: res.characters.map((character) => character.name)
+      }
+
+      await ctx.client.cache.set(`players:${player}`, JSON.stringify(playerObj));
+    }
 
     let character: PlayerArmory | null = null;
 
     if (res.characters.length <= 1) {
-      character = await ctx.client.api.getPlayerArmory(
-        player,
-        res.characters[0].id,
-      );
+
+      character = await ctx.client.api.getPlayerArmory(player, res.characters[0].id);
 
       if (!character)
-        return await interaction.reply(
-          'No character found. Please try again later.',
-        );
+        return await interaction.reply('No character found. Please try again later.');
 
       const embed = new ArmoryEmbed(character, ctx);
 
-      return await interaction.reply({
+      await interaction.reply({
         embeds: [embed],
         components: [armoryLink(player, res.characters[0].id)],
       });
     } else {
+
       const characters =
         new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
           new StringSelectMenuBuilder()
@@ -118,7 +114,7 @@ export default class Armory extends Interaction {
             ),
         );
 
-      return await interaction.reply({
+      await interaction.reply({
         content: 'This player has multiple characters. Please select one.',
         components: [characters],
       });
@@ -131,7 +127,7 @@ export default class Armory extends Interaction {
   ): Promise<any> {
     const value = interaction.options.getFocused();
 
-    let keys = await ctx.client.cache.keys('battleTag:*');
+    let keys = await ctx.client.cache.keys('players:*');
 
     if (!keys || keys.length <= 0) return await interaction.respond([]);
 
@@ -139,12 +135,11 @@ export default class Armory extends Interaction {
 
     choices = await Promise.all(
       keys.map(async (key) => {
-        const player = await ctx.client.cache.hGetAll(key);
+        const player = await ctx.client.cache.get(key);
+        const parsed = JSON.parse(player!) as any;
         return {
-          name: `${player.name} (${
-            JSON.parse(player.characters).length
-          } characters)`,
-          value: player.battleTag,
+          name: `${parsed.name} (${JSON.parse(parsed.characters).length} characters)`,
+          value: parsed.battleTag,
         };
       }),
     );
@@ -175,6 +170,7 @@ export default class Armory extends Interaction {
     interaction: StringSelectMenuInteraction<CacheType>,
     context: Context,
   ): Promise<any> {
+
     const [player, characterId] = interaction.values[0].split('_');
 
     const character = await context.client.api.getPlayerArmory(

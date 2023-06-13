@@ -13,8 +13,6 @@ export class EventEmbed extends Embed {
   ) {
     super();
 
-    this.data.title = getTitle(key, event);
-
     this.data.url = `${process.env.ARMORY_URL}/events`;
 
     this.data.image = {
@@ -23,25 +21,7 @@ export class EventEmbed extends Embed {
   }
 }
 
-function getTitle(key: string, event: Event) {
-
-  event.timestamp = event.timestamp / 1000;
-
-  switch (key) {
-    case 'boss':
-      return `${event.name} appears in ${event.zone} at ${time(event.timestamp, 'T')}`;
-    case 'helltide':
-      return `Helltide spawns in ${time(event.timestamp, 'R')} until ${time(event.timestamp + 3600, 'T')}`;
-    case 'legion':
-      return `Legion spawns in ${time(event.timestamp, 'R')}, next legion at ${time(event.timestamp + 1800, 'T')}`;
-    default:
-      return key;
-  }
-}
-
 function getURL(key: string, event: Event) {
-
-  if (!event.territory || !event.zone) return 'https://cdn.discordapp.com/attachments/1117722541209956422/1118197134924185630/no_png.png';
 
   switch (key) {
     case 'boss':

@@ -85,8 +85,6 @@ export class GuildRepository {
 
     const debug = await this.guilds.findOneBy({ id: guildId });
 
-    console.log(debug?.settings);
-
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
   }
 

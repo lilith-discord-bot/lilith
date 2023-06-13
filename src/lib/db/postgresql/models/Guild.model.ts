@@ -25,7 +25,6 @@ export class Guild {
         legion: {
           enabled: false,
           channel: null,
-
           role: null,
           schedule: false,
         },
@@ -34,7 +33,6 @@ export class Guild {
   })
   settings: {
     events: {
-      channel: null,
       boss: {
         enabled: boolean;
         channel: string;

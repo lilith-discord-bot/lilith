@@ -1,7 +1,8 @@
-import { ChannelType, GuildScheduledEventEntityType, GuildScheduledEventPrivacyLevel, NewsChannel, TextChannel, time } from 'discord.js';
+import { MessageCreateOptions, MessagePayload, NewsChannel, Role, TextChannel, time } from 'discord.js';
+
 import { Client } from '../../core/Client';
 import { Event } from '../../types';
-import { duration, getGuild } from '../../utils/Commons';
+import { duration } from '../../utils/Commons';
 import { EventEmbed } from '../../utils/embeds/EventEmbed';
 import { Broadcaster } from './Broadcaster';
 
@@ -56,7 +57,6 @@ export class EventNotifier {
 
     for (const guild of guilds) {
 
-
       for (let [key, value] of Object.entries(events)) {
 
         const isCached = await this.client.cache.exists(`events:${key}`);
@@ -70,15 +70,17 @@ export class EventNotifier {
 
         if (cachedEvent.timestamp !== value.timestamp) {
 
+          await this.client.cache.set(`events:${key}`, JSON.stringify(value));
+
           const date = Date.now();
           const event = new Date(value.timestamp * 1000).getTime();
 
-          if (date > event) return;
+          if (date > event) continue;
 
           const embed = new EventEmbed(key, value, { client: this.client, guild: guild });
 
-          let message = {
-            content: '',
+          let message: string | MessagePayload | MessageCreateOptions = {
+            content: getTitle(key, value),
             embeds: [embed],
           }
 
@@ -87,8 +89,11 @@ export class EventNotifier {
 
             // @ts-ignore
             if (guild.settings.events[key as keyof typeof guild.settings.events].role) {
-
-
+              const role = guild.settings.events[key as keyof typeof guild.settings.events].role as any as Role;
+              message.content += `- <@&${role.id}>`;
+              message.allowedMentions = {
+                roles: [role.id],
+              };
             }
 
             // @ts-ignore
@@ -111,15 +116,28 @@ export class EventNotifier {
             }
 
             // @ts-ignore
-            let channel = this.client.channels.cache.get(guild.settings.events[key as keyof typeof guild.settings.events].channel);
+            let channel = guild.settings.events[key as keyof typeof guild.settings.events].channel as TextChannel | NewsChannel;
 
-            if (!channel) return;
+            if (!channel) continue;
 
             this.broadcaster.broadcast(channel, message);
           }
-          await this.client.cache.set(`events:${key}`, JSON.stringify(value));
         }
       }
     }
+  }
+}
+
+
+function getTitle(key: string, event: Event) {
+  switch (key) {
+    case 'boss':
+      return `${event.name} appears in ${event.zone} at ${time(event.timestamp, 'T')}`;
+    case 'helltide':
+      return `Helltide spawns in ${time(event.timestamp, 'R')} until ${time(event.timestamp + 3600, 'T')}`;
+    case 'legion':
+      return `Legion spawns in ${time(event.timestamp, 'R')}, next legion at ${time(event.timestamp + 1800, 'T')}`;
+    default:
+      return key;
   }
 }

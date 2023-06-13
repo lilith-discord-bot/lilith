@@ -7,7 +7,7 @@ import {
 import { Context, Interaction } from '../../core/Interaction';
 
 export default class Armory extends Interaction {
-    
+
   static enabled = true;
 
   static command: ApplicationCommandData = {
@@ -20,8 +20,6 @@ export default class Armory extends Interaction {
     interaction: CommandInteraction,
     ctx: Context,
   ): Promise<any> {
-    await interaction.reply(
-      'https://cdn.discordapp.com/attachments/1117722541209956422/1118124913534976111/glyph_chart.png',
-    );
+    await interaction.reply('https://i.imgur.com/NkqsHef.png');
   }
 }
