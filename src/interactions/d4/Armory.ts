@@ -142,7 +142,7 @@ export default class Armory extends Interaction {
           characters: string[];
         };
         return {
-          name: `${parsed.name} (${parsed.characters.length} characters)`,
+          name: `${parsed.name} (${parsed.characters && parsed.characters.length || 0} characters)`,
           value: parsed.battleTag,
         };
       }),
