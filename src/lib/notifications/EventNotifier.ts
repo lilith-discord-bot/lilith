@@ -79,15 +79,15 @@ export class EventNotifier {
               name: this.getKeyName(key, value, true),
               value: `Ending in ${time(end / 1000, 'R')}`
             });
+          } else if (now >= start) {
+            alerts.push({
+              name: this.getKeyName(key, value, true),
+              value: `Starting in ${time(start / 1000, 'R')}`
+            });
           } else if (now >= end) {
             alerts.push({
               name: this.getKeyName(key, value, false),
               value: `No event is currently running.`
-            });
-          } else if (now >= start && now <= end) {
-            alerts.push({
-              name: this.getKeyName(key, value, true),
-              value: `Starting in ${time(start / 1000, 'R')}`
             });
           }
 
