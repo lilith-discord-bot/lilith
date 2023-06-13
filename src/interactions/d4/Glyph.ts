@@ -21,7 +21,7 @@ export default class Armory extends Interaction {
     ctx: Context,
   ): Promise<any> {
     await interaction.reply(
-      'https://cdn.discordapp.com/attachments/1117722541209956422/1117736455251427359/glyph_chart.png',
+      'https://cdn.discordapp.com/attachments/1117722541209956422/1118124913534976111/glyph_chart.png',
     );
   }
 }
