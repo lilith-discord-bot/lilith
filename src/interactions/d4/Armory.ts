@@ -136,9 +136,13 @@ export default class Armory extends Interaction {
     choices = await Promise.all(
       keys.map(async (key) => {
         const player = await ctx.client.cache.get(key);
-        const parsed = JSON.parse(player!) as any;
+        const parsed = JSON.parse(player!) as {
+          battleTag: string;
+          name: string;
+          characters: string[];
+        };
         return {
-          name: `${parsed.name} (${JSON.parse(parsed.characters).length} characters)`,
+          name: `${parsed.name} (${parsed.characters.length} characters)`,
           value: parsed.battleTag,
         };
       }),
@@ -163,7 +167,7 @@ export default class Armory extends Interaction {
         },
       ]);
 
-    return await interaction.respond(choices as any);
+    await interaction.respond(choices);
   }
 
   static async selectMenu(
@@ -183,7 +187,7 @@ export default class Armory extends Interaction {
 
     const embed = new ArmoryEmbed(character, context);
 
-    return await interaction.update({
+    await interaction.update({
       content: null,
       embeds: [embed],
       components: [armoryLink(player, characterId)],

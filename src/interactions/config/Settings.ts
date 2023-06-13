@@ -6,6 +6,7 @@ import {
   ChannelType,
   CommandInteraction,
   CommandInteractionOptionResolver,
+  GuildChannel,
   NewsChannel,
   PermissionFlagsBits,
   TextChannel,
@@ -90,7 +91,7 @@ export default class Settings extends Interaction {
     const subcommand = options.getSubcommand();
 
     let event = options.getString('event');
-    let channel = options.getChannel('channel');
+    let channel = options.getChannel('channel') as GuildChannel;
     let role = options.getRole('role');
     let schedule = options.getBoolean('schedule');
 
@@ -98,6 +99,13 @@ export default class Settings extends Interaction {
       case 'notifications':
         switch (subcommand) {
           case 'enable':
+
+            if (!channel.permissionsFor(interaction.client.user)?.has(PermissionFlagsBits.SendMessages)) {
+              return await interaction.reply({
+                content: `I don't have permissions to send messages in ${channel}.`,
+                ephemeral: true,
+              });
+            }
 
             // @ts-ignore
             role = options.getRole('role') || ctx.guild?.settings?.events?.[event as string]?.role;
