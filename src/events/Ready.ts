@@ -5,6 +5,7 @@ import { Event } from '../core/Event';
 import { EventNotifier } from '../lib/notifications/EventNotifier';
 import { Worker } from '../lib/Worker';
 import { Broadcaster } from '../lib/notifications/Broadcaster';
+import { isDev } from '../utils/Commons';
 
 export default class Ready extends Event {
   constructor(client: Client) {
@@ -15,7 +16,7 @@ export default class Ready extends Event {
 
     if (this.client.cluster.id === 0) {
       new EventNotifier(this.client);
-      new Worker(this.client);
+      if (!isDev) new Worker(this.client);
     }
 
     const shards =
