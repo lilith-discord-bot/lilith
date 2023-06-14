@@ -79,7 +79,11 @@ export class EventNotifier {
           const date = Date.now();
           const event = new Date(value.timestamp * 1000).getTime();
 
-          if (date > event) continue;
+          if (date > event) {
+            this.client.logger.info(`Event ${key} is outdated, skipping...`);
+            console.log(date, event);
+            continue;
+          };
 
           const embed = new EventEmbed(key, value, { client: this.client, guild: guild });
 
@@ -122,7 +126,10 @@ export class EventNotifier {
             // @ts-ignore
             let channel = guild.settings.events[key as keyof typeof guild.settings.events].channel as TextChannel | NewsChannel;
 
-            if (!channel) continue;
+            if (!channel) {
+              this.client.logger.info(`Event ${key} has no channel set, skipping...`);
+              continue;
+            };
 
             this.broadcaster.broadcast(channel, message);
           }

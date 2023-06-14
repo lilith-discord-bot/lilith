@@ -30,6 +30,8 @@ export class Broadcaster {
     (await this.client.cluster
       .broadcastEval(async (c, { channelId, message }) => {
 
+        console.log(channelId, message);
+
         let channel = c.channels.cache.get(channelId);
 
         if (!channel) return;
