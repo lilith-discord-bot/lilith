@@ -135,12 +135,17 @@ export default class Armory extends Interaction {
 
     choices = await Promise.all(
       keys.map(async (key) => {
+
         const player = await ctx.client.cache.get(key);
         const parsed = JSON.parse(player!) as {
           battleTag: string;
           name: string;
           characters: string[];
         };
+
+        if (parsed.name.length > 25)
+          parsed.name = parsed.name.substring(0, 25) + '...';
+
         return {
           name: `${parsed.name} (${parsed.characters.length} characters)`,
           value: parsed.battleTag,
