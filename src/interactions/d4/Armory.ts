@@ -147,7 +147,7 @@ export default class Armory extends Interaction {
           parsed.name = parsed.name.substring(0, 25) + '...';
 
         return {
-          name: `${parsed.name} (${parsed.characters.length} characters)`,
+          name: `${parsed.name} (${parsed.characters && parsed.characters.length || 0} characters)`,
           value: parsed.battleTag,
         };
       }),
