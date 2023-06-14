@@ -41,9 +41,6 @@ export class Broadcaster {
 
         channel = channel as TextChannel | NewsChannel;
 
-        if (channel.permissionsFor(channel.guild.members.me!).has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.ViewChannel]))
-          return;
-
         const messages = (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id);
 
         if (messages.size > 0) await messages.map((m) => m.delete());
