@@ -1,9 +1,8 @@
 import { Client } from "../core/Client";
-import { request } from "../utils/Commons";
+import { request, wait } from "../utils/Commons";
 import { MAP_API_URL } from "../utils/Constants";
 
 export class Worker {
-
     /**
      * The client.
      * @type {Client}
@@ -52,6 +51,8 @@ export class Worker {
             };
 
             await this.client.cache.set(`players:${player.battleTag}`, JSON.stringify(playerObj));
+
+            await wait(1000);
         }
     }
 
