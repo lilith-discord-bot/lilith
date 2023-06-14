@@ -5,7 +5,7 @@ import {
   MessageCreateOptions,
   MessagePayload,
   NewsChannel,
-  TextChannel
+  TextChannel,
 } from 'discord.js';
 
 import { Client } from '../../core/Client';
@@ -22,31 +22,43 @@ export class Broadcaster {
 
   /**
    * Broadcasts a message to a channel.
-   * 
+   *
    * @param channel - The channel to broadcast the message to.
    * @param message - The message to broadcast.
    */
-  async broadcast(channel: Channel, message: string | MessagePayload | MessageCreateOptions): Promise<void> {
-    (await this.client.cluster
-      .broadcastEval(async (c, { channelId, message }) => {
+  async broadcast(
+    channel: Channel,
+    message: string | MessagePayload | MessageCreateOptions,
+  ): Promise<void> {
+    await this.client.cluster.broadcastEval(
+      async (c, { channelId, message }) => {
 
         console.log(channelId, message);
 
         let channel = c.channels.cache.get(channelId);
 
-        if (!channel) return;
+        if (!channel) {
+          console.log('Channel not found');
+          return;
+        }
 
         channel = channel as TextChannel | NewsChannel;
 
-        const messages = (await channel.messages.fetch())
-          .filter((m) => m.author.id === c.user?.id);
+        // const messages = (await channel.messages.fetch()).filter(
+        //   (m) => m.author.id === c.user?.id,
+        // );
 
-        if (messages.size > 0) await messages.map((m) => m.delete());
+        // if (messages.size > 0) {
+        //   console.log(`Deleting ${messages.size} messages`);
+        //   await messages.map((m) => m.delete());
+        // }
 
         channel.send(message as string | MessagePayload | MessageCreateOptions);
-      }, {
+      },
+      {
         context: { channelId: channel.id, message },
-      }));
+      },
+    );
   }
 
   /**
@@ -61,7 +73,6 @@ export class Broadcaster {
     guild: Guild,
     options: GuildScheduledEventCreateOptions,
   ): Promise<void> {
-
     if (!guild) return;
 
     this.client.logger.info(`Creating scheduled event for guild ${guild.id}`);
