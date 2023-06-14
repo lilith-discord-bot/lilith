@@ -44,11 +44,7 @@ export class Broadcaster {
 
         if (messages.size > 0) await messages.map((m) => m.delete());
 
-        try {
-          await channel.send(message as string | MessagePayload | MessageCreateOptions);
-        } catch (error) {
-          console.log(error);
-        }
+        await channel.send(message as string | MessagePayload | MessageCreateOptions).catch(() => null);
       },
       {
         context: { channelId: channel.id, message },

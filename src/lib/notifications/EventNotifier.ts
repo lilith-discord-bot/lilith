@@ -67,13 +67,13 @@ export class EventNotifier {
 
       if (!cache || cachedEvent.timestamp !== value.timestamp) {
 
-        const date = Date.now() - duration.minutes(2);
+        const date = Date.now();
         const event = new Date(value.timestamp * 1000).getTime();
 
-        if (date > event) {
+        if (event < date - duration.minutes(5)) {
           this.client.logger.info(`Event ${key} is outdated, skipping...`);
           continue;
-        };
+        }
 
         const guilds = await this.client.repository.guild.getAllByEvent(key as keyof typeof events);
 
@@ -120,9 +120,9 @@ export class EventNotifier {
         }
 
         this.client.logger.info(`Event ${key} has been broadcasted to ${guilds.length} guilds.`);
-
-        await this.client.cache.set(`events:${key}`, JSON.stringify(value));
       }
+
+      await this.client.cache.set(`events:${key}`, JSON.stringify(value));
     }
   }
 }
