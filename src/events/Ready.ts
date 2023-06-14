@@ -1,11 +1,9 @@
-import { Events, TextChannel } from 'discord.js';
+import { Events } from 'discord.js';
 
 import { Client } from '../core/Client';
 import { Event } from '../core/Event';
-import { EventNotifier } from '../lib/notifications/EventNotifier';
 import { Worker } from '../lib/Worker';
-import { Broadcaster } from '../lib/notifications/Broadcaster';
-import { isDev } from '../utils/Commons';
+import { EventNotifier } from '../lib/notifications/EventNotifier';
 
 export default class Ready extends Event {
   constructor(client: Client) {
