@@ -58,9 +58,15 @@ export class EventNotifier {
 
     const guilds = await this.client.repository.guild.getAll();
 
+    this.client.logger.info(`Found ${guilds.length} guilds.`);
+
     for (const guild of guilds) {
 
+      this.client.logger.info(`Checking guild ${guild.id}...`);
+
       for (let [key, value] of Object.entries(events)) {
+
+        this.client.logger.info(`Checking event ${key}...`);
 
         const isCached = await this.client.cache.exists(`events:${key}`);
 

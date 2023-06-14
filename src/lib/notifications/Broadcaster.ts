@@ -40,9 +40,9 @@ export class Broadcaster {
 
         channel = channel as TextChannel | NewsChannel;
 
-        const messages = (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id);
+        // const messages = (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id);
 
-        if (messages.size > 0) await messages.map((m) => m.delete());
+        // if (messages.size > 0) await messages.map((m) => m.delete());
 
         try {
           await channel.send(message as string | MessagePayload | MessageCreateOptions);
