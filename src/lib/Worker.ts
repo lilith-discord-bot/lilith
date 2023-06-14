@@ -37,7 +37,13 @@ export class Worker {
 
             const user = await this.client.api.getPlayer(player.battleTag);
 
+            if (!user)
+                continue;
+
             this.client.logger.info(`Adding ${player.battleTag} to cache with ${user?.characters.length} characters.`);
+
+            if (user?.characters.length <= 0)
+                continue;
 
             const playerObj = {
                 battleTag: player.battleTag,
