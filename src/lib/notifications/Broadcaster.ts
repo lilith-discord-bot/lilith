@@ -5,6 +5,7 @@ import {
   MessageCreateOptions,
   MessagePayload,
   NewsChannel,
+  PermissionFlagsBits,
   TextChannel,
 } from 'discord.js';
 
@@ -39,6 +40,9 @@ export class Broadcaster {
         if (!channel) return;
 
         channel = channel as TextChannel | NewsChannel;
+
+        if (channel.permissionsFor(channel.guild.members.me!).has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.ViewChannel]))
+          return;
 
         const messages = (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id);
 

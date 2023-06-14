@@ -100,7 +100,7 @@ export default class Settings extends Interaction {
         switch (subcommand) {
           case 'enable':
 
-            if (!channel.permissionsFor(interaction.client.user)?.has(PermissionFlagsBits.SendMessages)) {
+            if (!channel.permissionsFor(interaction.client.user)?.has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.ViewChannel])) {
               return await interaction.reply({
                 content: `I don't have permissions to send messages in ${channel}.`,
                 ephemeral: true,
