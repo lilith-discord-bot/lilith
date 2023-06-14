@@ -67,6 +67,8 @@ export class EventNotifier {
 
       if (!cache || cachedEvent.timestamp !== value.timestamp) {
 
+        await this.client.cache.set(`events:${key}`, JSON.stringify(value));
+
         const date = Date.now();
         const event = new Date(value.timestamp * 1000).getTime();
 
@@ -121,8 +123,6 @@ export class EventNotifier {
 
         this.client.logger.info(`Event ${key} has been broadcasted to ${guilds.length} guilds.`);
       }
-
-      await this.client.cache.set(`events:${key}`, JSON.stringify(value));
     }
   }
 }
