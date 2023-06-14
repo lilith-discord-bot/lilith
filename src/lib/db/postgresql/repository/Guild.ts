@@ -96,4 +96,20 @@ export class GuildRepository {
   async getAll(): Promise<Guild[]> {
     return await this.guilds.find();
   }
+
+  /**
+   * Get all guilds that have a specific event enabled.
+   * 
+   * @param event - The event.
+   * @returns - The guilds.
+   */
+  async getAllByEvent(event: keyof Guild['settings']['events']): Promise<Guild[]> {
+
+    const query = this.guilds.createQueryBuilder('guild')
+      .where(`guild.settings->'events'->'${event}'->>'enabled' = 'true'`);
+
+    const guilds = await query.getMany();
+
+    return guilds;
+  }
 }
