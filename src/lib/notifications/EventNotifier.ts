@@ -38,16 +38,19 @@ export class EventNotifier {
 
     this.client.logger.info('Event notifier has been initialized.');
 
-    const status = await this.client.api.getStatus();
-
-    if (!status || !status.event_service) return;
-
     setInterval(() => this.refresh(), refreshInterval);
   }
 
   private async refresh() {
 
     this.client.logger.info('Refreshing events...');
+
+    const status = await this.client.api.getStatus();
+
+    if (!status || !status.event_service) {
+      this.client.logger.info('Event service is not available, skipping...');
+      return;
+    };
 
     const events = await this.client.api.getEvents();
 
@@ -81,31 +84,31 @@ export class EventNotifier {
 
           if (date > event) {
             this.client.logger.info(`Event ${key} is outdated, skipping...`);
-            console.log(date, event);
             continue;
           };
 
-          const embed = new EventEmbed(key, value, { client: this.client, guild: guild });
+          const embed = new EventEmbed(key, value, { client: this.client, guild });
 
           let message: string | MessagePayload | MessageCreateOptions = {
             content: getTitle(key, value),
             embeds: [embed],
           }
 
-          //@ts-ignore
-          if (guild.settings.events[key as keyof typeof guild.settings.events].enabled) {
+          const setting = guild.settings.events[key as keyof typeof guild.settings.events];
 
-            // @ts-ignore
-            if (guild.settings.events[key as keyof typeof guild.settings.events].role) {
-              const role = guild.settings.events[key as keyof typeof guild.settings.events].role as any as Role;
+          if (setting.enabled) {
+
+            this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`)
+
+            if (setting.role) {
+              const role = setting.role as any as Role;
               message.content += ` - <@&${role.id}>`;
               message.allowedMentions = {
                 roles: [role.id],
               };
             }
 
-            // @ts-ignore
-            if (guild.settings.events[key as keyof typeof guild.settings.events].schedule) {
+            if (setting.schedule) {
 
               // const clusterGuild = await getGuild(this.client, guild.id);
 
@@ -123,9 +126,8 @@ export class EventNotifier {
               // })
             }
 
-            // @ts-ignore
-            let channel = guild.settings.events[key as keyof typeof guild.settings.events].channel as TextChannel | NewsChannel;
-            
+            let channel = setting.channel as any as TextChannel | NewsChannel;
+
             if (!channel) {
               this.client.logger.info(`Event ${key} has no channel set, skipping...`);
               continue;
@@ -139,7 +141,14 @@ export class EventNotifier {
   }
 }
 
-
+/**
+ * Get the event title.
+ * 
+ * @param key - The event key.
+ * @param event - The event object.
+ * 
+ * @returns {string} - The event title.
+ */
 function getTitle(key: string, event: Event) {
   switch (key) {
     case 'boss':
