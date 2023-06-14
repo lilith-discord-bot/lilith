@@ -8,14 +8,17 @@ If you want to contribute to this project, please mind joining the [Discord serv
 
 ## Installation
 
+We recommend using our hosted version of [Lilith](https://discord.com/api/oauth2/authorize?client_id=1116120688814723142&permissions=17876191054848&scope=bot%20applications.commands), but if you want to host it yourself, follow the instructions below.
+
 ### Requirements
 
 - [Node.js](https://nodejs.org/en/) (v14.17.0 or higher)
 - [npm](https://www.npmjs.com/) (v7.16.0 or higher)
+- [Docker](https://www.docker.com/)
 
 ### Setup
 
-> If running using Docker, use `docker-compose -p "lilith" --env-file .env -f .docker/docker-compose.yml up --build -d` (**don't forget about the `.env` file!!**)
+> **Don't forget about the `.env` file !**
 
 1. Clone the repository
 
@@ -35,8 +38,8 @@ npm install
 TOKEN=your_token_here
 
 #API
-ARMORY_URL=api_url
-ARMORY_API_URL=api_url
+ARMORY_URL=api_url 
+ARMORY_API_URL=api_url 
 
 #Database
 POSTGRES_HOST=postgres_database_host # Doesn't need to be set if running with Docker.
@@ -61,12 +64,9 @@ Other commands:
 - `npm run bot:restart` - Restart the bot
 - `npm run bot:rebuild` - Rebuild the bot
 
-## Roadmap
+## Issues
 
-- [x] Handle interactions (commands)
-- [x] Create a database (redis or mongodb or both ?)
-- [x] Add the worker to fetch data
-- [ ] Create Scheduled event Discord system
+If you find a bug or have a feature request, please [open an issue](https://github.com/glazk0/lilith/issues/new/choose) on GitHub.
 
 ## License
 
