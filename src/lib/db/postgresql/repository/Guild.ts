@@ -1,4 +1,3 @@
-import { Channel } from 'discord.js';
 import { Repository } from 'typeorm';
 
 import { Client } from '../../../../core/Client';
@@ -82,8 +81,6 @@ export class GuildRepository {
     } catch (error) {
       this.client.logger.error(error);
     }
-
-    const debug = await this.guilds.findOneBy({ id: guildId });
 
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
   }
