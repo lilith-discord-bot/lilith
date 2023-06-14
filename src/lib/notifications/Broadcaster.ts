@@ -30,30 +30,25 @@ export class Broadcaster {
     channel: Channel,
     message: string | MessagePayload | MessageCreateOptions,
   ): Promise<void> {
+
     await this.client.cluster.broadcastEval(
       async (c, { channelId, message }) => {
 
-        console.log(channelId, message);
-
         let channel = c.channels.cache.get(channelId);
 
-        if (!channel) {
-          console.log('Channel not found');
-          return;
-        }
+        if (!channel) return;
 
         channel = channel as TextChannel | NewsChannel;
 
-        // const messages = (await channel.messages.fetch()).filter(
-        //   (m) => m.author.id === c.user?.id,
-        // );
+        const messages = (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id);
 
-        // if (messages.size > 0) {
-        //   console.log(`Deleting ${messages.size} messages`);
-        //   await messages.map((m) => m.delete());
-        // }
+        if (messages.size > 0) await messages.map((m) => m.delete());
 
-        channel.send(message as string | MessagePayload | MessageCreateOptions);
+        try {
+          await channel.send(message as string | MessagePayload | MessageCreateOptions);
+        } catch (error) {
+          console.log(error);
+        }
       },
       {
         context: { channelId: channel.id, message },

@@ -125,7 +125,7 @@ export class EventNotifier {
 
             // @ts-ignore
             let channel = guild.settings.events[key as keyof typeof guild.settings.events].channel as TextChannel | NewsChannel;
-
+            
             if (!channel) {
               this.client.logger.info(`Event ${key} has no channel set, skipping...`);
               continue;

@@ -13,10 +13,10 @@ export default class Ready extends Event {
   }
 
   async run(): Promise<void> {
-
+    
     if (this.client.cluster.id === 0) {
       new EventNotifier(this.client);
-      if (!isDev) new Worker(this.client);
+      new Worker(this.client);
     }
 
     const shards =
