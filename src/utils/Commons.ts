@@ -3,6 +3,14 @@ import { Logger } from '../lib/Logger';
 import { Client } from '../core/Client';
 
 /**
+ * Wait for a given amount of milliseconds.
+ * 
+ * @param ms - The amount of milliseconds to wait.
+ * @returns - Promise<void> The promise.
+ */
+export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
  * Duration in milliseconds for common time units.
  * @type {Object}
  */
