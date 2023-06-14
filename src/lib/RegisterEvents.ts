@@ -42,6 +42,14 @@ export function registerClientEvents(client: Client): void {
     client.eventHandler.run(Events.InteractionCreate, interaction);
   });
 
+  client.on(Events.GuildCreate, async (guild) => {
+    client.eventHandler.run(Events.GuildCreate, guild);
+  });
+
+  client.on(Events.GuildDelete, async (guild) => {
+    client.eventHandler.run(Events.GuildDelete, guild);
+  });
+
   client.on(Events.Error, (error: any) => {
     client.logger.error(error);
   });
@@ -67,7 +75,7 @@ export function registerClusterEvents(
   manager: ClusterManager,
   logger: typeof Logger,
 ): ClusterManager {
-  
+
   if (isDev) {
     manager.on('debug', (message: string) => {
       logger.debug(message);

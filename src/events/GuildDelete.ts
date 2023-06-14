@@ -3,7 +3,7 @@ import { Events, Guild } from 'discord.js';
 import { Client } from '../core/Client';
 import { Event } from '../core/Event';
 
-export default class Ready extends Event {
+export default class GuildDelete extends Event {
   constructor(client: Client) {
     super(client, 'onGuildDelete', Events.GuildDelete);
   }
