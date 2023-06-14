@@ -70,7 +70,11 @@ export class EventNotifier {
 
         if (cachedEvent.timestamp !== value.timestamp) {
 
+          this.client.logger.info(`Event ${key} is outdated, updating...`);
+
           await this.client.cache.set(`events:${key}`, JSON.stringify(value));
+
+          this.client.logger.info(`Event ${key} has been updated.`);
 
           const date = Date.now();
           const event = new Date(value.timestamp * 1000).getTime();
@@ -90,7 +94,7 @@ export class EventNotifier {
             // @ts-ignore
             if (guild.settings.events[key as keyof typeof guild.settings.events].role) {
               const role = guild.settings.events[key as keyof typeof guild.settings.events].role as any as Role;
-              message.content += `- <@&${role.id}>`;
+              message.content += ` - <@&${role.id}>`;
               message.allowedMentions = {
                 roles: [role.id],
               };

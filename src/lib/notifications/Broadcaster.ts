@@ -1,17 +1,14 @@
 import {
   Channel,
-  ChannelType,
   Guild,
   GuildScheduledEventCreateOptions,
-  Message,
   MessageCreateOptions,
   MessagePayload,
   NewsChannel,
-  TextChannel,
+  TextChannel
 } from 'discord.js';
 
 import { Client } from '../../core/Client';
-import { Embed } from '../../utils/embeds/Embed';
 
 export class Broadcaster {
   /**
@@ -39,7 +36,10 @@ export class Broadcaster {
 
         channel = channel as TextChannel | NewsChannel;
 
-        (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id).map((m) => m.delete());
+        const messages = (await channel.messages.fetch())
+          .filter((m) => m.author.id === c.user?.id);
+
+        if (messages.size > 0) await messages.map((m) => m.delete());
 
         channel.send(message as string | MessagePayload | MessageCreateOptions);
       }, {
