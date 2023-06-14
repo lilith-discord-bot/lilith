@@ -8,7 +8,7 @@ export default class Ready extends Event {
     super(client, 'onGuildDelete', Events.GuildDelete);
   }
 
-  async run(...[guild]: [guild: Guild]): Promise<void> {
+  async run(guild: Guild): Promise<void> {
 
     if (!this.client.isReady) return;
 
