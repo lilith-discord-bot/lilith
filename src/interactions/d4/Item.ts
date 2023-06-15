@@ -38,7 +38,7 @@ export default class Item extends Interaction {
 
         const { options } = interaction;
 
-        let [query] = (options.get('query')?.value || null) as string;
+        let query = (options.get('query')?.value || null) as string;
 
         if (!query) return await interaction.reply('Invalid query.');
 
