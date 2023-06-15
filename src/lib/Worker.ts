@@ -1,6 +1,6 @@
 import { Client } from "../core/Client";
 import { request, wait } from "../utils/Commons";
-import { MAP_API_URL } from "../utils/Constants";
+import { DATABASE_URL, MAP_API_URL, languages } from "../utils/Constants";
 
 export class Worker {
     /**
@@ -14,8 +14,28 @@ export class Worker {
 
         this.client = client;
 
+        this.refreshDatabase();
         this.refreshPlayers();
         this.refreshMap();
+    }
+
+    /**
+     * Refresh the map cache.
+     */
+    async refreshDatabase() {
+
+        for (const language of languages) {
+
+            let data = await request(`${DATABASE_URL}/i18n/autocomplete_${language}.json`, true);
+
+            if (!data) continue;
+
+            await this.client.cache.set(`database:${language}`, JSON.stringify(data));
+
+            this.client.logger.info(`Added ${data.length} entries to the database cache for ${language}.`);
+
+            await wait(1000);
+        }
     }
 
     /**

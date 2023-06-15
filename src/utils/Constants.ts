@@ -3,11 +3,18 @@ import {
   ClientOptions,
   GatewayIntentBits,
   IntentsBitField,
+  Locale,
   Partials,
   PresenceData,
 } from 'discord.js';
 
 import { ClassesChoices, ModesChoices } from '../types';
+
+/**
+ * The url of the Diablo 4 Database.
+ * @type {string}
+ */
+export const DATABASE_URL = 'https://diablo4.cc';
 
 /**
  * The url of the @DevLeon map.
@@ -134,110 +141,40 @@ export const modesChoices: ModesChoices[] = [
   },
 ];
 
-export const glyphs = [
-  {
-    level: 1,
-    xp: 0,
-    total: 0,
-  },
-  {
-    level: 2,
-    xp: 8,
-    total: 8,
-  },
-  {
-    level: 3,
-    xp: 15,
-    total: 23,
-  },
-  {
-    level: 4,
-    xp: 24,
-    total: 47,
-  },
-  {
-    level: 5,
-    xp: 35,
-    total: 82,
-  },
-  {
-    level: 6,
-    xp: 46,
-    total: 128,
-  },
-  {
-    level: 7,
-    xp: 59,
-    total: 187,
-  },
-  {
-    level: 8,
-    xp: 72,
-    total: 259,
-  },
-  {
-    level: 9,
-    xp: 87,
-    total: 346,
-  },
-  {
-    level: 10,
-    xp: 104,
-    total: 450,
-  },
-  {
-    level: 11,
-    xp: 121,
-    total: 571,
-  },
-  {
-    level: 12,
-    xp: 140,
-    total: 711,
-  },
-  {
-    level: 13,
-    xp: 159,
-    total: 870,
-  },
-  {
-    level: 14,
-    xp: 180,
-    total: 1050,
-  },
-  {
-    level: 15,
-    xp: 203,
-    total: 1253,
-  },
-  {
-    level: 16,
-    xp: 226,
-    total: 1479,
-  },
-  {
-    level: 17,
-    xp: 251,
-    total: 1730,
-  },
-  {
-    level: 18,
-    xp: 276,
-    total: 2006,
-  },
-  {
-    level: 19,
-    xp: 303,
-    total: 2309,
-  },
-  {
-    level: 20,
-    xp: 332,
-    total: 2641,
-  },
-  {
-    level: 21,
-    xp: 361,
-    total: 3002,
-  },
+/**
+ * The differents languages of D4 DB.
+ */
+export const languages = [
+  'us',
+  'tw',
+  'cn',
+  'kr',
+  'jp',
+  'ru',
+  'de',
+  'fr',
+  'es',
+  'br',
+  'mx',
+  'it',
+  'pl'
 ];
+
+/**
+ * Match Discord locales to D4 DB languages.
+ */
+export const discordToLanguage = {
+  'en-US': 'us',
+  'en-GB': 'us',
+  'zh-CN': 'cn',
+  'zh-TW': 'tw',
+  fr: 'fr',
+  de: 'de',
+  it: 'it',
+  ja: 'jp',
+  ko: 'kr',
+  pl: 'pl',
+  'pt-BR': 'br',
+  ru: 'ru',
+  'es-ES': 'es',
+} as Record<Locale, string>;
