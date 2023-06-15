@@ -42,7 +42,7 @@ export default class Item extends Interaction {
 
         if (!query) return await interaction.reply('Invalid query.');
 
-        const [url, label] = query.split('_');
+        const [url, label] = query.split(':');
 
         await interaction.reply(hyperlink(`See ${label} on Diablo 4 Database`, `${DATABASE_URL}/${url}`, 'Click here to see the Diablo 4 Database'));
     }
@@ -74,7 +74,7 @@ export default class Item extends Interaction {
 
         await interaction.respond(items.map((item) => ({
             name: `${item.label} (${item.desc})`,
-            value: `${language}/${item.value}_${item.label}`,
+            value: `${language}/${item.value}:${item.label}`,
         })));
     }
 }
