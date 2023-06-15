@@ -135,28 +135,24 @@ export default class Armory extends Interaction {
 
     let choices;
 
-    choices = await Promise.all(
-      keys.map(async (key) => {
+    choices = await Promise.all(keys.map(async (key) => {
 
-        const player = await ctx.client.cache.get(key);
-        const parsed = JSON.parse(player!) as {
-          battleTag: string;
-          name: string;
-          characters: string[];
-        };
+      const player = await ctx.client.cache.get(key);
 
-        if (parsed.name.length > 15)
-          parsed.name = parsed.name.substring(0, 15) + '...';
+      const parsed = JSON.parse(player!) as {
+        battleTag: string;
+        name: string;
+        characters: string[];
+      };
 
-        return {
-          name: `${parsed.name} (${parsed.characters && parsed.characters.length || 0} characters)`,
-          value: parsed.battleTag,
-        };
-      }),
-    );
+      if (parsed.name.length > 15)
+        parsed.name = parsed.name.substring(0, 15) + '...';
 
-    ctx.client.logger.debug(choices.map((choice) => choice.name));
-    ctx.client.logger.debug(choices.map((choice) => choice.name.length));
+      return {
+        name: `${parsed.name} (${parsed.characters && parsed.characters.length || 0} chars.)`,
+        value: parsed.battleTag,
+      };
+    })).then((choices) => choices.filter((choice) => choice.name.length > 1 && choice.name.length <= 100));
 
     choices = [
       ...(choices?.filter((player) => {
