@@ -2,7 +2,7 @@ import { MessageCreateOptions, MessagePayload, NewsChannel, Role, TextChannel, t
 
 import { Client } from '../../core/Client';
 import { Event } from '../../types';
-import { duration } from '../../utils/Commons';
+import { duration, wait } from '../../utils/Commons';
 import { EventEmbed } from '../../utils/embeds/EventEmbed';
 import { Broadcaster } from './Broadcaster';
 
@@ -119,6 +119,8 @@ export class EventNotifier {
           };
 
           await this.broadcaster.broadcast(channel, message);
+
+          await wait(250);
         }
 
         this.client.logger.info(`Event ${key} has been broadcasted to ${guilds.length} guilds.`);
@@ -140,7 +142,7 @@ function getTitle(key: string, event: Event) {
     case 'boss':
       return `${event.name} appears in ${event.zone} (${event.territory}) at ${time(event.timestamp, 't')}`;
     case 'helltide':
-      return `Helltide occuring until ${time(event.timestamp + 3600, 't')}, next helltide around ${time(event.timestamp + 7200, 't')}`;
+      return `Helltide occuring until ${time(event.timestamp + 3600, 't')}, next helltide at ${time(event.timestamp + 8100, 't')}`;
     case 'legion':
       return `Legion appears ${time(event.timestamp, 'R')}, next legion at ${time(event.timestamp + 1800, 't')}`;
     default:
