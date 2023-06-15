@@ -11,7 +11,6 @@ import { Context, Interaction } from '../../core/Interaction';
 
 import { DATABASE_URL, discordToLanguage } from '../../utils/Constants';
 
-
 export default class Item extends Interaction {
 
     static enabled = true;

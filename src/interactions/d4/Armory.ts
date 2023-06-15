@@ -39,6 +39,7 @@ export default class Armory extends Interaction {
         type: ApplicationCommandOptionType.String,
         name: 'player',
         description: 'The player to get the armory of.',
+        required: true,
         autocomplete: true,
       },
     ],
@@ -99,7 +100,7 @@ export default class Armory extends Interaction {
         embeds: [embed],
         components: [armoryLink(player, res.characters[0].id)],
       });
-      
+
     } else {
 
       const characters =
@@ -154,7 +155,8 @@ export default class Armory extends Interaction {
       }),
     );
 
-    ctx.client.logger.debug(choices);
+    ctx.client.logger.debug(choices.map((choice) => choice.name));
+    ctx.client.logger.debug(choices.map((choice) => choice.name.length));
 
     choices = [
       ...(choices?.filter((player) => {
