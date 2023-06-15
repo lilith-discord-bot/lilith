@@ -145,14 +145,11 @@ export default class Armory extends Interaction {
         characters: string[];
       };
 
-      if (parsed.name.length > 15)
-        parsed.name = parsed.name.substring(0, 15) + '...';
-
       return {
-        name: `${parsed.name} (${parsed.characters && parsed.characters.length || 0} chars.)`,
+        name: `${parsed.name} (${parsed.characters && parsed.characters.length || 0} characters)`,
         value: parsed.battleTag,
       };
-    })).then((choices) => choices.filter((choice) => choice.name.length > 1 && choice.name.length <= 100));
+    }));
 
     choices = [
       ...(choices?.filter((player) => {
@@ -168,7 +165,7 @@ export default class Armory extends Interaction {
     if (choices.length <= 0)
       return await interaction.respond([
         {
-          name: `Player "${value}" isn't cached yet or isn't linked. Sending this request will try to reach and cache it.`,
+          name: `"${value}" isn't currently tracked, send to track it.`,
           value: value,
         },
       ]);
