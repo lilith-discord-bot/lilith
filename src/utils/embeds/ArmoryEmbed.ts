@@ -18,12 +18,11 @@ export class ArmoryEmbed extends Embed {
     };
 
     const stats = `World Tier: ${String(
-      character.worldTier,
-    )}\nMonsters killed: ${character.monstersKilled.toLocaleString(
-      'en-US',
-    )}\nElites killed: ${character.elitesKilled.toLocaleString(
-      'en-US',
-    )}\nGolds collected: ${character.goldCollected.toLocaleString('en-US')}`;
+      character.worldTier + 1)}\nMonsters killed: ${character.monstersKilled.toLocaleString(
+        'en-US',
+      )}\nElites killed: ${character.elitesKilled.toLocaleString(
+        'en-US',
+      )}\nGolds collected: ${character.goldCollected.toLocaleString('en-US')}`;
 
     this.data.fields = [
       {

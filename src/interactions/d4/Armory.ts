@@ -16,7 +16,7 @@ import { Context, Interaction } from '../../core/Interaction';
 
 import { ArmoryEmbed } from '../../utils/embeds/ArmoryEmbed';
 
-import { PlayerArmory, PlayerResearch } from '../../types';
+import { PlayerArmory } from '../../types';
 import { getArmoryLink } from '../../utils/Commons';
 
 const armoryLink = (battleTag: string, heroId: string) =>
@@ -99,6 +99,7 @@ export default class Armory extends Interaction {
         embeds: [embed],
         components: [armoryLink(player, res.characters[0].id)],
       });
+      
     } else {
 
       const characters =
@@ -143,8 +144,8 @@ export default class Armory extends Interaction {
           characters: string[];
         };
 
-        if (parsed.name.length > 25)
-          parsed.name = parsed.name.substring(0, 25) + '...';
+        if (parsed.name.length > 15)
+          parsed.name = parsed.name.substring(0, 15) + '...';
 
         return {
           name: `${parsed.name} (${parsed.characters && parsed.characters.length || 0} characters)`,
@@ -152,6 +153,8 @@ export default class Armory extends Interaction {
         };
       }),
     );
+
+    ctx.client.logger.debug(choices);
 
     choices = [
       ...(choices?.filter((player) => {
@@ -167,7 +170,7 @@ export default class Armory extends Interaction {
     if (choices.length <= 0)
       return await interaction.respond([
         {
-          name: `${value} not found or not cached yet. If you send this request it will be cached.`,
+          name: `Player "${value}" isn't cached yet or isn't linked. Sending this request will try to reach and cache it.`,
           value: value,
         },
       ]);

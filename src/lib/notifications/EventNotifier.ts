@@ -38,7 +38,7 @@ export class EventNotifier {
 
     this.client.logger.info('Event notifier has been initialized.');
 
-    setInterval(() => this.refresh(), refreshInterval);
+    // setInterval(() => this.refresh(), refreshInterval);
   }
 
   private async refresh() {
@@ -138,11 +138,11 @@ export class EventNotifier {
 function getTitle(key: string, event: Event) {
   switch (key) {
     case 'boss':
-      return `${event.name} appears in ${event.zone} at ${time(event.timestamp, 'T')}`;
+      return `${event.name} appears in ${event.zone} (${event.territory}) at ${time(event.timestamp, 't')}`;
     case 'helltide':
-      return `Helltide spawns in ${time(event.timestamp, 'R')} until ${time(event.timestamp + 3600, 'T')}, next helltide around ${time(event.timestamp + 7200, 'T')}`;
+      return `Helltide occuring until ${time(event.timestamp + 3600, 't')}, next helltide around ${time(event.timestamp + 7200, 't')}`;
     case 'legion':
-      return `Legion spawns in ${time(event.timestamp, 'R')}, next legion at ${time(event.timestamp + 1800, 'T')}`;
+      return `Legion appears ${time(event.timestamp, 'R')}, next legion at ${time(event.timestamp + 1800, 't')}`;
     default:
       return key;
   }
