@@ -38,7 +38,7 @@ export class EventNotifier {
 
     this.client.logger.info('Event notifier has been initialized.');
 
-    // setInterval(() => this.refresh(), refreshInterval);
+    setInterval(() => this.refresh(), refreshInterval);
   }
 
   private async refresh() {
