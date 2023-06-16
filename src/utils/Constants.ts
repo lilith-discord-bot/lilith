@@ -1,42 +1,64 @@
-import {
-  ActivityType,
-  ClientOptions,
-  GatewayIntentBits,
-  IntentsBitField,
-  Locale,
-  Partials,
-  PresenceData,
-} from 'discord.js';
+import { ActivityType, ClientOptions, GatewayIntentBits, Locale, Partials, PresenceData } from "discord.js";
 
-import { ClassesChoices, ModesChoices } from '../types';
+import { ClassesChoices, ModesChoices } from "../@types";
+
+/**
+ * The bot invite link.
+ * @type {string}
+ */
+export const BOT_INVITE =
+  "https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions=17876191071232&scope=bot%20applications.commands";
+
+/**
+ * The support server invite link.
+ * @type {string}
+ */
+export const SUPPORT_SERVER = "https://discord.gg/Mv2yCrJK87";
+
+/**
+ * D4 Armory URL, thanks to @Shalzuth
+ * @type {string}
+ */
+export const ARMORY_URL = "https://d4armory.io";
+
+/**
+ * D4 Armory API URL, thanks to @Shalzuth
+ * @type {string}
+ */
+export const ARMORY_API_URL = "https://d4armory.io/api";
 
 /**
  * The url of the Diablo 4 Database.
  * @type {string}
  */
-export const DATABASE_URL = 'https://diablo4.cc';
+export const DATABASE_URL = "https://diablo4.cc";
 
 /**
  * The url of the @DevLeon map.
  * @type {string}
  */
-export const MAP_URL = 'https://diablo4.th.gl';
+export const MAP_URL = "https://diablo4.th.gl";
 
 /**
  * The url of the @DevLeon map API.
  * @type {string}
  */
-export const MAP_API_URL = 'https://diablo4.th.gl/api/nodes';
+export const MAP_API_URL = "https://diablo4.th.gl/api/nodes";
 
+/**
+ * The client symbol for the container.
+ * @type {symbol}
+ */
+export const clientSymbol = Symbol("client");
 /**
  * Utility enum for admins.
  * @enum {string}
  */
 export enum Admins {
   /** glazk0 on Discord. */
-  glazk0 = '247344130798256130',
+  glazk0 = "247344130798256130",
   /** Marco. AKA 4d6172636f2e2332343535 on Discord. */
-  Marco = '309620533761146880',
+  Marco = "309620533761146880",
 }
 
 /**
@@ -44,10 +66,10 @@ export enum Admins {
  * @type {PresenceData}
  */
 export const presence: PresenceData = {
-  status: 'online',
+  status: "online",
   activities: [
     {
-      name: 'hell',
+      name: "hell",
       type: ActivityType.Watching,
     },
   ],
@@ -58,16 +80,12 @@ export const presence: PresenceData = {
  * @type {ClientOptions}
  */
 export const options: ClientOptions = {
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildWebhooks,
-    GatewayIntentBits.GuildScheduledEvents,
-  ],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildWebhooks, GatewayIntentBits.GuildScheduledEvents],
   partials: [Partials.Channel, Partials.GuildScheduledEvent],
   presence: presence,
   allowedMentions: {
     repliedUser: false,
-    parse: ['roles', 'everyone']
+    parse: ["roles", "everyone"],
   },
 };
 
@@ -76,16 +94,16 @@ export const options: ClientOptions = {
  */
 export const eventsChoices = [
   {
-    name: 'World Boss',
-    value: 'boss',
+    name: "World Boss",
+    value: "boss",
   },
   {
-    name: 'Hell Tide',
-    value: 'helltide',
+    name: "Hell Tide",
+    value: "helltide",
   },
   {
-    name: 'Legion Invasion',
-    value: 'legion',
+    name: "Legion Invasion",
+    value: "legion",
   },
 ];
 
@@ -94,24 +112,24 @@ export const eventsChoices = [
  */
 export const classesChoices: ClassesChoices[] = [
   {
-    name: 'Barbarian',
-    value: 'Barbarian',
+    name: "Barbarian",
+    value: "Barbarian",
   },
   {
-    name: 'Sorcerer',
-    value: 'Sorcerer',
+    name: "Sorcerer",
+    value: "Sorcerer",
   },
   {
-    name: 'Druid',
-    value: 'Druid',
+    name: "Druid",
+    value: "Druid",
   },
   {
-    name: 'Rogue',
-    value: 'Rogue',
+    name: "Rogue",
+    value: "Rogue",
   },
   {
-    name: 'Necromancer',
-    value: 'Necromancer',
+    name: "Necromancer",
+    value: "Necromancer",
   },
 ];
 
@@ -120,61 +138,48 @@ export const classesChoices: ClassesChoices[] = [
  */
 export const modesChoices: ModesChoices[] = [
   {
-    name: 'All modes',
-    value: 'allmodes',
+    name: "All modes",
+    value: "allmodes",
   },
   {
-    name: 'Softcore',
-    value: 'softcore',
+    name: "Softcore",
+    value: "softcore",
   },
   {
-    name: 'Hardcore',
-    value: 'hardcore',
+    name: "Hardcore",
+    value: "hardcore",
   },
   {
-    name: 'Hall of Valor',
-    value: 'dead',
+    name: "Hall of Valor",
+    value: "dead",
   },
   {
-    name: 'PvP',
-    value: 'pvp',
+    name: "PvP",
+    value: "pvp",
   },
 ];
 
 /**
  * The differents languages of D4 DB.
  */
-export const languages = [
-  'us',
-  'tw',
-  'cn',
-  'kr',
-  'jp',
-  'ru',
-  'de',
-  'fr',
-  'es',
-  'br',
-  'mx',
-  'it',
-  'pl'
-];
+export const languages = ["us", "tw", "cn", "kr", "jp", "ru", "de", "fr", "es", "br", "mx", "it", "pl"];
 
 /**
  * Match Discord locales to D4 DB languages.
+ * @type {Record<Locale, string>}
  */
 export const discordToLanguage = {
-  'en-US': 'us',
-  'en-GB': 'us',
-  'zh-CN': 'cn',
-  'zh-TW': 'tw',
-  fr: 'fr',
-  de: 'de',
-  it: 'it',
-  ja: 'jp',
-  ko: 'kr',
-  pl: 'pl',
-  'pt-BR': 'br',
-  ru: 'ru',
-  'es-ES': 'es',
+  "en-US": "us",
+  "en-GB": "us",
+  "zh-CN": "cn",
+  "zh-TW": "tw",
+  fr: "fr",
+  de: "de",
+  it: "it",
+  ja: "jp",
+  ko: "kr",
+  pl: "pl",
+  "pt-BR": "br",
+  ru: "ru",
+  "es-ES": "es",
 } as Record<Locale, string>;
