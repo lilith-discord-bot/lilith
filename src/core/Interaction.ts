@@ -1,12 +1,13 @@
 import {
   ApplicationCommandData,
   AutocompleteInteraction,
-  CommandInteraction,
-  StringSelectMenuInteraction
-} from 'discord.js';
+  CacheType,
+  ChatInputCommandInteraction,
+  StringSelectMenuInteraction,
+} from "discord.js";
 
-import { Guild } from '../lib/db/postgresql/models/Guild.model';
-import { Client } from './Client';
+import { Guild } from "../lib/db/postgresql/models/Guild.model";
+import { Client } from "./Client";
 
 export type Context = {
   client: Client;
@@ -34,10 +35,7 @@ export class Interaction {
    *
    * @returns {Promise<void>}
    */
-  static async run(
-    interaction: CommandInteraction,
-    context: Context,
-  ): Promise<any> {}
+  static async run(interaction: ChatInputCommandInteraction<CacheType>, context: Context): Promise<any> {}
 
   /**
    * Handles the interaction autocomplete.
@@ -45,10 +43,7 @@ export class Interaction {
    * @param interaction - The interaction.
    * @param context - The context.
    */
-  static async autocomplete(
-    interaction: AutocompleteInteraction,
-    context: Context,
-  ): Promise<any> {}
+  static async autocomplete?(interaction: AutocompleteInteraction<CacheType>, context: Context): Promise<any> {}
 
   /**
    * Handles the interaction select menu.
@@ -56,9 +51,5 @@ export class Interaction {
    * @param interaction - The interaction.
    * @param context - The context.
    */
-  static async selectMenu(
-    // TODO ADD MORE OR MAKE IT GENERIC
-    interaction: StringSelectMenuInteraction,
-    context: Context,
-  ): Promise<any> {}
+  static async selectMenu?(interaction: StringSelectMenuInteraction<CacheType>, context: Context): Promise<any> {}
 }

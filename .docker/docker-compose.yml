@@ -12,8 +12,6 @@ services:
       - network
     environment:
       - TOKEN=${TOKEN}
-      - ARMORY_API_URL=${ARMORY_API_URL}
-      - ARMORY_URL=${ARMORY_URL}
       - POSTGRES_HOST=postgres
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -21,7 +19,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PASSWORD=${REDIS_PASSWORD}
     command: npm start
-  
+
   redis:
     container_name: cache
     image: redis:7.0.11
@@ -41,9 +39,8 @@ services:
       - POSTGRES_DATABASE=${POSTGRES_DATABASE}
     networks:
       - network
-    volumes: 
+    volumes:
       - pgdata:/var/lib/postgresql/data
-      
 
 networks:
   network:

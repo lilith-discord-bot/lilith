@@ -1,11 +1,11 @@
-import * as winston from 'winston';
+import * as winston from "winston";
 
 const colorizer = winston.format.colorize();
 
 const level = (): string => {
-  const env = process.env.NODE_ENV || 'development';
-  const isDevelopment = env === 'development';
-  return isDevelopment ? 'debug' : 'info';
+  const env = process.env.NODE_ENV || "development";
+  const isDevelopment = env === "development";
+  return isDevelopment ? "debug" : "info";
 };
 
 const levels = {
@@ -17,32 +17,29 @@ const levels = {
 };
 
 const colors = {
-  error: 'red',
-  warn: 'yellow',
-  info: 'green',
-  http: 'magenta',
-  debug: 'white',
+  error: "red",
+  warn: "yellow",
+  info: "green",
+  http: "magenta",
+  debug: "white",
 };
 
 winston.addColors(colors);
 
 const format = winston.format.combine(
-  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+  winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
   winston.format.printf((info) =>
-    colorizer.colorize(
-      info.level,
-      `[${info.timestamp}] [ ${info.level.toUpperCase()} ] - ${info.message}`,
-    ),
-  ),
+    colorizer.colorize(info.level, `[${info.timestamp}] [ ${info.level.toUpperCase()} ] - ${info.message}`)
+  )
 );
 
 const transports = [
   new winston.transports.Console(),
   new winston.transports.File({
-    filename: 'logs/error.log',
-    level: 'error',
+    filename: "logs/error.log",
+    level: "error",
   }),
-  new winston.transports.File({ filename: 'logs/all.log' }),
+  new winston.transports.File({ filename: "logs/all.log" }),
 ];
 
 export const Logger = winston.createLogger({

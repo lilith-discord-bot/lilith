@@ -1,15 +1,14 @@
-import { Events, Guild } from 'discord.js';
+import { Events, Guild } from "discord.js";
 
-import { Client } from '../core/Client';
-import { Event } from '../core/Event';
+import { Client } from "../core/Client";
+import { Event } from "../core/Event";
 
 export default class GuildCreate extends Event {
-  constructor(client: Client) {
-    super(client, 'onGuildCreate', Events.GuildCreate);
+  constructor() {
+    super("onGuildCreate", Events.GuildCreate);
   }
 
   async run(guild: Guild): Promise<void> {
-    
     if (!this.client.isReady) return;
 
     await this.client.repository.guild.findOrCreate(guild.id);

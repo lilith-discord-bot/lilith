@@ -1,7 +1,9 @@
-import { Repository } from 'typeorm';
+import { container } from "tsyringe";
+import { Repository } from "typeorm";
 
-import { Client } from '../../../../core/Client';
-import { Guild } from '../models/Guild.model';
+import { Client } from "../../../../core/Client";
+import { clientSymbol } from "../../../../utils/Constants";
+import { Guild } from "../models/Guild.model";
 
 export class GuildRepository {
   /**
@@ -17,9 +19,9 @@ export class GuildRepository {
    */
   private readonly guilds: Repository<Guild>;
 
-  constructor(client: Client) {
-    this.client = client;
-    this.guilds = client.database.getRepository(Guild);
+  constructor() {
+    this.client = container.resolve<Client>(clientSymbol);
+    this.guilds = this.client.database.getRepository(Guild);
   }
 
   /**
@@ -30,11 +32,9 @@ export class GuildRepository {
    * @returns Promise<Guild> - The guild.
    */
   async findOrCreate(guildId: string): Promise<Guild> {
-
     const cache = await this.client.cache.get(`guilds:${guildId}`);
 
     if (!cache) {
-
       let guild = await this.guilds.findOneBy({ id: guildId });
 
       if (!guild) {
@@ -46,7 +46,6 @@ export class GuildRepository {
       await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
 
       return guild;
-
     } else return JSON.parse(cache) as Guild;
   }
 
@@ -56,7 +55,6 @@ export class GuildRepository {
    * @param guildId - The guild ID.
    */
   async delete(guildId: string): Promise<void> {
-
     const guild = await this.guilds.findOneBy({ id: guildId });
 
     if (!guild) return;
@@ -68,8 +66,11 @@ export class GuildRepository {
     await this.guilds.delete({ id: guildId });
   }
 
-  async updateEvent(guildId: string, event: keyof Guild['settings']['events'], data: { enabled: boolean, channel: string | null, role: string | null, schedule: boolean }): Promise<void> {
-
+  async updateEvent(
+    guildId: string,
+    event: keyof Guild["settings"]["events"],
+    data: { enabled: boolean; channel: string | null; role: string | null; schedule: boolean }
+  ): Promise<void> {
     const guild = await this.findOrCreate(guildId);
 
     if (!guild) return;
@@ -96,17 +97,13 @@ export class GuildRepository {
 
   /**
    * Get all guilds that have a specific event enabled.
-   * 
+   *
    * @param event - The event.
    * @returns - The guilds.
    */
-  async getAllByEvent(event: keyof Guild['settings']['events']): Promise<Guild[]> {
-
-    const query = this.guilds.createQueryBuilder('guild')
-      .where(`guild.settings->'events'->'${event}'->>'enabled' = 'true'`);
-
+  async getAllByEvent(event: keyof Guild["settings"]["events"]): Promise<Guild[]> {
+    const query = this.guilds.createQueryBuilder("guild").where(`guild.settings->'events'->'${event}'->>'enabled' = 'true'`);
     const guilds = await query.getMany();
-
     return guilds;
   }
 }

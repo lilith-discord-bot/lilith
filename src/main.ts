@@ -1,22 +1,21 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 
-import { config } from 'dotenv';
+import { config } from "dotenv";
 
 config();
 
-import path from 'node:path';
+import path from "node:path";
+import { ClusterManager } from "discord-hybrid-sharding";
 
-import { ClusterManager } from 'discord-hybrid-sharding';
-
-import { Logger } from './lib/Logger';
-import { registerClusterEvents } from './lib/RegisterEvents';
+import { Logger } from "./lib/Logger";
+import { registerClusterEvents } from "./lib/RegisterEvents";
 
 // TODO : See docs for more information and maybe add plugins to handle reclustering
 
-const manager = new ClusterManager(path.join(__dirname, './core/Client.js'), {
-  totalShards: 'auto',
-  totalClusters: 'auto',
-  mode: 'process',
+const manager = new ClusterManager(path.join(__dirname, "./core/Client.js"), {
+  totalShards: "auto",
+  totalClusters: "auto",
+  mode: "process",
   shardsPerClusters: 2,
   token: process.env.TOKEN,
 });
@@ -27,6 +26,4 @@ manager
   .spawn({
     timeout: -1,
   })
-  .catch((...args: any[]) =>
-    Logger.error('Shard spawn has occured a error', ...args),
-  );
+  .catch((reason: any) => Logger.error("Shard spawn has occured a error", reason));
