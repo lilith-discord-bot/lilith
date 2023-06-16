@@ -39,19 +39,12 @@ export class Broadcaster {
 
         channel = channel as TextChannel | NewsChannel;
 
-        if (
-          !channel
-            .permissionsFor(channel.guild.members.me!)
-            ?.has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.ViewChannel])
-        )
-          return;
-
         //  && m.embeds.length > 0 && m.embeds[0].footer?.text === key
         let messages = (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id);
 
         if (messages.size > 0) await messages.map((m) => m.delete());
 
-        await channel.send(message as string | MessagePayload | MessageCreateOptions);
+        await channel.send(message as string | MessagePayload | MessageCreateOptions).catch(() => {});
       },
       {
         context: { channelId: channel.id, message },
