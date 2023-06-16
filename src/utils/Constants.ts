@@ -1,6 +1,6 @@
 import { ActivityType, ClientOptions, GatewayIntentBits, Locale, Partials, PresenceData } from "discord.js";
 
-import { ClassesChoices, ModesChoices } from "../@types";
+import { ClassesChoices, ModesChoices } from "../types";
 
 /**
  * The bot invite link.
