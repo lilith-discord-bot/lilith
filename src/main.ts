@@ -1,4 +1,8 @@
-require('dotenv').config();
+import 'reflect-metadata';
+
+import { config } from 'dotenv';
+
+config();
 
 import path from 'node:path';
 
