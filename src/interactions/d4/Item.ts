@@ -1,79 +1,73 @@
 import {
-    ApplicationCommandData,
-    ApplicationCommandOptionType,
-    ApplicationCommandType,
-    AutocompleteInteraction,
-    CommandInteraction,
-    hyperlink
-} from 'discord.js';
+  ApplicationCommandData,
+  ApplicationCommandOptionType,
+  ApplicationCommandType,
+  AutocompleteInteraction,
+  CommandInteraction,
+  hyperlink,
+} from "discord.js";
 
-import { Context, Interaction } from '../../core/Interaction';
+import { Context, Interaction } from "../../core/Interaction";
 
-import { DATABASE_URL, discordToLanguage } from '../../utils/Constants';
+import { DATABASE_URL, discordToLanguage } from "../../utils/Constants";
 
 export default class Item extends Interaction {
+  static enabled = true;
 
-    static enabled = true;
+  static command: ApplicationCommandData = {
+    type: ApplicationCommandType.ChatInput,
+    name: "item",
+    description: "Give information about specific item.",
+    options: [
+      {
+        type: ApplicationCommandOptionType.String,
+        name: "query",
+        description: "The name of the thing you want to know about.",
+        required: true,
+        autocomplete: true,
+      },
+    ],
+  };
 
-    static command: ApplicationCommandData = {
-        type: ApplicationCommandType.ChatInput,
-        name: 'item',
-        description: 'Give information about specific item.',
-        options: [
-            {
-                type: ApplicationCommandOptionType.String,
-                name: 'query',
-                description: 'The name of the thing you want to know about.',
-                required: true,
-                autocomplete: true,
-            }
-        ],
-    };
+  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
+    const { options } = interaction;
 
-    static async run(
-        interaction: CommandInteraction,
-        ctx: Context,
-    ): Promise<any> {
+    let query = (options.get("query")?.value || null) as string;
 
-        const { options } = interaction;
+    if (!query) return await interaction.reply("Invalid query.");
 
-        let query = (options.get('query')?.value || null) as string;
+    const [url, label] = query.split(":");
 
-        if (!query) return await interaction.reply('Invalid query.');
+    await interaction.reply(
+      hyperlink(`See ${label} on Diablo 4 Database`, `${DATABASE_URL}/${url}`, "Click here to see the Diablo 4 Database")
+    );
+  }
 
-        const [url, label] = query.split(':');
+  static async autocomplete(interaction: AutocompleteInteraction, ctx: Context): Promise<any> {
+    const language = discordToLanguage[interaction.guild?.preferredLocale || interaction.locale] || "us";
 
-        await interaction.reply(hyperlink(`See ${label} on Diablo 4 Database`, `${DATABASE_URL}/${url}`, 'Click here to see the Diablo 4 Database'));
-    }
+    let data = await ctx.client.cache.get(`database:${language}`);
 
-    static async autocomplete(
-        interaction: AutocompleteInteraction,
-        ctx: Context,
-    ): Promise<any> {
+    if (!data) return await interaction.respond([]);
 
-        const language = discordToLanguage[interaction.guild?.preferredLocale || interaction.locale] || 'us';
+    let items = JSON.parse(data) as {
+      value: string;
+      desc: string;
+      label: string;
+    }[];
 
-        let data = await ctx.client.cache.get(`database:${language}`);
+    const value = interaction.options.getFocused();
 
-        if (!data)
-            return await interaction.respond([]);
+    items = [
+      ...items?.filter((item) => item.label.toLowerCase().indexOf(value.toLowerCase()) === 0),
+      ...items?.filter((item) => item.label.toLowerCase().indexOf(value.toLowerCase()) > 0),
+    ].slice(0, 25);
 
-        let items = JSON.parse(data) as {
-            value: string;
-            desc: string;
-            label: string;
-        }[];
-
-        const value = interaction.options.getFocused();
-
-        items = [
-            ...items?.filter((item) => item.label.toLowerCase().indexOf(value.toLowerCase()) === 0),
-            ...items?.filter((item) => item.label.toLowerCase().indexOf(value.toLowerCase()) > 0),
-        ].slice(0, 25);
-
-        await interaction.respond(items.map((item) => ({
-            name: `${item.label} (${item.desc})`,
-            value: `${language}/${item.value}:${item.label}`,
-        })));
-    }
+    await interaction.respond(
+      items.map((item) => ({
+        name: `${item.label} (${item.desc})`,
+        value: `${language}/${item.value}:${item.label}`,
+      }))
+    );
+  }
 }

@@ -1,16 +1,19 @@
-import { Cluster, ClusterManager } from 'discord-hybrid-sharding';
+import { Cluster, ClusterManager } from "discord-hybrid-sharding";
 
-import { Logger } from './Logger';
-import { isDev } from '../utils/Commons';
-import { Client } from '../core/Client';
-import { Events } from 'discord.js';
+import { Logger } from "./Logger";
+import { isDev } from "../utils/Commons";
+import { Client } from "../core/Client";
+import { Events } from "discord.js";
+import { container } from "tsyringe";
+import { clientSymbol } from "../utils/Constants";
 
 /**
  * Registers the client events.
  *
  * @param client - The client.
  */
-export function registerClientEvents(client: Client): void {
+export function registerClientEvents(): void {
+  const client = container.resolve<Client>(clientSymbol);
 
   client.once(Events.ClientReady, async () => {
     client.eventHandler.run(Events.ClientReady, []);
@@ -33,9 +36,7 @@ export function registerClientEvents(client: Client): void {
   });
 
   client.on(Events.ShardDisconnect, async (event: any, id: number) => {
-    client.logger.warn(
-      `Shard #${id} disconnected with code ${event.code} for cluster #${client.cluster.id}`,
-    );
+    client.logger.warn(`Shard #${id} disconnected with code ${event.code} for cluster #${client.cluster.id}`);
   });
 
   client.on(Events.InteractionCreate, async (interaction) => {
@@ -71,22 +72,18 @@ export function registerClientEvents(client: Client): void {
  *
  * @returns {ClusterManager} The cluster manager.
  */
-export function registerClusterEvents(
-  manager: ClusterManager,
-  logger: typeof Logger,
-): ClusterManager {
-
+export function registerClusterEvents(manager: ClusterManager, logger: typeof Logger): ClusterManager {
   if (isDev) {
-    manager.on('debug', (message: string) => {
+    manager.on("debug", (message: string) => {
       logger.debug(message);
     });
   }
 
-  manager.on('clusterCreate', (cluster: Cluster) => {
+  manager.on("clusterCreate", (cluster: Cluster) => {
     logger.info(`Launched cluster #${cluster.id}`);
   });
 
-  manager.on('clusterReady', (cluster: Cluster) => {
+  manager.on("clusterReady", (cluster: Cluster) => {
     logger.info(`Cluster #${cluster.id} is ready`);
   });
 

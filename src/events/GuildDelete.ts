@@ -1,15 +1,14 @@
-import { Events, Guild } from 'discord.js';
+import { Events, Guild } from "discord.js";
 
-import { Client } from '../core/Client';
-import { Event } from '../core/Event';
+import { Client } from "../core/Client";
+import { Event } from "../core/Event";
 
 export default class GuildDelete extends Event {
-  constructor(client: Client) {
-    super(client, 'onGuildDelete', Events.GuildDelete);
+  constructor() {
+    super("onGuildDelete", Events.GuildDelete);
   }
 
   async run(guild: Guild): Promise<void> {
-
     if (!this.client.isReady) return;
 
     await this.client.repository.guild.delete(guild.id);

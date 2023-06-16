@@ -5,11 +5,12 @@ import {
   MessageCreateOptions,
   MessagePayload,
   NewsChannel,
-  PermissionFlagsBits,
   TextChannel,
-} from 'discord.js';
+} from "discord.js";
 
-import { Client } from '../../core/Client';
+import { container } from "tsyringe";
+import { Client } from "../../core/Client";
+import { clientSymbol } from "../../utils/Constants";
 
 export class Broadcaster {
   /**
@@ -17,8 +18,8 @@ export class Broadcaster {
    */
   readonly client: Client;
 
-  constructor(client: Client) {
-    this.client = client;
+  constructor() {
+    this.client = container.resolve<Client>(clientSymbol);
   }
 
   /**
@@ -26,30 +27,27 @@ export class Broadcaster {
    *
    * @param channel - The channel to broadcast the message to.
    * @param message - The message to broadcast.
+   * @param key - The key to use for the message.
    */
-  async broadcast(
-    channel: Channel,
-    message: string | MessagePayload | MessageCreateOptions,
-  ): Promise<void> {
-
+  async broadcast(channel: Channel, message: string | MessagePayload | MessageCreateOptions, key?: string): Promise<void> {
     await this.client.cluster.broadcastEval(
       async (c, { channelId, message }) => {
-
         let channel = c.channels.cache.get(channelId);
 
         if (!channel) return;
 
         channel = channel as TextChannel | NewsChannel;
 
-        const messages = (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id);
+        //  && m.embeds.length > 0 && m.embeds[0].footer?.text === key
+        let messages = (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id);
 
         if (messages.size > 0) await messages.map((m) => m.delete());
 
-        await channel.send(message as string | MessagePayload | MessageCreateOptions).catch(() => null);
+        await channel.send(message as string | MessagePayload | MessageCreateOptions);
       },
       {
         context: { channelId: channel.id, message },
-      },
+      }
     );
   }
 
@@ -61,10 +59,7 @@ export class Broadcaster {
    *
    * @returns {Promise<void>} Nothing.
    */
-  async scheduleEvent(
-    guild: Guild,
-    options: GuildScheduledEventCreateOptions,
-  ): Promise<void> {
+  async scheduleEvent(guild: Guild, options: GuildScheduledEventCreateOptions): Promise<void> {
     if (!guild) return;
 
     this.client.logger.info(`Creating scheduled event for guild ${guild.id}`);

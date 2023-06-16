@@ -1,5 +1,9 @@
-import { Events } from 'discord.js';
-import { Client } from './Client';
+import { Events } from "discord.js";
+import { container } from "tsyringe";
+
+import { Client } from "./Client";
+
+import { clientSymbol } from "../utils/Constants";
 
 export class Event {
   /**
@@ -30,21 +34,11 @@ export class Event {
    * @param id - The event identifier.
    * @param event - The event to trigger.
    */
-  constructor(client: Client, id: string, event: Events) {
-    /**
-     * The client.
-     * @type {Client}
-     */
-    this.client = client;
+  constructor(id: string, event: Events) {
+    this.client = container.resolve<Client>(clientSymbol);
 
-    /**
-     * Event identifier.
-     */
     this.id = id;
 
-    /**
-     * Event to trigger.
-     */
     this.event = event;
   }
 
