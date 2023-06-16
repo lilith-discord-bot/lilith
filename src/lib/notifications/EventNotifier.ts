@@ -1,10 +1,13 @@
-import { MessageCreateOptions, MessagePayload, NewsChannel, Role, TextChannel, time } from 'discord.js';
+import { MessageCreateOptions, MessagePayload, NewsChannel, Role, TextChannel, time } from "discord.js";
 
-import { Client } from '../../core/Client';
-import { Event } from '../../types';
-import { duration, wait } from '../../utils/Commons';
-import { EventEmbed } from '../../utils/embeds/EventEmbed';
-import { Broadcaster } from './Broadcaster';
+import { Client } from "../../core/Client";
+import { Event } from "../../types";
+import { duration, wait } from "../../utils/Commons";
+import { EventEmbed } from "../../utils/embeds/EventEmbed";
+import { Broadcaster } from "./Broadcaster";
+import { container } from "tsyringe";
+import { clientSymbol } from "../../utils/Constants";
+import { getEvents, getStatus } from "../API";
 
 const refreshInterval = duration.seconds(60);
 
@@ -26,47 +29,42 @@ export class EventNotifier {
    */
   readonly broadcaster: Broadcaster;
 
-  constructor(client: Client) {
-    this.client = client;
-
-    this.broadcaster = new Broadcaster(this.client);
+  constructor() {
+    this.client = container.resolve<Client>(clientSymbol);
+    this.broadcaster = new Broadcaster();
 
     this.init();
   }
 
   async init() {
-
-    this.client.logger.info('Event notifier has been initialized.');
+    this.client.logger.info("Event notifier has been initialized.");
 
     setInterval(() => this.refresh(), refreshInterval);
   }
 
   private async refresh() {
+    this.client.logger.info("Refreshing events...");
 
-    this.client.logger.info('Refreshing events...');
-
-    const status = await this.client.api.getStatus();
+    const status = await getStatus();
 
     if (!status || !status.event_service) {
-      this.client.logger.info('Event service is not available, skipping...');
+      this.client.logger.info("Event service is not available, skipping...");
       return;
-    };
+    }
 
-    const events = await this.client.api.getEvents();
+    const events = await getEvents();
 
     if (!events) {
-      this.client.logger.info('No events found, skipping...');
-      return
-    };
+      this.client.logger.info("No events found, skipping...");
+      return;
+    }
 
     for (let [key, value] of Object.entries(events)) {
-
       let cache = await this.client.cache.get(`events:${key}`);
 
       const cachedEvent = JSON.parse(cache!) as Event;
 
       if (!cache || cachedEvent.timestamp !== value.timestamp) {
-
         await this.client.cache.set(`events:${key}`, JSON.stringify(value));
 
         const date = Date.now();
@@ -82,7 +80,6 @@ export class EventNotifier {
         this.client.logger.info(`Found ${guilds.length} guilds with event ${key}.`);
 
         for (const guild of guilds) {
-
           this.client.logger.info(`Checking guild ${guild.id}...`);
 
           const embed = new EventEmbed(key, value, { client: this.client, guild });
@@ -90,14 +87,13 @@ export class EventNotifier {
           let message: string | MessagePayload | MessageCreateOptions = {
             content: getTitle(key, value),
             embeds: [embed],
-          }
+          };
 
           const setting = guild.settings.events[key as keyof typeof guild.settings.events];
 
-          if (!setting.enabled)
-            continue;
+          if (!setting.enabled) continue;
 
-          this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`)
+          this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`);
 
           if (setting.role) {
             const role = setting.role as any as Role;
@@ -116,7 +112,7 @@ export class EventNotifier {
           if (!channel) {
             this.client.logger.info(`Event ${key} has no channel set, skipping...`);
             continue;
-          };
+          }
 
           await this.broadcaster.broadcast(channel, message);
 
@@ -131,20 +127,23 @@ export class EventNotifier {
 
 /**
  * Get the event title.
- * 
+ *
  * @param key - The event key.
  * @param event - The event object.
- * 
+ *
  * @returns {string} - The event title.
  */
 function getTitle(key: string, event: Event) {
   switch (key) {
-    case 'boss':
-      return `${event.name} appears in ${event.zone} (${event.territory}) at ${time(event.timestamp, 't')}`;
-    case 'helltide':
-      return `Helltide occuring until ${time(event.timestamp + 3600, 't')}, next helltide at ${time(event.timestamp + 8100, 't')}`;
-    case 'legion':
-      return `Legion appears ${time(event.timestamp, 'R')}, next legion at ${time(event.timestamp + 1800, 't')}`;
+    case "boss":
+      return `${event.name} appears in ${event.zone} (${event.territory}) at ${time(event.timestamp, "t")}`;
+    case "helltide":
+      return `Helltide occuring until ${time(event.timestamp + 3600, "t")}, next helltide at ${time(
+        event.timestamp + 8100,
+        "t"
+      )}`;
+    case "legion":
+      return `Legion appears ${time(event.timestamp, "R")}, next legion at ${time(event.timestamp + 1800, "t")}`;
     default:
       return key;
   }

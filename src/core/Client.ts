@@ -1,17 +1,19 @@
-import { ClusterClient, getInfo } from 'discord-hybrid-sharding';
-import { ClientOptions, Client as DiscordClient } from 'discord.js';
-import { DataSource } from 'typeorm';
+import "reflect-metadata";
 
-import EventHandler from '../events/EventHandler';
+import { ClusterClient, getInfo } from "discord-hybrid-sharding";
+import { ClientOptions, Client as DiscordClient } from "discord.js";
+import { DataSource } from "typeorm";
 
-import { API } from '../lib/API';
-import { Logger } from '../lib/Logger';
-import { registerClientEvents } from '../lib/RegisterEvents';
-import { database } from '../lib/db/postgresql/Database';
-import { redis } from '../lib/db/redis/Redis';
+import EventHandler from "../events/EventHandler";
 
-import { GuildRepository } from '../lib/db/postgresql/repository/Guild';
-import { options } from '../utils/Constants';
+import { Logger } from "../lib/Logger";
+import { registerClientEvents } from "../lib/RegisterEvents";
+import { database } from "../lib/db/postgresql/Database";
+import { redis } from "../lib/db/redis/Redis";
+
+import { GuildRepository } from "../lib/db/postgresql/repository/Guild";
+import { clientSymbol, options } from "../utils/Constants";
+import { container } from "tsyringe";
 
 export class Client extends DiscordClient {
   /**
@@ -27,13 +29,6 @@ export class Client extends DiscordClient {
    * @readonly
    */
   readonly eventHandler: EventHandler;
-
-  /**
-   * The API class.
-   * @type {API}
-   * @readonly
-   */
-  readonly api: API;
 
   /**
    * Redis cache.
@@ -75,18 +70,18 @@ export class Client extends DiscordClient {
       ...options,
     });
 
+    container.register(clientSymbol, { useValue: this });
+
     this.cluster = new ClusterClient(this);
 
-    this.eventHandler = new EventHandler(this);
-
-    this.api = new API();
+    this.eventHandler = new EventHandler();
 
     this.cache = redis;
 
     this.database = database;
 
     this.repository = {
-      guild: new GuildRepository(this),
+      guild: new GuildRepository(),
     };
 
     this.logger = Logger;
@@ -98,10 +93,9 @@ export class Client extends DiscordClient {
    * @returns {Promise<this>} The client.
    */
   async init(): Promise<this> {
-    
     await this.eventHandler.init();
 
-    await registerClientEvents(this);
+    await registerClientEvents();
 
     await this.cache.connect();
     await this.database.initialize();
