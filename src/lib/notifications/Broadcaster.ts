@@ -1,11 +1,10 @@
 import {
-  Channel,
   Guild,
   GuildScheduledEventCreateOptions,
+  Message,
   MessageCreateOptions,
   MessagePayload,
   NewsChannel,
-  PermissionFlagsBits,
   TextChannel,
 } from "discord.js";
 
@@ -35,8 +34,8 @@ export class Broadcaster {
     message: string | MessagePayload | MessageCreateOptions,
     oldMessageId: string | null,
     key?: string
-  ) {
-    return await this.client.cluster.broadcastEval(
+  ): Promise<(Message<true> | null)[]> {
+    return (await this.client.cluster.broadcastEval(
       async (c, { channelId, message, oldMessageId }) => {
         let channel = c.channels.cache.get(channelId);
 
@@ -56,7 +55,7 @@ export class Broadcaster {
       {
         context: { channelId, message, oldMessageId },
       }
-    );
+    )) as (Message<true> | null)[];
   }
 
   /**
