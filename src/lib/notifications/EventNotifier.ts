@@ -9,7 +9,7 @@ import { container } from "tsyringe";
 import { clientSymbol } from "../../utils/Constants";
 import { getEvents, getStatus } from "../API";
 
-const refreshInterval = duration.seconds(10);
+const refreshInterval = duration.seconds(60);
 
 /**
  * The event notifier handler.
