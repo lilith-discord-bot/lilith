@@ -1,9 +1,10 @@
 import { container } from "tsyringe";
-import { Repository } from "typeorm";
 
 import { Client } from "../../../../core/Client";
 import { clientSymbol } from "../../../../utils/Constants";
-import { Guild } from "../models/Guild.model";
+import { Prisma } from "@prisma/client";
+import { EventsList } from "../../../../types";
+import { Guild } from "../../../../types/Database";
 
 export class GuildRepository {
   /**
@@ -12,16 +13,17 @@ export class GuildRepository {
    * @readonly
    */
   private readonly client: Client;
+
   /**
    * The guilds repository.
-   * @type {Repository<Guild>}
+   * @type {Prisma.GuildDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>}
    * @readonly
    */
-  private readonly guilds: Repository<Guild>;
+  private readonly guilds: Prisma.GuildDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>;
 
   constructor() {
     this.client = container.resolve<Client>(clientSymbol);
-    this.guilds = this.client.database.getRepository(Guild);
+    this.guilds = this.client.database.guild;
   }
 
   /**
@@ -35,12 +37,15 @@ export class GuildRepository {
     const cache = await this.client.cache.get(`guilds:${guildId}`);
 
     if (!cache) {
-      let guild = await this.guilds.findOneBy({ id: guildId });
+      let guild = await this.guilds.findUnique({ where: { guildId }, include: { events: true } });
 
       if (!guild) {
-        guild = new Guild();
-        guild.id = guildId;
-        await this.guilds.save(guild);
+        guild = await this.guilds.create({
+          data: {
+            guildId,
+          },
+          include: { events: true },
+        });
       }
 
       await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
@@ -55,7 +60,7 @@ export class GuildRepository {
    * @param guildId - The guild ID.
    */
   async delete(guildId: string): Promise<void> {
-    const guild = await this.guilds.findOneBy({ id: guildId });
+    const guild = await this.guilds.findUnique({ where: { guildId } });
 
     if (!guild) return;
 
@@ -63,22 +68,36 @@ export class GuildRepository {
 
     if (cache) await this.client.cache.del(`guilds:${guildId}`);
 
-    await this.guilds.delete({ id: guildId });
+    await this.guilds.delete({ where: { guildId } });
   }
 
   async updateEvent(
     guildId: string,
-    event: keyof Guild["settings"]["events"],
-    data: { enabled: boolean; channel: string | null; role: string | null; schedule: boolean }
+    type: EventsList,
+    data: { enabled: boolean; channel: string; role: string | null; schedule: boolean }
   ): Promise<void> {
-    const guild = await this.findOrCreate(guildId);
+    let guild = await this.findOrCreate(guildId);
 
     if (!guild) return;
 
     try {
-      // @ts-ignore
-      guild.settings.events[event] = data;
-      await this.guilds.save(guild);
+      guild = await this.guilds.update({
+        data: {
+          events: {
+            create: {
+              type,
+              channelId: data.channel,
+              messageId: null,
+              roleId: data.role,
+              enabled: data.enabled,
+            },
+          },
+        },
+        where: {
+          guildId,
+        },
+        include: { events: true },
+      });
     } catch (error) {
       this.client.logger.error(error);
     }
@@ -92,7 +111,7 @@ export class GuildRepository {
    * @returns Promise<Guild[]> - The guilds.
    */
   async getAll(): Promise<Guild[]> {
-    return await this.guilds.find();
+    return await this.guilds.findMany({ include: { events: true } });
   }
 
   /**
@@ -101,9 +120,8 @@ export class GuildRepository {
    * @param event - The event.
    * @returns - The guilds.
    */
-  async getAllByEvent(event: keyof Guild["settings"]["events"]): Promise<Guild[]> {
-    const query = this.guilds.createQueryBuilder("guild").where(`guild.settings->'events'->'${event}'->>'enabled' = 'true'`);
-    const guilds = await query.getMany();
+  async getAllByEvent(event: EventsList): Promise<Guild[]> {
+    const guilds = await this.guilds.findMany({ where: { events: { some: { type: event } } }, include: { events: true } });
     return guilds;
   }
 }

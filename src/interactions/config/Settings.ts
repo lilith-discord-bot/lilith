@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   ApplicationCommandData,
   ApplicationCommandOptionType,
@@ -14,6 +16,7 @@ import {
 
 import { Context, Interaction } from "../../core/Interaction";
 import { eventsChoices } from "../../utils/Constants";
+import { EventsList } from "../../types";
 
 export default class Settings extends Interaction {
   static enabled = true;
@@ -70,6 +73,13 @@ export default class Settings extends Interaction {
                 name: "event",
                 description: "The event to disable notifications for.",
                 choices: eventsChoices,
+                required: true,
+              },
+              {
+                type: ApplicationCommandOptionType.Channel,
+                name: "channel",
+                description: "The channel to disable notifications to.",
+                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
                 required: true,
               },
             ],
@@ -136,16 +146,15 @@ export default class Settings extends Interaction {
 
             break;
           case "disable":
-            // @ts-ignore
-            if (!ctx.guild?.settings?.events?.[event as string]?.enabled) {
-              return await interaction.reply({
-                content: `Notifications for **${event}** are already disabled.`,
-                ephemeral: true,
-              });
-            }
+            // if (!ctx.guild?.settings?.events?.[event as string]?.enabled) {
+            //   return await interaction.reply({
+            //     content: `Notifications for **${event}** are already disabled.`,
+            //     ephemeral: true,
+            //   });
+            // }
 
             try {
-              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as any, {
+              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as EventsList, {
                 enabled: false,
                 channel: null,
                 role: null,

@@ -2,7 +2,6 @@ import "reflect-metadata";
 
 import { ClusterClient, getInfo } from "discord-hybrid-sharding";
 import { ClientOptions, Client as DiscordClient } from "discord.js";
-import { DataSource } from "typeorm";
 
 import EventHandler from "../events/EventHandler";
 
@@ -14,6 +13,7 @@ import { redis } from "../lib/db/redis/Redis";
 import { GuildRepository } from "../lib/db/postgresql/repository/Guild";
 import { clientSymbol, options } from "../utils/Constants";
 import { container } from "tsyringe";
+import { PrismaClient } from "@prisma/client";
 
 export class Client extends DiscordClient {
   /**
@@ -39,9 +39,9 @@ export class Client extends DiscordClient {
 
   /**
    * The datasource
-   * @type {DataSource}
+   * @type {PrismaClient}
    */
-  readonly database: DataSource;
+  readonly database: PrismaClient;
 
   /**
    * Differents repositories.
@@ -98,7 +98,7 @@ export class Client extends DiscordClient {
     await registerClientEvents();
 
     await this.cache.connect();
-    await this.database.initialize();
+    await this.database.$connect();
 
     try {
       await super.login(process.env.TOKEN);
