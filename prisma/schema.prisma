@@ -19,7 +19,7 @@ model Guild {
 model Event {
   id        String  @id @default(uuid())
   type      String
-  Guild     Guild   @relation(fields: [guildId], references: [id])
+  Guild     Guild   @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
   guildId   String
   channelId String
   messageId String?
