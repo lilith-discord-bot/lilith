@@ -33,10 +33,10 @@ export class GuildRepository {
    *
    * @returns Promise<Guild> - The guild.
    */
-  async findOrCreate(guildId: string): Promise<Guild> {
+  async findOrCreate(guildId: string, skipCache?: boolean): Promise<Guild> {
     const cache = await this.client.cache.get(`guilds:${guildId}`);
 
-    if (!cache) {
+    if (!cache || !!skipCache) {
       let guild = await this.guilds.findUnique({ where: { guildId }, include: { events: true } });
 
       if (!guild) {
@@ -71,7 +71,7 @@ export class GuildRepository {
     await this.guilds.delete({ where: { guildId } });
   }
 
-  async updateEvent(
+  async createEvent(
     guildId: string,
     type: EventsList,
     data: { enabled: boolean; channel: string; role: string | null; schedule: boolean }
@@ -98,6 +98,24 @@ export class GuildRepository {
         },
         include: { events: true },
       });
+    } catch (error) {
+      this.client.logger.error(error);
+    }
+
+    await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
+  }
+
+  async removeEvent(guildId: string, type: EventsList, channelId: string): Promise<void> {
+    let guild = await this.findOrCreate(guildId);
+
+    if (!guild) return;
+
+    try {
+      await this.client.database.event.delete({ where: { type_channelId: { type, channelId } } });
+
+      guild = await this.findOrCreate(guildId, true);
+
+      console.log(guild);
     } catch (error) {
       this.client.logger.error(error);
     }
