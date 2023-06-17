@@ -22,7 +22,6 @@ services:
     command: npm start
 
   redis:
-    container_name: cache
     image: redis/redis-stack-server:latest
     # TODO: configure redis properly, either by using arguments or using a separate volume for configs.
     environment:
@@ -33,7 +32,6 @@ services:
       - redisdata:/data
 
   postgres:
-    container_name: database
     image: postgres:13.11
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
