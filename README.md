@@ -50,6 +50,7 @@ DATABASE_URL="postgresql://user:password@host:5432/database"
 
 #Cache
 REDIS_HOST=redis_host # Doesn't need to be set if running with Docker.
+REDIS_PORT=0000 # Doesn't need to be set if running with Docker.
 REDIS_PASSWORD=redis_password
 ```
 
