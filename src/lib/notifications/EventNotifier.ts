@@ -152,7 +152,7 @@ function getTitle(key: string, event: Event) {
       return `${event.name} appears in ${event.zone} (${event.territory}) at ${time(
         event.timestamp,
         "t"
-      )}\n\nNext expected boss is ${event.expectedName} at ${time(event.nextExpected, "t")}`;
+      )}\n\nNext expected boss is ${event.nextExpectedName} at ${time(event.nextExpected, "t")}`;
     case "helltide":
       return `Helltide occuring until ${time(event.timestamp + 3600, "t")}, next helltide at ${time(
         event.timestamp + 8100,
