@@ -10,8 +10,11 @@ COPY package.json .
 # Install dependencies using npm
 RUN npm install
 
-# Get all the code needed to run the ap
+# Get all the code needed to run the app
 COPY . .
+
+# Generate prisma schema
+RUN npx prisma generate
 
 RUN npm run build
 

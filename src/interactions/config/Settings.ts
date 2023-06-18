@@ -2,18 +2,17 @@ import {
   ApplicationCommandData,
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  Channel,
+  CacheType,
   ChannelType,
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildChannel,
-  NewsChannel,
   PermissionFlagsBits,
-  TextChannel,
 } from "discord.js";
 
 import { Context, Interaction } from "../../core/Interaction";
 import { eventsChoices } from "../../utils/Constants";
+import { EventsList } from "../../types";
 
 export default class Settings extends Interaction {
   static enabled = true;
@@ -72,24 +71,34 @@ export default class Settings extends Interaction {
                 choices: eventsChoices,
                 required: true,
               },
+              {
+                type: ApplicationCommandOptionType.Channel,
+                name: "channel",
+                description: "The channel to disable notifications to.",
+                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
+                required: true,
+              },
             ],
           },
         ],
       },
     ],
   };
-  guild: any;
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
+  static async run(interaction: CommandInteraction<CacheType>, ctx: Context): Promise<any> {
+    if (!interaction.isChatInputCommand() || !interaction.guild) return;
+
     const options = interaction.options as CommandInteractionOptionResolver;
 
     const group = options.getSubcommandGroup();
     const subcommand = options.getSubcommand();
 
-    let event = options.getString("event");
+    let event = options.getString("event") as EventsList;
     let channel = options.getChannel("channel") as GuildChannel;
     let role = options.getRole("role");
     let schedule = options.getBoolean("schedule");
+
+    const currentEvent = ctx.guild?.events.find((item) => item.type === event && channel.id === item.channelId);
 
     switch (group) {
       case "notifications":
@@ -106,38 +115,33 @@ export default class Settings extends Interaction {
               });
             }
 
-            // @ts-ignore
-            role = options.getRole("role") || ctx.guild?.settings?.events?.[event as string]?.role;
-            // @ts-ignore
-            schedule = options.getBoolean("schedule") || ctx.guild?.settings?.events?.[event as string]?.schedule;
+            if (currentEvent?.enabled)
+              return await interaction.reply({
+                content: `Notifications for **${event}** are already enabled.`,
+                ephemeral: true,
+              });
+
+            const roleElement = role?.id || currentEvent?.roleId;
 
             try {
-              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as any, {
+              await ctx.client.repository.guild.createEvent(interaction.guild.id, event, {
                 enabled: true,
-                channel: channel as any as string,
-                role: role as any as string,
-                schedule: schedule as any as boolean,
+                channel: channel.id,
+                role: roleElement || null,
+                schedule: false,
               });
             } catch (error) {
               ctx.client.logger.error(error);
             }
 
-            // @ts-ignore
-            if (!ctx.guild?.settings?.events?.[event as string]?.enabled)
-              await interaction.reply({
-                content: `Notifications for **${event}** have been enabled.`,
-                ephemeral: true,
-              });
-            else
-              await interaction.reply({
-                content: `Notifications for **${event}** have been updated.`,
-                ephemeral: true,
-              });
+            await interaction.reply({
+              content: `Notifications for **${event}** have been updated.`,
+              ephemeral: true,
+            });
 
             break;
           case "disable":
-            // @ts-ignore
-            if (!ctx.guild?.settings?.events?.[event as string]?.enabled) {
+            if (!currentEvent) {
               return await interaction.reply({
                 content: `Notifications for **${event}** are already disabled.`,
                 ephemeral: true,
@@ -145,12 +149,7 @@ export default class Settings extends Interaction {
             }
 
             try {
-              await ctx.client.repository.guild.updateEvent(interaction.guildId!, event as any, {
-                enabled: false,
-                channel: null,
-                role: null,
-                schedule: false,
-              });
+              await ctx.client.repository.guild.removeEvent(interaction.guild.id, event as EventsList, channel.id);
             } catch (error) {
               ctx.client.logger.error(error);
             }
