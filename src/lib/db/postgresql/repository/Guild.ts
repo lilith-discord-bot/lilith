@@ -114,8 +114,6 @@ export class GuildRepository {
       await this.client.database.event.delete({ where: { type_channelId: { type, channelId } } });
 
       guild = await this.findOrCreate(guildId, true);
-
-      console.log(guild);
     } catch (error) {
       this.client.logger.error(error);
     }

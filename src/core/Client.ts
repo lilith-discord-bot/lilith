@@ -7,7 +7,6 @@ import EventHandler from "../events/EventHandler";
 
 import { Logger } from "../lib/Logger";
 import { registerClientEvents } from "../lib/RegisterEvents";
-import { database } from "../lib/db/postgresql/Database";
 import { redis } from "../lib/db/redis/Redis";
 
 import { GuildRepository } from "../lib/db/postgresql/repository/Guild";
@@ -41,7 +40,7 @@ export class Client extends DiscordClient {
    * The datasource
    * @type {PrismaClient}
    */
-  readonly database: PrismaClient;
+  public database: PrismaClient;
 
   /**
    * Differents repositories.
@@ -78,7 +77,7 @@ export class Client extends DiscordClient {
 
     this.cache = redis;
 
-    this.database = database;
+    // this.database = database;
 
     this.repository = {
       guild: new GuildRepository(),
@@ -98,7 +97,7 @@ export class Client extends DiscordClient {
     await registerClientEvents();
 
     await this.cache.connect();
-    await this.database.$connect();
+    // await this.database.$connect();
 
     try {
       await super.login(process.env.TOKEN);
@@ -108,6 +107,10 @@ export class Client extends DiscordClient {
     }
 
     return this;
+  }
+
+  public registerClusterDatabase(database: PrismaClient) {
+    this.database = database;
   }
 
   /**
