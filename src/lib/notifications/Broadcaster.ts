@@ -44,13 +44,19 @@ export class Broadcaster {
         channel = channel as TextChannel | NewsChannel;
 
         // Remove old message before sending message
-        let oldMessage = oldMessageId ? await channel.messages.fetch(oldMessageId) : null;
+        let oldMessage = oldMessageId
+          ? await channel.messages.fetch(oldMessageId).catch((e) => {
+              console.error(`Unable to send fetch message ${oldMessageId}:`, e.message);
+              return null;
+            })
+          : null;
         if (oldMessage)
-          await oldMessage
-            .delete()
-            .catch((e) => this.client.logger.error(`Unable to remove message with id: ${oldMessageId}`));
+          await oldMessage.delete().catch((e) => console.error(`Unable to remove message with id: ${oldMessageId}`));
 
-        return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch(() => null);
+        return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch((e) => {
+          console.error(`Unable to send message`, e.message);
+          return null;
+        });
       },
       {
         context: { channelId, message, oldMessageId },
