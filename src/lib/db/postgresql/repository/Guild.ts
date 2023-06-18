@@ -2,7 +2,7 @@ import { container } from "tsyringe";
 
 import { Client } from "../../../../core/Client";
 import { clientSymbol } from "../../../../utils/Constants";
-import { Prisma } from "@prisma/client";
+import { Event, Prisma } from "@prisma/client";
 import { EventsList } from "../../../../types";
 import { Guild } from "../../../../types/Database";
 
@@ -89,7 +89,6 @@ export class GuildRepository {
               channelId: data.channel,
               messageId: null,
               roleId: data.role,
-              enabled: data.enabled,
             },
           },
         },

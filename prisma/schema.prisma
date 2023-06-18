@@ -24,8 +24,7 @@ model Event {
   channelId String
   messageId String?
   roleId    String?
-  enabled   Boolean @default(false)
-  // schedule
+  schedule  Boolean @default(false)
 
   @@unique([type, channelId])
 }

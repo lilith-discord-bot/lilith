@@ -122,7 +122,7 @@ export default class InteractionHandler extends Event {
 
       if (!command) return undefined;
 
-      this.client.logger.info(`Command ${command.name} was executed.`);
+      this.client.logger.info(`Command ${command.name} was executed in ${interaction.guildId || "DM"}`);
 
       try {
         await command.run?.(interaction, context);
