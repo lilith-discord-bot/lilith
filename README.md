@@ -49,6 +49,7 @@ POSTGRES_DATABASE=postgres_database
 
 #Cache
 REDIS_HOST=redis_host # Doesn't need to be set if running with Docker.
+REDIS_PORT=0000 # Doesn't need to be set if running with Docker.
 REDIS_PASSWORD=redis_password
 ```
 
