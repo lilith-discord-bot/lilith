@@ -21,7 +21,7 @@ services:
     command: npm start
 
   redis:
-    image: redis/redis-stack-server:latest
+    image: redis:7.0.11
     # TODO: configure redis properly, either by using arguments or using a separate volume for configs.
     environment:
       - REDIS_ARGS=--requirepass ${REDIS_PASSWORD}
