@@ -21,12 +21,13 @@ services:
     command: npm start
 
   redis:
-    image: redis/redis-stack-server:latest
+    image: redis:7.0.11
     # TODO: configure redis properly, either by using arguments or using a separate volume for configs.
-    environment:
-      - REDIS_ARGS=--requirepass ${REDIS_PASSWORD}
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
       - network
+    ports:
+      - "6379"
     volumes:
       - redisdata:/data
 
@@ -38,6 +39,8 @@ services:
       - POSTGRES_DATABASE=${POSTGRES_DATABASE}
     networks:
       - network
+    ports:
+      - "5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
