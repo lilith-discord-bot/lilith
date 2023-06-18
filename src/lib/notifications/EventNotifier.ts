@@ -60,12 +60,12 @@ export class EventNotifier {
     }
 
     for (let [key, value] of Object.entries(events)) {
-      let cache = await this.client.cache.get(`events:${key}`);
+      let cache = await this.client.cache.get(`events:${this.client.user?.id}:${key}`);
 
       const cachedEvent = JSON.parse(cache!) as Event;
 
       if (!cache || cachedEvent.timestamp !== value.timestamp) {
-        await this.client.cache.set(`events:${key}`, JSON.stringify(value));
+        await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
 
         const date = Date.now();
         const event = new Date(value.timestamp * 1000).getTime();
