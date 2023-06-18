@@ -9,8 +9,11 @@ import { ClusterManager } from "discord-hybrid-sharding";
 
 import { Logger } from "./lib/Logger";
 import { registerClusterEvents } from "./lib/RegisterEvents";
+import { database } from "./lib/db/postgresql/Database";
 
 // TODO : See docs for more information and maybe add plugins to handle reclustering
+
+database.$connect();
 
 const manager = new ClusterManager(path.join(__dirname, "./core/Client.js"), {
   totalShards: "auto",
@@ -21,7 +24,6 @@ const manager = new ClusterManager(path.join(__dirname, "./core/Client.js"), {
 });
 
 registerClusterEvents(manager, Logger);
-
 manager
   .spawn({
     timeout: -1,

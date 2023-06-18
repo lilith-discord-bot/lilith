@@ -6,8 +6,8 @@ import {
   StringSelectMenuInteraction,
 } from "discord.js";
 
-import { Guild } from "../lib/db/postgresql/models/Guild.model";
 import { Client } from "./Client";
+import { Guild } from "../types/Database";
 
 export type Context = {
   client: Client;

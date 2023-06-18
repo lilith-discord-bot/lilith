@@ -10,3 +10,5 @@ export type Event = {
   territory?: string;
   zone: string;
 };
+
+export type EventsList = "boss" | "helltide" | "legion";

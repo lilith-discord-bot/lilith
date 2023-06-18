@@ -1,7 +1,7 @@
-import { MessageCreateOptions, MessagePayload, NewsChannel, Role, TextChannel, time } from "discord.js";
+import { Message, MessageCreateOptions, MessagePayload, time } from "discord.js";
 
 import { Client } from "../../core/Client";
-import { Event } from "../../types";
+import { Event, EventsList } from "../../types";
 import { duration, wait } from "../../utils/Commons";
 import { EventEmbed } from "../../utils/embeds/EventEmbed";
 import { Broadcaster } from "./Broadcaster";
@@ -75,7 +75,7 @@ export class EventNotifier {
           continue;
         }
 
-        const guilds = await this.client.repository.guild.getAllByEvent(key as keyof typeof events);
+        const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
 
         this.client.logger.info(`Found ${guilds.length} guilds with event ${key}.`);
 
@@ -89,32 +89,46 @@ export class EventNotifier {
             embeds: [embed],
           };
 
-          const setting = guild.settings.events[key as keyof typeof guild.settings.events];
+          const setting = guild.events.find((event) => event.type === (key as EventsList));
 
+          if (!setting) return;
           if (!setting.enabled) continue;
 
           this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`);
 
-          if (setting.role) {
-            const role = setting.role as any as Role;
-            message.content += ` - <@&${role.id}>`;
+          if (setting.roleId) {
+            message.content += ` - <@&${setting.roleId}>`;
             message.allowedMentions = {
-              roles: [role.id],
+              roles: [setting.roleId],
             };
           }
 
-          if (setting.schedule) {
-            // TODO: Implement schedule
-          }
+          // if (setting.schedule) {
+          //   // TODO: Implement schedule
+          // }
 
-          let channel = setting.channel as any as TextChannel | NewsChannel;
-
-          if (!channel) {
+          if (!setting.channelId) {
             this.client.logger.info(`Event ${key} has no channel set, skipping...`);
             continue;
           }
 
-          await this.broadcaster.broadcast(channel, message);
+          const response = (await this.broadcaster.broadcast(
+            setting.channelId,
+            message,
+            setting.messageId
+          )) as (Message<true> | null)[];
+
+          if (response && response.length >= 1) {
+            await this.client.database.event.update({
+              data: { messageId: response[0]?.id },
+              where: {
+                type_channelId: {
+                  type: key,
+                  channelId: setting.channelId,
+                },
+              },
+            });
+          }
 
           await wait(250);
         }

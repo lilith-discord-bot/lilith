@@ -46,6 +46,7 @@ POSTGRES_HOST=postgres_database_host # Doesn't need to be set if running with Do
 POSTGRES_USER=postgres_database_user
 POSTGRES_PASSWORD=postgres_database_password
 POSTGRES_DATABASE=postgres_database
+DATABASE_URL="postgresql://user:password@host:5432/database"
 
 #Cache
 REDIS_HOST=redis_host # Doesn't need to be set if running with Docker.
