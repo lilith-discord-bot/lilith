@@ -3,6 +3,12 @@ import { ActivityType, ClientOptions, GatewayIntentBits, Locale, Partials, Prese
 import { ClassesChoices, ModesChoices } from "../types";
 
 /**
+ * Our CDN.
+ * @type {string}
+ */
+export const CDN = "https://s3.glazk0.dev/lilith";
+
+/**
  * The bot invite link.
  * @type {string}
  */

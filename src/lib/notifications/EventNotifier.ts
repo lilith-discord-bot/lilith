@@ -82,7 +82,7 @@ export class EventNotifier {
         for (const guild of guilds) {
           this.client.logger.info(`Checking guild ${guild.id}...`);
 
-          const embed = new EventEmbed(key, value, { client: this.client, guild });
+          const embed = new EventEmbed(key, value);
 
           let message: string | MessagePayload | MessageCreateOptions = {
             content: getTitle(key, value),
@@ -91,8 +91,7 @@ export class EventNotifier {
 
           const setting = guild.events.find((event) => event.type === (key as EventsList));
 
-          if (!setting) return;
-          if (!setting.enabled) continue;
+          if (!setting) continue;
 
           this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`);
 
@@ -150,7 +149,10 @@ export class EventNotifier {
 function getTitle(key: string, event: Event) {
   switch (key) {
     case "boss":
-      return `${event.name} appears in ${event.zone} (${event.territory}) at ${time(event.timestamp, "t")}`;
+      return `${event.name} appears in ${event.zone} (${event.territory}) at ${time(
+        event.timestamp,
+        "t"
+      )}\n\nNext expected boss is ${event.expectedName} at ${time(event.nextExpected, "t")}`;
     case "helltide":
       return `Helltide occuring until ${time(event.timestamp + 3600, "t")}, next helltide at ${time(
         event.timestamp + 8100,

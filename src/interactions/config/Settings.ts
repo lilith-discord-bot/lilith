@@ -13,6 +13,7 @@ import {
 import { Context, Interaction } from "../../core/Interaction";
 import { eventsChoices } from "../../utils/Constants";
 import { EventsList } from "../../types";
+import { SettingsEmbed } from "../../utils/embeds/SettingsEmbed";
 
 export default class Settings extends Interaction {
   static enabled = true;
@@ -44,7 +45,12 @@ export default class Settings extends Interaction {
                 type: ApplicationCommandOptionType.Channel,
                 name: "channel",
                 description: "The channel to send notifications to.",
-                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
+                channelTypes: [
+                  ChannelType.GuildAnnouncement,
+                  ChannelType.GuildText,
+                  ChannelType.PublicThread,
+                  ChannelType.PrivateThread,
+                ],
                 required: true,
               },
               {
@@ -59,6 +65,37 @@ export default class Settings extends Interaction {
               // },
             ],
           },
+          // {
+          //   type: ApplicationCommandOptionType.Subcommand,
+          //   name: "update",
+          //   description: "Update notifications for a given event.",
+          //   options: [
+          //     {
+          //       type: ApplicationCommandOptionType.String,
+          //       name: "event",
+          //       description: "The event to update notifications for.",
+          //       choices: eventsChoices,
+          //       required: true,
+          //     },
+          //     {
+          //       type: ApplicationCommandOptionType.Channel,
+          //       name: "channel",
+          //       description: "The channel to send notifications to.",
+          //       channelTypes: [
+          //         ChannelType.GuildAnnouncement,
+          //         ChannelType.GuildText,
+          //         ChannelType.PublicThread,
+          //         ChannelType.PrivateThread,
+          //       ],
+          //       required: true,
+          //     },
+          //     {
+          //       type: ApplicationCommandOptionType.Role,
+          //       name: "role",
+          //       description: "The role to mention in the notification.",
+          //     },
+          //   ],
+          // },
           {
             type: ApplicationCommandOptionType.Subcommand,
             name: "disable",
@@ -79,6 +116,11 @@ export default class Settings extends Interaction {
                 required: true,
               },
             ],
+          },
+          {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: "list",
+            description: "List all notifications enabled.",
           },
         ],
       },
@@ -115,13 +157,13 @@ export default class Settings extends Interaction {
               });
             }
 
-            if (currentEvent?.enabled)
+            if (currentEvent)
               return await interaction.reply({
                 content: `Notifications for **${event}** are already enabled.`,
                 ephemeral: true,
               });
 
-            const roleElement = role?.id || currentEvent?.roleId;
+            const roleElement = role?.id;
 
             try {
               await ctx.client.repository.guild.createEvent(interaction.guild.id, event, {
@@ -138,7 +180,6 @@ export default class Settings extends Interaction {
               content: `Notifications for **${event}** have been updated.`,
               ephemeral: true,
             });
-
             break;
           case "disable":
             if (!currentEvent) {
@@ -158,6 +199,20 @@ export default class Settings extends Interaction {
               content: `Notifications for **${event}** have been disabled.`,
               ephemeral: true,
             });
+            break;
+          case "list":
+            const events = ctx.guild?.events;
+
+            if (!events?.length) {
+              return await interaction.reply({
+                content: `No notifications enabled.`,
+                ephemeral: true,
+              });
+            }
+
+            const embed = new SettingsEmbed(events);
+
+            await interaction.reply({ embeds: [embed], ephemeral: true });
             break;
         }
         break;
