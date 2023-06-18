@@ -1,6 +1,5 @@
 services:
   bot:
-    container_name: bot
     depends_on:
       - postgres
       - redis
