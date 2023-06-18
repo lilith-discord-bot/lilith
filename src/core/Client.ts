@@ -13,6 +13,7 @@ import { GuildRepository } from "../lib/db/postgresql/repository/Guild";
 import { clientSymbol, options } from "../utils/Constants";
 import { container } from "tsyringe";
 import { PrismaClient } from "@prisma/client";
+import { database } from "../lib/db/postgresql/Database";
 
 export class Client extends DiscordClient {
   /**
@@ -40,7 +41,7 @@ export class Client extends DiscordClient {
    * The datasource
    * @type {PrismaClient}
    */
-  public database: PrismaClient;
+  readonly database: PrismaClient;
 
   /**
    * Differents repositories.
@@ -77,7 +78,7 @@ export class Client extends DiscordClient {
 
     this.cache = redis;
 
-    // this.database = database;
+    this.database = database;
 
     this.repository = {
       guild: new GuildRepository(),
@@ -97,7 +98,6 @@ export class Client extends DiscordClient {
     await registerClientEvents();
 
     await this.cache.connect();
-    // await this.database.$connect();
 
     try {
       await super.login(process.env.TOKEN);
@@ -107,10 +107,6 @@ export class Client extends DiscordClient {
     }
 
     return this;
-  }
-
-  public registerClusterDatabase(database: PrismaClient) {
-    this.database = database;
   }
 
   /**
