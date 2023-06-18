@@ -1,8 +1,7 @@
 import { Embed } from "./Embed";
 
-import { CDN } from "discord.js";
 import { Event } from "../../types";
-import { ARMORY_URL } from "../Constants";
+import { ARMORY_URL, CDN } from "../Constants";
 
 const territory = {
   kehj: "Kehjistan",
