@@ -67,10 +67,12 @@ export class EventNotifier {
       if (!cache || cachedEvent.timestamp !== value.timestamp) {
         await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
 
+        this.client.logger.info(value);
+
         const date = Date.now();
         const event = new Date(value.timestamp * 1000).getTime();
 
-        if (event < date - duration.minutes(5)) {
+        if (event < date - duration.minutes(2)) {
           this.client.logger.info(`Event ${key} is outdated, skipping...`);
           continue;
         }

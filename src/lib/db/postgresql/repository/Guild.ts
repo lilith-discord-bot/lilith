@@ -74,7 +74,7 @@ export class GuildRepository {
   async createEvent(
     guildId: string,
     type: EventsList,
-    data: { enabled: boolean; channel: string; role: string | null; schedule: boolean }
+    data: { channel: string; role: string | null; schedule: boolean }
   ): Promise<void> {
     let guild = await this.findOrCreate(guildId);
 

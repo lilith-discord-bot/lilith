@@ -167,7 +167,6 @@ export default class Settings extends Interaction {
 
             try {
               await ctx.client.repository.guild.createEvent(interaction.guild.id, event, {
-                enabled: true,
                 channel: channel.id,
                 role: roleElement || null,
                 schedule: false,
