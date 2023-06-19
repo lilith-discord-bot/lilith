@@ -28,6 +28,7 @@ winston.addColors(colors);
 
 const format = winston.format.combine(
   winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
+  winston.format.errors({ stack: true }),
   winston.format.printf((info) =>
     colorizer.colorize(info.level, `[${info.timestamp}] [ ${info.level.toUpperCase()} ] - ${info.message}`)
   )

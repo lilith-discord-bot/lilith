@@ -10,7 +10,7 @@ export class SettingsEmbed extends Embed {
 
     this.data.fields = events.map((event) => ({
       name: event.type,
-      value: `Channel: <#${event.channelId}>\nRole: <@&${event.roleId}>`,
+      value: `Channel: <#${event.channelId}>\nRole: ${event.roleId ? `<@&${event.roleId}>` : "None"}`,
       inline: true,
     }));
   }
