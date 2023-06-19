@@ -3,7 +3,7 @@ import { Embed } from "./Embed";
 import { Event } from "../../types";
 import { ARMORY_URL, CDN } from "../Constants";
 
-const territory = {
+export const territory = {
   kehj: "Kehjistan",
   hawe: "Hawezar",
   step: "Dry Steppes",
