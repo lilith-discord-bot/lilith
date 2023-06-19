@@ -37,10 +37,6 @@ npm install
 ```env
 TOKEN=your_token_here
 
-#API
-ARMORY_URL=api_url 
-ARMORY_API_URL=api_url 
-
 #Database
 POSTGRES_HOST=postgres_database_host # Doesn't need to be set if running with Docker.
 POSTGRES_USER=postgres_database_user
