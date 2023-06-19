@@ -89,47 +89,49 @@ export class EventNotifier {
             embeds: [embed],
           };
 
-          const setting = guild.events.find((event) => event.type === (key as EventsList));
+          const settings = guild.events.filter((event) => event.type === (key as EventsList));
 
-          if (!setting) continue;
+          if (!settings || settings.length === 0) continue;
 
-          this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`);
+          for (let setting of settings) {
+            this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`);
 
-          if (setting.roleId) {
-            message.content += ` - <@&${setting.roleId}>`;
-            message.allowedMentions = {
-              roles: [setting.roleId],
-            };
-          }
+            if (setting.roleId) {
+              message.content += ` - <@&${setting.roleId}>`;
+              message.allowedMentions = {
+                roles: [setting.roleId],
+              };
+            }
 
-          // if (setting.schedule) {
-          //   // TODO: Implement schedule
-          // }
+            // if (setting.schedule) {
+            //   // TODO: Implement schedule
+            // }
 
-          if (!setting.channelId) {
-            this.client.logger.info(`Event ${key} has no channel set, skipping...`);
-            continue;
-          }
+            if (!setting.channelId) {
+              this.client.logger.info(`Event ${key} has no channel set, skipping...`);
+              continue;
+            }
 
-          const response = (await this.broadcaster.broadcast(
-            setting.channelId,
-            message,
-            setting.messageId
-          )) as (Message<true> | null)[];
+            const response = (await this.broadcaster.broadcast(
+              setting.channelId,
+              message,
+              setting.messageId
+            )) as (Message<true> | null)[];
 
-          if (response && response.length >= 1) {
-            await this.client.database.event.update({
-              data: { messageId: response[0]?.id },
-              where: {
-                type_channelId: {
-                  type: key,
-                  channelId: setting.channelId,
+            if (response && response.length >= 1) {
+              await this.client.database.event.update({
+                data: { messageId: response[0]?.id },
+                where: {
+                  type_channelId: {
+                    type: key,
+                    channelId: setting.channelId,
+                  },
                 },
-              },
-            });
-          }
+              });
+            }
 
-          await wait(250);
+            await wait(250);
+          }
         }
 
         this.client.logger.info(`Event ${key} has been broadcasted to ${guilds.length} guilds.`);
