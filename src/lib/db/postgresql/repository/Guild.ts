@@ -71,6 +71,13 @@ export class GuildRepository {
     await this.guilds.delete({ where: { guildId } });
   }
 
+  /**
+   * Create an event for a guild.
+   *
+   * @param guildId - The guild ID.
+   * @param type - The event type.
+   * @param data - The event data.
+   */
   async createEvent(
     guildId: string,
     type: EventsList,
@@ -104,6 +111,49 @@ export class GuildRepository {
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
   }
 
+  /**
+   * Update an event for a guild.
+   *
+   * @param guildId - The guild ID.
+   * @param type - The event type.
+   * @param data - The event data.
+   */
+  async updateEvent(
+    guildId: string,
+    type: EventsList,
+    data: { channel: string; role: string | null; schedule: boolean }
+  ): Promise<void> {
+    let guild = await this.findOrCreate(guildId);
+
+    if (!guild) return;
+
+    try {
+      await this.client.database.event.update({
+        data: {
+          channelId: data.channel,
+          roleId: data.role,
+        },
+        where: {
+          type_channelId: {
+            type,
+            channelId: data.channel,
+          },
+        },
+      });
+    } catch (error) {
+      this.client.logger.error(error);
+    }
+
+    await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
+  }
+
+  /**
+   * Remove an event from a guild.
+   *
+   * @param guildId - The guild ID.
+   * @param type - The event type.
+   * @param channelId - The channel ID.
+   */
   async removeEvent(guildId: string, type: EventsList, channelId: string): Promise<void> {
     let guild = await this.findOrCreate(guildId);
 
