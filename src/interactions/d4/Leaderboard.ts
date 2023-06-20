@@ -2,13 +2,14 @@ import {
   ApplicationCommandData,
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  CommandInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
 } from "discord.js";
 
 import { Context, Interaction } from "../../core/Interaction";
 
-import { leaderboardEmbed } from "../../utils/embeds/LeaderboardEmbed";
 import { classesChoices, modesChoices } from "../../utils/Constants";
+import { leaderboardEmbed } from "../../utils/embeds/LeaderboardEmbed";
 
 import { getLeaderboard } from "../../lib/API";
 
@@ -35,11 +36,9 @@ export default class Leaderboard extends Interaction {
     ],
   };
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
-    const { options } = interaction;
-
-    const classe = options.get("class")?.value as any;
-    const mode = options.get("mode")?.value as any;
+  static async run(interaction: ChatInputCommandInteraction<CacheType>, ctx: Context): Promise<any> {
+    const classe = interaction.options.getString("class", true) as any;
+    const mode = interaction.options.getString("mode", true) as any;
 
     const res = await getLeaderboard(classe, mode);
 
