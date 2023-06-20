@@ -3,13 +3,14 @@ import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   AutocompleteInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
   CommandInteraction,
-  hyperlink,
 } from "discord.js";
 
 import { Context, Interaction } from "../../core/Interaction";
 
-import { MAP_URL } from "../../utils/Constants";
+import { MapEmbed } from "../../utils/embeds/MapEmbed";
 
 const nodes = [
   {
@@ -79,10 +80,11 @@ export default class Map extends Interaction {
     ],
   };
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
+  static async run(interaction: ChatInputCommandInteraction<CacheType>, ctx: Context): Promise<any> {
     const { options } = interaction;
 
-    let query = (options.get("query")?.value || null) as string;
+    const query = options.getString("query", true);
+    const type = options.getString("type", true);
 
     if (!query) return await interaction.reply("Invalid query.");
 
@@ -90,10 +92,18 @@ export default class Map extends Interaction {
 
     name = name.replace(/%20/g, " ");
 
-    await interaction.reply(hyperlink(`See ${name} location on Diablo 4 Map`, `${MAP_URL}/nodes/${query}?ref=glazk0`));
+    let description = "";
+
+    const data = await ctx.client.cache.get(`map:${type}`);
+
+    if (data) description = JSON.parse(data).find((node: any) => node.name === name)?.description;
+
+    const embed = new MapEmbed(name, description, query);
+
+    await interaction.reply({ embeds: [embed] });
   }
 
-  static async autocomplete(interaction: AutocompleteInteraction, ctx: Context): Promise<any> {
+  static async autocomplete(interaction: AutocompleteInteraction<CacheType>, ctx: Context): Promise<any> {
     const type = interaction.options.getString("type", true);
 
     if (!type) return await interaction.respond([]);
