@@ -1,4 +1,5 @@
 import { container } from "tsyringe";
+
 import { Client } from "../core/Client";
 import { request, wait } from "../utils/Commons";
 import { DATABASE_URL, MAP_API_URL, clientSymbol, languages } from "../utils/Constants";

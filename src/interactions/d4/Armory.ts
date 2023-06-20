@@ -7,7 +7,7 @@ import {
   ButtonBuilder,
   ButtonStyle,
   CacheType,
-  CommandInteraction,
+  ChatInputCommandInteraction,
   StringSelectMenuBuilder,
   StringSelectMenuInteraction,
 } from "discord.js";
@@ -16,9 +16,9 @@ import { Context, Interaction } from "../../core/Interaction";
 
 import { ArmoryEmbed } from "../../utils/embeds/ArmoryEmbed";
 
+import { getPlayer, getPlayerArmory } from "../../lib/API";
 import { PlayerArmory } from "../../types";
 import { getArmoryLink } from "../../utils/Commons";
-import { getPlayer, getPlayerArmory } from "../../lib/API";
 
 const armoryLink = (battleTag: string, heroId: string) =>
   new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -43,10 +43,8 @@ export default class Armory extends Interaction {
     ],
   };
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
-    const { options } = interaction;
-
-    let player = (options.get("player")?.value || null) as string;
+  static async run(interaction: ChatInputCommandInteraction<CacheType>, ctx: Context): Promise<any> {
+    let player = interaction.options.getString("player", true);
 
     if (!player) return await interaction.reply("No player/character provided.");
 
@@ -63,7 +61,8 @@ export default class Armory extends Interaction {
 
     if (!res) return await interaction.reply("No player found. Please try again later.");
 
-    if (res.characters.length <= 0) return await interaction.reply("No characters found for this player.");
+    if (!res.characters || res.characters.length <= 0)
+      return await interaction.reply("No characters found for this player.");
 
     const cached = await ctx.client.cache.get(`players:${player}`);
 
@@ -110,7 +109,7 @@ export default class Armory extends Interaction {
     }
   }
 
-  static async autocomplete(interaction: AutocompleteInteraction, ctx: Context): Promise<any> {
+  static async autocomplete(interaction: AutocompleteInteraction<CacheType>, ctx: Context): Promise<any> {
     const value = interaction.options.getFocused();
 
     let keys = await ctx.client.cache.keys("players:*");

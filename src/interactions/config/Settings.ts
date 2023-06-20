@@ -128,7 +128,8 @@ export default class Settings extends Interaction {
   };
 
   static async run(interaction: CommandInteraction<CacheType>, ctx: Context): Promise<any> {
-    if (!interaction.isChatInputCommand() || !interaction.guild) return;
+    if (!interaction.inGuild() || !interaction.guild)
+      return await interaction.reply({ content: "This command is only available in guilds." });
 
     const options = interaction.options as CommandInteractionOptionResolver;
 

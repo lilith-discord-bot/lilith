@@ -3,7 +3,8 @@ import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   AutocompleteInteraction,
-  CommandInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
   hyperlink,
 } from "discord.js";
 
@@ -29,7 +30,7 @@ export default class Item extends Interaction {
     ],
   };
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
+  static async run(interaction: ChatInputCommandInteraction<CacheType>, ctx: Context): Promise<any> {
     const { options } = interaction;
 
     let query = (options.get("query")?.value || null) as string;
@@ -43,7 +44,7 @@ export default class Item extends Interaction {
     );
   }
 
-  static async autocomplete(interaction: AutocompleteInteraction, ctx: Context): Promise<any> {
+  static async autocomplete(interaction: AutocompleteInteraction<CacheType>, ctx: Context): Promise<any> {
     const language = discordToLanguage[interaction.guild?.preferredLocale || interaction.locale] || "us";
 
     let data = await ctx.client.cache.get(`database:${language}`);
