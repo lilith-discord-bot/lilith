@@ -5,7 +5,6 @@ import {
   AutocompleteInteraction,
   CacheType,
   ChatInputCommandInteraction,
-  CommandInteraction,
 } from "discord.js";
 
 import { Context, Interaction } from "../../core/Interaction";
