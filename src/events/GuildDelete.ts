@@ -11,7 +11,7 @@ export default class GuildDelete extends Event {
   async run(guild: Guild): Promise<void> {
     if (!this.client.isReady) return;
 
-    await this.client.repository.guild.delete(guild.id);
+    // await this.client.repository.guild.delete(guild.id);
 
     this.client.logger.info(`Leaved ${guild.name} (${guild.id})`);
   }

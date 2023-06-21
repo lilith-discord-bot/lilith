@@ -7,7 +7,10 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildChannel,
+  NewsChannel,
   PermissionFlagsBits,
+  TextChannel,
+  ThreadChannel,
 } from "discord.js";
 
 import { Context, Interaction } from "../../core/Interaction";
@@ -112,7 +115,12 @@ export default class Settings extends Interaction {
                 type: ApplicationCommandOptionType.Channel,
                 name: "channel",
                 description: "The channel to disable notifications to.",
-                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
+                channelTypes: [
+                  ChannelType.GuildAnnouncement,
+                  ChannelType.GuildText,
+                  ChannelType.PublicThread,
+                  ChannelType.PrivateThread,
+                ],
                 required: true,
               },
             ],
@@ -121,6 +129,32 @@ export default class Settings extends Interaction {
             type: ApplicationCommandOptionType.Subcommand,
             name: "list",
             description: "List all notifications enabled.",
+          },
+          {
+            type: ApplicationCommandOptionType.Subcommand,
+            name: "test",
+            description: "Test if everything is working fine.",
+            options: [
+              {
+                type: ApplicationCommandOptionType.String,
+                name: "event",
+                description: "The event to test notifications for.",
+                choices: eventsChoices,
+                required: true,
+              },
+              {
+                type: ApplicationCommandOptionType.Channel,
+                name: "channel",
+                description: "The channel where you should receive the notification.",
+                channelTypes: [
+                  ChannelType.GuildAnnouncement,
+                  ChannelType.GuildText,
+                  ChannelType.PublicThread,
+                  ChannelType.PrivateThread,
+                ],
+                required: true,
+              },
+            ],
           },
         ],
       },
@@ -249,6 +283,48 @@ export default class Settings extends Interaction {
             const embed = new SettingsEmbed(events);
 
             await interaction.reply({ embeds: [embed], ephemeral: true });
+            break;
+          case "test":
+            if (!currentEvent) {
+              return await interaction.reply({
+                content: `Notifications for **${event}** are not enabled or the channel is not the good one.`,
+                ephemeral: true,
+              });
+            }
+
+            const channelElement = interaction.guild.channels.cache.get(currentEvent.channelId) as
+              | TextChannel
+              | NewsChannel
+              | ThreadChannel;
+
+            if (!channel) {
+              return await interaction.reply({
+                content: `Channel for notifications for **${event}** is not available.`,
+                ephemeral: true,
+              });
+            }
+
+            if (
+              !channelElement
+                .permissionsFor(interaction.client.user)
+                ?.has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.ViewChannel])
+            ) {
+              return await interaction.reply({
+                content: `I don't have permissions to send messages in ${channelElement}.`,
+                ephemeral: true,
+              });
+            }
+
+            await channelElement
+              .send({
+                content: `This is a test notification for **${event}**.`,
+              })
+              .then((message) => setTimeout(() => message.delete(), 5000));
+
+            await interaction.reply({
+              content: `Notifications for **${event}** are working fine.`,
+              ephemeral: true,
+            });
             break;
         }
         break;
