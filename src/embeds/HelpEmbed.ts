@@ -19,7 +19,7 @@ export class HelpEmbed extends Embed {
 
     for (const category of categories) {
       const commandsInCategory = commands.filter((command) => command.category === category);
-      this.data.fields.push({
+      this.addFields({
         name: category,
         value: commandsInCategory.map((command) => `\`${command.command.name}\``).join(", "),
       });
