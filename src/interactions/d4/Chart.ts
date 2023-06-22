@@ -4,16 +4,20 @@ import {
   ApplicationCommandType,
   CacheType,
   ChatInputCommandInteraction,
+  InteractionResponse,
 } from "discord.js";
+import { inject, injectable } from "tsyringe";
 
 import { Interaction } from "../../core/Interaction";
+import { Client } from "../../core/Client";
 
-import { CDN } from "../../utils/Constants";
+import { CDN, clientSymbol } from "../../utils/Constants";
 
+@injectable()
 export default class Chart extends Interaction {
-  static enabled = true;
+  public readonly enabled = true;
 
-  static command: ApplicationCommandData = {
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "chart",
     description: "Displays a specific chart.",
@@ -49,7 +53,11 @@ export default class Chart extends Interaction {
     ],
   };
 
-  static async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<any> {
+  constructor(@inject(clientSymbol) private client: Client) {
+    super();
+  }
+
+  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<any> {
     const option = interaction.options.get("get")?.value;
 
     switch (option) {

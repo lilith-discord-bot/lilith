@@ -8,27 +8,33 @@ import {
   ButtonStyle,
   CacheType,
   ChatInputCommandInteraction,
+  InteractionResponse,
   StringSelectMenuBuilder,
   StringSelectMenuInteraction,
 } from "discord.js";
+import { inject, injectable } from "tsyringe";
 
-import { Context, Interaction } from "../../core/Interaction";
-
-import { ArmoryEmbed } from "../../utils/embeds/ArmoryEmbed";
+import { Client } from "../../core/Client";
+import { Interaction } from "../../core/Interaction";
 
 import { getPlayer, getPlayerArmory } from "../../lib/API";
+
 import { PlayerArmory } from "../../types";
+
 import { getArmoryLink } from "../../utils/Commons";
+import { clientSymbol } from "../../utils/Constants";
+import { ArmoryEmbed } from "../../utils/embeds/ArmoryEmbed";
 
 const armoryLink = (battleTag: string, heroId: string) =>
   new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder().setURL(getArmoryLink(battleTag, heroId)).setLabel("See armory").setStyle(ButtonStyle.Link)
   );
 
+@injectable()
 export default class Armory extends Interaction {
-  static enabled = true;
+  public readonly enabled: boolean = true;
 
-  static command: ApplicationCommandData = {
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "armory",
     description: "Displays the armory of a given player.",
@@ -43,7 +49,11 @@ export default class Armory extends Interaction {
     ],
   };
 
-  static async run(interaction: ChatInputCommandInteraction<CacheType>, ctx: Context): Promise<any> {
+  constructor(@inject(clientSymbol) private client: Client) {
+    super();
+  }
+
+  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
     let player = interaction.options.getString("player", true);
 
     if (!player) return await interaction.reply("No player/character provided.");
@@ -64,7 +74,7 @@ export default class Armory extends Interaction {
     if (!res.characters || res.characters.length <= 0)
       return await interaction.reply("No characters found for this player.");
 
-    const cached = await ctx.client.cache.get(`players:${player}`);
+    const cached = await this.client.cache.get(`players:${player}`);
 
     if (!cached) {
       const playerObj = {
@@ -73,7 +83,7 @@ export default class Armory extends Interaction {
         characters: res.characters.map((character) => character.name),
       };
 
-      await ctx.client.cache.set(`players:${player}`, JSON.stringify(playerObj));
+      await this.client.cache.set(`players:${player}`, JSON.stringify(playerObj));
     }
 
     let character: PlayerArmory | null = null;
@@ -83,9 +93,9 @@ export default class Armory extends Interaction {
 
       if (!character) return await interaction.reply("No character found. Please try again later.");
 
-      const embed = new ArmoryEmbed(character, ctx);
+      const embed = new ArmoryEmbed(character);
 
-      await interaction.reply({
+      return await interaction.reply({
         embeds: [embed],
         components: [armoryLink(player, res.characters[0].id)],
       });
@@ -102,17 +112,17 @@ export default class Armory extends Interaction {
           )
       );
 
-      await interaction.reply({
+      return await interaction.reply({
         content: "This player has multiple characters. Please select one.",
         components: [characters],
       });
     }
   }
 
-  static async autocomplete(interaction: AutocompleteInteraction<CacheType>, ctx: Context): Promise<any> {
+  public async autocomplete(interaction: AutocompleteInteraction<CacheType>): Promise<any> {
     const value = interaction.options.getFocused();
 
-    let keys = await ctx.client.cache.keys("players:*");
+    let keys = await this.client.cache.keys("players:*");
 
     if (!keys || keys.length <= 0) return await interaction.respond([]);
 
@@ -120,7 +130,7 @@ export default class Armory extends Interaction {
 
     choices = await Promise.all(
       keys.map(async (key) => {
-        const player = await ctx.client.cache.get(key);
+        const player = await this.client.cache.get(key);
 
         const parsed = JSON.parse(player!) as {
           battleTag: string;
@@ -157,14 +167,14 @@ export default class Armory extends Interaction {
     await interaction.respond(choices);
   }
 
-  static async selectMenu(interaction: StringSelectMenuInteraction<CacheType>, context: Context): Promise<any> {
+  public async selectMenu(interaction: StringSelectMenuInteraction<CacheType>): Promise<any> {
     const [player, characterId] = interaction.values[0].split("_");
 
     const character = await getPlayerArmory(player, characterId);
 
     if (!character) return await interaction.reply("No character found for this player.");
 
-    const embed = new ArmoryEmbed(character, context);
+    const embed = new ArmoryEmbed(character);
 
     await interaction.update({
       content: null,

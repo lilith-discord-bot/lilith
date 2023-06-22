@@ -6,23 +6,31 @@ import {
   ButtonStyle,
   CommandInteraction,
 } from "discord.js";
+import { inject, injectable } from "tsyringe";
 
 import { Context, Interaction } from "../../core/Interaction";
+
 import { InfoEmbed } from "../../utils/embeds/InfoEmbed";
-import { BOT_INVITE, SUPPORT_SERVER } from "../../utils/Constants";
+import { BOT_INVITE, SUPPORT_SERVER, clientSymbol } from "../../utils/Constants";
+import { Client } from "../../core/Client";
 
+@injectable()
 export default class Info extends Interaction {
-  static enabled = true;
+  public readonly enabled = true;
 
-  static command: ApplicationCommandData = {
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "info",
     description: "Displays Lilith's info.",
   };
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
-    const guilds = await ctx.client.cluster.broadcastEval((client) => client.guilds.cache.size);
-    const users = await ctx.client.cluster.broadcastEval((client) =>
+  constructor(@inject(clientSymbol) private client: Client) {
+    super();
+  }
+
+  public async run(interaction: CommandInteraction): Promise<any> {
+    const guilds = await this.client.cluster.broadcastEval((client) => client.guilds.cache.size);
+    const users = await this.client.cluster.broadcastEval((client) =>
       client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)
     );
 
@@ -37,7 +45,7 @@ export default class Info extends Interaction {
         new ButtonBuilder({
           label: "Invite me",
           style: ButtonStyle.Link,
-          url: BOT_INVITE.replace("{{id}}", ctx.client.user!.id),
+          url: BOT_INVITE.replace("{{id}}", this.client.user!.id),
         }),
         new ButtonBuilder({
           label: "Support",
@@ -52,7 +60,7 @@ export default class Info extends Interaction {
       ],
     });
 
-    const embed = new InfoEmbed(data, ctx);
+    const embed = new InfoEmbed(data);
 
     await interaction.reply({
       embeds: [embed],

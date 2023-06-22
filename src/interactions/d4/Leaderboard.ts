@@ -4,6 +4,7 @@ import {
   ApplicationCommandType,
   CacheType,
   ChatInputCommandInteraction,
+  InteractionResponse,
 } from "discord.js";
 
 import { Context, Interaction } from "../../core/Interaction";
@@ -14,9 +15,9 @@ import { leaderboardEmbed } from "../../utils/embeds/LeaderboardEmbed";
 import { getLeaderboard } from "../../lib/API";
 
 export default class Leaderboard extends Interaction {
-  static enabled = true;
+  public readonly enabled = true;
 
-  static command: ApplicationCommandData = {
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "leaderboard",
     description: "Displays the leaderboard for a given class and mode.",
@@ -36,7 +37,7 @@ export default class Leaderboard extends Interaction {
     ],
   };
 
-  static async run(interaction: ChatInputCommandInteraction<CacheType>, ctx: Context): Promise<any> {
+  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
     const classe = interaction.options.getString("class", true) as any;
     const mode = interaction.options.getString("mode", true) as any;
 
@@ -44,6 +45,6 @@ export default class Leaderboard extends Interaction {
 
     const embed = new leaderboardEmbed(res);
 
-    await interaction.reply({ embeds: [embed] });
+    return await interaction.reply({ embeds: [embed] });
   }
 }

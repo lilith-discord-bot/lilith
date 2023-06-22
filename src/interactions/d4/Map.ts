@@ -5,10 +5,14 @@ import {
   AutocompleteInteraction,
   CacheType,
   ChatInputCommandInteraction,
+  InteractionResponse,
 } from "discord.js";
+import { inject, injectable } from "tsyringe";
 
+import { Client } from "../../core/Client";
 import { Context, Interaction } from "../../core/Interaction";
 
+import { clientSymbol } from "../../utils/Constants";
 import { MapEmbed } from "../../utils/embeds/MapEmbed";
 
 const nodes = [
@@ -54,10 +58,11 @@ const nodes = [
   },
 ];
 
+@injectable()
 export default class Map extends Interaction {
-  static enabled = true;
+  public readonly enabled = true;
 
-  static command: ApplicationCommandData = {
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "map",
     description: "Give information about specific things on the map.",
@@ -79,7 +84,11 @@ export default class Map extends Interaction {
     ],
   };
 
-  static async run(interaction: ChatInputCommandInteraction<CacheType>, ctx: Context): Promise<any> {
+  constructor(@inject(clientSymbol) private client: Client) {
+    super();
+  }
+
+  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
     const { options } = interaction;
 
     const query = options.getString("query", true);
@@ -93,21 +102,21 @@ export default class Map extends Interaction {
 
     let description = "";
 
-    const data = await ctx.client.cache.get(`map:${type}`);
+    const data = await this.client.cache.get(`map:${type}`);
 
     if (data) description = JSON.parse(data).find((node: any) => node.name === name)?.description;
 
     const embed = new MapEmbed(name, description, query);
 
-    await interaction.reply({ embeds: [embed] });
+    return await interaction.reply({ embeds: [embed] });
   }
 
-  static async autocomplete(interaction: AutocompleteInteraction<CacheType>, ctx: Context): Promise<any> {
+  public async autocomplete(interaction: AutocompleteInteraction<CacheType>): Promise<any> {
     const type = interaction.options.getString("type", true);
 
     if (!type) return await interaction.respond([]);
 
-    let data = await ctx.client.cache.get(`map:${type}`);
+    let data = await this.client.cache.get(`map:${type}`);
 
     if (!data) return await interaction.respond([]);
 
