@@ -13,7 +13,7 @@ import { Client } from "../../core/Client";
 import { Context, Interaction } from "../../core/Interaction";
 
 import { clientSymbol } from "../../utils/Constants";
-import { MapEmbed } from "../../utils/embeds/MapEmbed";
+import { MapEmbed } from "../../embeds/MapEmbed";
 
 const nodes = [
   {
@@ -61,6 +61,8 @@ const nodes = [
 @injectable()
 export default class Map extends Interaction {
   public readonly enabled = true;
+
+  public readonly category = "Diablo 4";
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,

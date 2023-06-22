@@ -18,6 +18,8 @@ import { DATABASE_URL, clientSymbol, discordToLanguage } from "../../utils/Const
 export default class Item extends Interaction {
   public readonly enabled = true;
 
+  public readonly category = "Diablo 4";
+
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "item",

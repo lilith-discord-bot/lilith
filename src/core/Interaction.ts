@@ -23,6 +23,11 @@ export abstract class Interaction implements InteractionInterface {
   public readonly enabled: boolean = true;
 
   /**
+   * The interaction category.
+   */
+  public readonly category: string = "Other";
+
+  /**
    * The command data.
    * @type {ApplicationCommandData}
    */
@@ -62,6 +67,7 @@ export abstract class Interaction implements InteractionInterface {
 
 export interface InteractionInterface {
   readonly enabled: boolean;
+  readonly category: string;
   readonly command: ApplicationCommandData;
   run(interaction: ChatInputCommandInteraction<CacheType>, context: Context): Promise<any>;
   autocomplete?(interaction: AutocompleteInteraction<CacheType>): Promise<any>;

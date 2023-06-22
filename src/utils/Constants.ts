@@ -12,8 +12,7 @@ export const CDN = "https://s3.glazk0.dev/lilith";
  * The bot invite link.
  * @type {string}
  */
-export const BOT_INVITE =
-  "https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions=17876191071232&scope=bot%20applications.commands";
+export const BOT_INVITE = "https://lilith.mom/invite";
 
 /**
  * The support server invite link.

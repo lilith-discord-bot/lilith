@@ -4,19 +4,43 @@ import {
   ApplicationCommandType,
   ButtonBuilder,
   ButtonStyle,
-  CommandInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
+  InteractionResponse,
 } from "discord.js";
 import { inject, injectable } from "tsyringe";
 
-import { Context, Interaction } from "../../core/Interaction";
-
-import { InfoEmbed } from "../../utils/embeds/InfoEmbed";
-import { BOT_INVITE, SUPPORT_SERVER, clientSymbol } from "../../utils/Constants";
 import { Client } from "../../core/Client";
+import { Interaction } from "../../core/Interaction";
 
-@injectable()
+import { InfoEmbed } from "../../embeds/InfoEmbed";
+
+import { BOT_INVITE, SUPPORT_SERVER, clientSymbol } from "../../utils/Constants";
+
+export const helpersButtons = new ActionRowBuilder<ButtonBuilder>({
+  components: [
+    new ButtonBuilder({
+      label: "Invite me",
+      style: ButtonStyle.Link,
+      url: BOT_INVITE,
+    }),
+    new ButtonBuilder({
+      label: "Support",
+      style: ButtonStyle.Link,
+      url: SUPPORT_SERVER,
+    }),
+    new ButtonBuilder({
+      label: "GitHub",
+      style: ButtonStyle.Link,
+      url: "https://github.com/glazk0/lilith",
+    }),
+  ],
+});
+
 export default class Info extends Interaction {
-  public readonly enabled = true;
+  static enabled = true;
+
+  public readonly category = "General";
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
@@ -28,7 +52,7 @@ export default class Info extends Interaction {
     super();
   }
 
-  public async run(interaction: CommandInteraction): Promise<any> {
+  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
     const guilds = await this.client.cluster.broadcastEval((client) => client.guilds.cache.size);
     const users = await this.client.cluster.broadcastEval((client) =>
       client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)
@@ -40,31 +64,11 @@ export default class Info extends Interaction {
       shardId: interaction.guild?.shardId || 0,
     };
 
-    const buttons = new ActionRowBuilder<ButtonBuilder>({
-      components: [
-        new ButtonBuilder({
-          label: "Invite me",
-          style: ButtonStyle.Link,
-          url: BOT_INVITE.replace("{{id}}", this.client.user!.id),
-        }),
-        new ButtonBuilder({
-          label: "Support",
-          style: ButtonStyle.Link,
-          url: SUPPORT_SERVER,
-        }),
-        new ButtonBuilder({
-          label: "GitHub",
-          style: ButtonStyle.Link,
-          url: "https://github.com/glazk0/lilith",
-        }),
-      ],
-    });
-
     const embed = new InfoEmbed(data);
 
-    await interaction.reply({
+    return await interaction.reply({
       embeds: [embed],
-      components: [buttons],
+      components: [helpersButtons],
     });
   }
 }

@@ -23,7 +23,7 @@ import { PlayerArmory } from "../../types";
 
 import { getArmoryLink } from "../../utils/Commons";
 import { clientSymbol } from "../../utils/Constants";
-import { ArmoryEmbed } from "../../utils/embeds/ArmoryEmbed";
+import { ArmoryEmbed } from "../../embeds/ArmoryEmbed";
 
 const armoryLink = (battleTag: string, heroId: string) =>
   new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -33,6 +33,8 @@ const armoryLink = (battleTag: string, heroId: string) =>
 @injectable()
 export default class Armory extends Interaction {
   public readonly enabled: boolean = true;
+
+  public readonly category = "Diablo 4";
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,

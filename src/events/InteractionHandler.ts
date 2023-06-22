@@ -51,15 +51,12 @@ export default class InteractionHandler extends Event {
         if (!file.endsWith(".js")) continue;
         const commandClass = (await import(join(resolve(), "interactions", category, file))).default;
         const interaction = container.resolve<Interaction>(commandClass);
+        this.client.logger.info(`Loading interaction ${interaction.command.name}.`);
         this.interactions.set(interaction.command.name, interaction);
       }
     }
 
-    this.interactions.forEach((interaction) => {
-      this.client.logger.info(`Loaded interaction ${interaction.command.name}.`);
-    });
-
-    await this.refresh();
+    this.client.setInteractions(this.interactions);
   }
 
   /**

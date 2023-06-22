@@ -17,6 +17,8 @@ import { CDN, clientSymbol } from "../../utils/Constants";
 export default class Chart extends Interaction {
   public readonly enabled = true;
 
+  public readonly category = "Diablo 4";
+
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "chart",

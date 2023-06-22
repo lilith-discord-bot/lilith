@@ -7,6 +7,7 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildChannel,
+  InteractionResponse,
   NewsChannel,
   PermissionFlagsBits,
   TextChannel,
@@ -18,11 +19,13 @@ import { Client } from "../../core/Client";
 import { Context, Interaction } from "../../core/Interaction";
 import { EventsList } from "../../types";
 import { clientSymbol, eventsChoices } from "../../utils/Constants";
-import { SettingsEmbed } from "../../utils/embeds/SettingsEmbed";
+import { SettingsEmbed } from "../../embeds/SettingsEmbed";
 
 @injectable()
 export default class Settings extends Interaction {
   public readonly enabled = true;
+
+  public readonly category = "Configuration";
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
@@ -168,7 +171,7 @@ export default class Settings extends Interaction {
     super();
   }
 
-  public async run(interaction: CommandInteraction<CacheType>, ctx: Context): Promise<any> {
+  public async run(interaction: CommandInteraction<CacheType>, ctx: Context): Promise<InteractionResponse<boolean>> {
     if (!interaction.inGuild() || !interaction.guild)
       return await interaction.reply({ content: "This command is only available in guilds." });
 

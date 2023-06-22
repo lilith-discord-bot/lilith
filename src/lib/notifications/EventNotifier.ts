@@ -3,7 +3,7 @@ import { Message, MessageCreateOptions, MessagePayload, time } from "discord.js"
 import { Client } from "../../core/Client";
 import { Event, EventsList } from "../../types";
 import { duration, wait } from "../../utils/Commons";
-import { EventEmbed, territory } from "../../utils/embeds/EventEmbed";
+import { EventEmbed, territory } from "../../embeds/EventEmbed";
 import { Broadcaster } from "./Broadcaster";
 import { container } from "tsyringe";
 import { clientSymbol } from "../../utils/Constants";

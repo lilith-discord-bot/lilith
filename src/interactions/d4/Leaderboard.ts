@@ -10,12 +10,14 @@ import {
 import { Context, Interaction } from "../../core/Interaction";
 
 import { classesChoices, modesChoices } from "../../utils/Constants";
-import { leaderboardEmbed } from "../../utils/embeds/LeaderboardEmbed";
+import { leaderboardEmbed } from "../../embeds/LeaderboardEmbed";
 
 import { getLeaderboard } from "../../lib/API";
 
 export default class Leaderboard extends Interaction {
   public readonly enabled = true;
+
+  public readonly category = "Diablo 4";
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
