@@ -37,8 +37,9 @@ export const helpersButtons = new ActionRowBuilder<ButtonBuilder>({
   ],
 });
 
+@injectable()
 export default class Info extends Interaction {
-  static enabled = true;
+  public enabled = true;
 
   public readonly category = "General";
 
