@@ -112,8 +112,6 @@ export default class InteractionHandler extends Event {
 
       const command = this.interactions.get(interaction.commandName);
 
-      this.client.logger.debug(command);
-
       if (!command) return undefined;
 
       this.client.logger.info(`Command ${command.command.name} was executed in ${interaction.guildId || "DM"}`);
