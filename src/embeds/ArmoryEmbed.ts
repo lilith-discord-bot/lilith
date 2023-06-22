@@ -2,19 +2,17 @@ import { underscore } from "discord.js";
 
 import { Embed } from "./Embed";
 
-import { Context } from "../../core/Interaction";
-
-import { PlayerArmory } from "../../types";
-import { getTimestamp, secondsToDhms } from "../Commons";
+import { PlayerArmory } from "../types";
+import { getTimestamp, secondsToDhms } from "../utils/Commons";
 
 export class ArmoryEmbed extends Embed {
-  constructor(character: PlayerArmory, ctx: Context) {
+  constructor(character: PlayerArmory) {
     super();
 
     this.data.title = `Armory @ ${character.character} LvL. ${character.level} (${character.class})`;
 
     this.data.thumbnail = {
-      url: ctx.client.user?.displayAvatarURL() || "",
+      url: this.client.user?.displayAvatarURL() || "",
     };
 
     const stats = `World Tier: ${String(

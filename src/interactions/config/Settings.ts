@@ -7,21 +7,27 @@ import {
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildChannel,
+  InteractionResponse,
   NewsChannel,
   PermissionFlagsBits,
   TextChannel,
   ThreadChannel,
 } from "discord.js";
 
+import { inject, injectable } from "tsyringe";
+import { Client } from "../../core/Client";
 import { Context, Interaction } from "../../core/Interaction";
 import { EventsList } from "../../types";
-import { eventsChoices } from "../../utils/Constants";
-import { SettingsEmbed } from "../../utils/embeds/SettingsEmbed";
+import { clientSymbol, eventsChoices } from "../../utils/Constants";
+import { SettingsEmbed } from "../../embeds/SettingsEmbed";
 
+@injectable()
 export default class Settings extends Interaction {
-  static enabled = true;
+  public readonly enabled = true;
 
-  static command: ApplicationCommandData = {
+  public readonly category = "Configuration";
+
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "settings",
     description: "Manage your actual guild settings.",
@@ -161,7 +167,11 @@ export default class Settings extends Interaction {
     ],
   };
 
-  static async run(interaction: CommandInteraction<CacheType>, ctx: Context): Promise<any> {
+  constructor(@inject(clientSymbol) private client: Client) {
+    super();
+  }
+
+  public async run(interaction: CommandInteraction<CacheType>, ctx: Context): Promise<InteractionResponse<boolean>> {
     if (!interaction.inGuild() || !interaction.guild)
       return await interaction.reply({ content: "This command is only available in guilds." });
 
@@ -201,13 +211,13 @@ export default class Settings extends Interaction {
             const roleElement = role?.id;
 
             try {
-              await ctx.client.repository.guild.createEvent(interaction.guild.id, event, {
+              await this.client.repository.guild.createEvent(interaction.guild.id, event, {
                 channel: channel.id,
                 role: roleElement || null,
                 schedule: false,
               });
             } catch (error) {
-              ctx.client.logger.error(error);
+              this.client.logger.error(error);
             }
 
             await interaction.reply({
@@ -237,13 +247,13 @@ export default class Settings extends Interaction {
             const roleElementUpdate = role?.id;
 
             try {
-              await ctx.client.repository.guild.updateEvent(interaction.guild.id, event, {
+              await this.client.repository.guild.updateEvent(interaction.guild.id, event, {
                 channel: channel.id,
                 role: roleElementUpdate || currentEvent.roleId,
                 schedule: currentEvent.schedule,
               });
             } catch (error) {
-              ctx.client.logger.error(error);
+              this.client.logger.error(error);
             }
 
             await interaction.reply({
@@ -260,9 +270,9 @@ export default class Settings extends Interaction {
             }
 
             try {
-              await ctx.client.repository.guild.removeEvent(interaction.guild.id, event as EventsList, channel.id);
+              await this.client.repository.guild.removeEvent(interaction.guild.id, event as EventsList, channel.id);
             } catch (error) {
-              ctx.client.logger.error(error);
+              this.client.logger.error(error);
             }
 
             await interaction.reply({

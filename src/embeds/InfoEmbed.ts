@@ -1,18 +1,18 @@
 import { Embed } from "./Embed";
 
-import { Context } from "../../core/Interaction";
+import { Context } from "../core/Interaction";
 
 export class InfoEmbed extends Embed {
-  constructor(data: any, ctx: Context) {
+  constructor(data: any) {
     super();
 
     this.data.author = {
-      name: ctx.client.user!.username,
-      icon_url: ctx.client.user!.displayAvatarURL(),
+      name: this.client.user!.username,
+      icon_url: this.client.user!.displayAvatarURL(),
     };
 
     this.data.thumbnail = {
-      url: ctx.client.user!.displayAvatarURL(),
+      url: this.client.user!.displayAvatarURL(),
     };
 
     this.data.description = `Lilith is a Discord bot that provides information about Diablo 4.`;
@@ -24,7 +24,7 @@ export class InfoEmbed extends Embed {
       },
       {
         name: "Debug",
-        value: `Clusters: ${ctx.client.cluster.count}\nShards: ${ctx.client.cluster.info.TOTAL_SHARDS}\nShardID: ${data.shardId}\nClusterID: ${ctx.client.cluster.id}`,
+        value: `Clusters: ${this.client.cluster.count}\nShards: ${this.client.cluster.info.TOTAL_SHARDS}\nShardID: ${data.shardId}\nClusterID: ${this.client.cluster.id}`,
       },
     ];
   }
