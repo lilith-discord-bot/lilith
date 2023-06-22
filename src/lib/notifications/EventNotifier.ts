@@ -132,7 +132,7 @@ export class EventNotifier {
               });
             }
 
-            await wait(250);
+            // await wait(250);
           }
         }
 
