@@ -33,12 +33,16 @@ const nodes = [
     value: "dungeons",
   },
   {
-    name: "Healer",
-    value: "healers",
+    name: "Campaign Dungeon",
+    value: "campaignDungeons",
   },
   {
-    name: "Helltide Chest",
-    value: "helltideChests",
+    name: "Side Quest Dungeon",
+    value: "sideQuestDungeons",
+  },
+  {
+    name: "Healer",
+    value: "healers",
   },
   {
     name: "Jeweler",
@@ -55,6 +59,18 @@ const nodes = [
   {
     name: "Waypoint",
     value: "waypoints",
+  },
+  {
+    name: "Campaign Quest",
+    value: "campaignQuests",
+  },
+  {
+    name: "Side Quest",
+    value: "sideQuests",
+  },
+  {
+    name: "Event",
+    value: "events",
   },
 ];
 
@@ -125,8 +141,6 @@ export default class Map extends Interaction {
     let nodes = JSON.parse(data) as any[];
 
     const value = interaction.options.getFocused();
-
-    if (!value) return await interaction.respond([]);
 
     nodes = [
       ...nodes?.filter((node: any) => node.name.toLowerCase().indexOf(value.toLowerCase()) === 0),
