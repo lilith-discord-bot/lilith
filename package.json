@@ -1,17 +1,16 @@
 {
   "name": "lilith",
-  "description": "A Diablo 4 Discord bot.",
-  "version": "1.0.0",
+  "description": "A Discord.js bot for Diablo 4 that allows tracking events, news and more.",
   "main": "main.js",
   "scripts": {
     "start": "node main",
     "dev": "npm run build && NODE_ENV=development node dist/main.js",
     "build": "rm -rf dist && tsc",
-    "bot:up": "docker-compose -p 'lilith' --env-file .env -f .docker/docker-compose.yml up --build -d",
-    "bot:restart": "docker-compose -p 'lilith' -f .docker/docker-compose.yml restart",
-    "bot:update": "docker-compose -p 'lilith' -f .docker/docker-compose.yml exec bot sh -c 'npm install'",
-    "bot:stop": "docker-compose -p 'lilith' -f .docker/docker-compose.yml stop",
-    "bot:clean": "docker-compose -p 'lilith' -f .docker/docker-compose.yml down",
+    "bot:up": "docker-compose -p lilith --env-file .env -f .docker/docker-compose.yml up --build -d",
+    "bot:restart": "docker-compose -p lilith -f .docker/docker-compose.yml restart",
+    "bot:update": "docker-compose -p lilith -f .docker/docker-compose.yml exec bot sh -c 'npm install'",
+    "bot:stop": "docker-compose -p lilith -f .docker/docker-compose.yml stop",
+    "bot:clean": "docker-compose -p lilith -f .docker/docker-compose.yml down",
     "bot:rebuild": "npm run bot:clean && npm run bot:up"
   },
   "repository": {
