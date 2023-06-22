@@ -15,7 +15,7 @@ export class InfoEmbed extends Embed {
       url: this.client.user!.displayAvatarURL(),
     };
 
-    this.data.description = `Lilith is a Discord bot that provides information about Diablo 4.`;
+    this.data.description = `${this.client.user.username} is a Discord bot that provides information about Diablo 4. World Discord bot developed by glazk0 & Marco.`;
 
     this.data.fields = [
       {
