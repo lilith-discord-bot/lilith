@@ -1,6 +1,6 @@
 import { Embed } from "./Embed";
 
-import { MAP_URL } from "../Constants";
+import { MAP_URL } from "../utils/Constants";
 
 export class MapEmbed extends Embed {
   constructor(name: string, description: string, coords: string) {
