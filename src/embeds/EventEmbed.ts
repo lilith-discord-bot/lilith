@@ -1,7 +1,7 @@
 import { Embed } from "./Embed";
 
-import { Event } from "../../types";
-import { ARMORY_URL, CDN } from "../Constants";
+import { Event } from "../types";
+import { ARMORY_URL, CDN } from "../utils/Constants";
 
 export const territory = {
   kehj: "Kehjistan",

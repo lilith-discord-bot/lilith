@@ -1,8 +1,8 @@
 import { Embed } from "./Embed";
 
-import { Player } from "../../types";
+import { Player } from "../types";
 
-import { getArmoryLink } from "../Commons";
+import { getArmoryLink } from "../utils/Commons";
 
 export class leaderboardEmbed extends Embed {
   constructor(leaderboard: Player[] | null) {
