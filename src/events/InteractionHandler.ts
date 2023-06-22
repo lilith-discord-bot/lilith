@@ -57,6 +57,8 @@ export default class InteractionHandler extends Event {
     }
 
     this.client.setInteractions(this.interactions);
+
+    this.refresh();
   }
 
   /**
