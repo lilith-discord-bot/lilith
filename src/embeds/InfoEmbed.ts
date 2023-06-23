@@ -3,7 +3,7 @@ import { Embed } from "./Embed";
 import { Context } from "../core/Interaction";
 
 export class InfoEmbed extends Embed {
-  constructor(data: any) {
+  constructor(data: any, { i18n }: Context) {
     super();
 
     this.data.author = {
@@ -15,16 +15,24 @@ export class InfoEmbed extends Embed {
       url: this.client.user!.displayAvatarURL(),
     };
 
-    this.data.description = `${this.client.user.username} is a Discord bot that provides information about Diablo 4. World Discord bot developed by glazk0 & Marco.`;
+    this.data.description = i18n.embeds.INFO.DESCRIPTION({ username: this.client.user?.username });
 
     this.data.fields = [
       {
-        name: "Statistics",
-        value: `Servers: ${data.guilds.toLocaleString("en-US")}\nUsers: ${data.users.toLocaleString("en-US")}`,
+        name: i18n.embeds.INFO.STATISTICS_TITLE(),
+        value: i18n.embeds.INFO.STATISTICS_VALUE({
+          servers: data.guilds.toLocaleString("en-US"),
+          users: data.users.toLocaleString("en-US"),
+        }),
       },
       {
-        name: "Debug",
-        value: `Clusters: ${this.client.cluster.count}\nShards: ${this.client.cluster.info.TOTAL_SHARDS}\nShardID: ${data.shardId}\nClusterID: ${this.client.cluster.id}`,
+        name: i18n.embeds.INFO.DEBUG_TITLE(),
+        value: i18n.embeds.INFO.DEBUG_VALUE({
+          clusters: this.client.cluster.count,
+          shards: this.client.cluster.info.TOTAL_SHARDS,
+          shardId: data.shardId,
+          clusterId: this.client.cluster.id,
+        }),
       },
     ];
   }

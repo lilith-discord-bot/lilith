@@ -15,7 +15,7 @@ import { leaderboardEmbed } from "../../embeds/LeaderboardEmbed";
 import { getLeaderboard } from "../../lib/API";
 
 export default class Leaderboard extends Interaction {
-  public readonly enabled = true;
+  public readonly enabled = false;
 
   public readonly category = "Diablo 4";
 

@@ -106,13 +106,16 @@ export default class Map extends Interaction {
     super();
   }
 
-  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
+  public async run(
+    interaction: ChatInputCommandInteraction<CacheType>,
+    { i18n }: Context
+  ): Promise<InteractionResponse<boolean>> {
     const { options } = interaction;
 
     const query = options.getString("query", true);
     const type = options.getString("type", true);
 
-    if (!query) return await interaction.reply("Invalid query.");
+    if (!query) return await interaction.reply(i18n.misc.INVALID_QUERY());
 
     let [name] = query.split("/@");
 

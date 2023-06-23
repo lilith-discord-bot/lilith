@@ -11,10 +11,14 @@ import {
   Routes,
   StringSelectMenuInteraction,
 } from "discord.js";
+import { container } from "tsyringe";
 
 import { Event } from "../core/Event";
 import { Context, Interaction } from "../core/Interaction";
-import { container } from "tsyringe";
+
+import L from "../i18n/i18n-node";
+
+import { Guild } from "../types/Database";
 
 // TODO : Refactor this, it works for now
 export default class InteractionHandler extends Event {
@@ -78,7 +82,7 @@ export default class InteractionHandler extends Event {
       this.client.logger.info(`Started refreshing ${this.interactions.size} application (/) commands.`);
 
       const data = (await rest.put(Routes.applicationCommands(this.client.user.id), {
-        body: this.interactions.map((interaction) => interaction.command),
+        body: this.interactions.filter((interaction) => interaction.enabled).map((interaction) => interaction.command),
       })) as any;
 
       this.client.logger.info(`Successfully reloaded ${data.length} application (/) commands.`);
@@ -98,13 +102,13 @@ export default class InteractionHandler extends Event {
     if (!this.client.isReady) return undefined;
     if (!interaction) return undefined;
 
-    let guild = null;
+    let guild = null as Guild | null;
 
     if (interaction.inGuild()) guild = await this.client.repository.guild.findOrCreate(interaction.guildId);
 
     let context = {} as Context;
 
-    context.client = this.client;
+    context.i18n = L[guild.locale || "en"];
     context.guild = guild;
 
     if (interaction.isChatInputCommand()) {
@@ -135,7 +139,7 @@ export default class InteractionHandler extends Event {
       if (!command) return undefined;
 
       try {
-        await command.autocomplete?.(interaction);
+        await command.autocomplete?.(interaction, context);
       } catch (error) {
         this.client.logger.error(`Failed to run autocomplete for interaction ${command.command.name}: ${error}`);
       }
@@ -153,7 +157,7 @@ export default class InteractionHandler extends Event {
       if (!command) return undefined;
 
       try {
-        await command.selectMenu?.(interaction);
+        await command.selectMenu?.(interaction, context);
       } catch (error) {
         this.client.logger.error(`Failed to run interaction ${selectMenu.customId}: ${error}`);
       }

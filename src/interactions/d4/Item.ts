@@ -11,7 +11,7 @@ import {
 import { inject, injectable } from "tsyringe";
 
 import { Client } from "../../core/Client";
-import { Interaction } from "../../core/Interaction";
+import { Context, Interaction } from "../../core/Interaction";
 
 import { DATABASE_URL, clientSymbol, discordToLanguage } from "../../utils/Constants";
 @injectable()
@@ -39,12 +39,15 @@ export default class Item extends Interaction {
     super();
   }
 
-  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
+  public async run(
+    interaction: ChatInputCommandInteraction<CacheType>,
+    { i18n }: Context
+  ): Promise<InteractionResponse<boolean>> {
     const { options } = interaction;
 
     let query = (options.get("query")?.value || null) as string;
 
-    if (!query) return await interaction.reply("Invalid query.");
+    if (!query) return await interaction.reply(i18n.misc.INVALID_QUERY());
 
     const [url, label] = query.split(":");
 

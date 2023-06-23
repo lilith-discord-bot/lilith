@@ -7,11 +7,12 @@ import {
   StringSelectMenuInteraction,
 } from "discord.js";
 
+import { TranslationFunctions } from "../i18n/i18n-types";
+
 import { Guild } from "../types/Database";
-import { Client } from "./Client";
 
 export type Context = {
-  client: Client;
+  i18n: TranslationFunctions;
   guild: Guild | null;
 };
 
@@ -54,7 +55,7 @@ export abstract class Interaction implements InteractionInterface {
    * @param interaction - The interaction.
    * @param context - The context.
    */
-  public async autocomplete?(interaction: AutocompleteInteraction<CacheType>): Promise<any> {}
+  public async autocomplete?(interaction: AutocompleteInteraction<CacheType>, context: Context): Promise<any> {}
 
   /**
    * Handles the interaction select menu.
@@ -62,7 +63,7 @@ export abstract class Interaction implements InteractionInterface {
    * @param interaction - The interaction.
    * @param context - The context.
    */
-  public async selectMenu?(interaction: StringSelectMenuInteraction<CacheType>): Promise<any> {}
+  public async selectMenu?(interaction: StringSelectMenuInteraction<CacheType>, context: Context): Promise<any> {}
 }
 
 export interface InteractionInterface {
@@ -70,6 +71,6 @@ export interface InteractionInterface {
   readonly category: string;
   readonly command: ApplicationCommandData;
   run(interaction: ChatInputCommandInteraction<CacheType>, context: Context): Promise<any>;
-  autocomplete?(interaction: AutocompleteInteraction<CacheType>): Promise<any>;
-  selectMenu?(interaction: StringSelectMenuInteraction<CacheType>): Promise<any>;
+  autocomplete?(interaction: AutocompleteInteraction<CacheType>, context: Context): Promise<any>;
+  selectMenu?(interaction: StringSelectMenuInteraction<CacheType>, context: Context): Promise<any>;
 }

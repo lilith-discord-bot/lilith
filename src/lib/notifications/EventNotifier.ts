@@ -8,6 +8,8 @@ import { Broadcaster } from "./Broadcaster";
 import { container } from "tsyringe";
 import { clientSymbol } from "../../utils/Constants";
 import { getEvents, getStatus } from "../API";
+import L from "../../i18n/i18n-node";
+import { Locales } from "../../i18n/i18n-types";
 
 const refreshInterval = duration.seconds(60);
 
@@ -69,8 +71,6 @@ export class EventNotifier {
       if (!cache || cachedEvent.timestamp !== value.timestamp || this.checkRefresh(value)) {
         await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
 
-        this.client.logger.info(value);
-
         const event = new Date(value.timestamp * 1000).getTime();
 
         if (event < date - duration.minutes(2)) {
@@ -88,7 +88,7 @@ export class EventNotifier {
           const embed = new EventEmbed(key, value);
 
           let message: string | MessagePayload | MessageCreateOptions = {
-            content: getTitle(key, value),
+            content: this.getTitle(key, value, guild.locale as Locales),
             embeds: [embed],
           };
 
@@ -142,6 +142,9 @@ export class EventNotifier {
     }
   }
 
+  /**
+   * TODO - Implement refresh
+   */
   private checkRefresh(event: Event) {
     if (event.refresh && event.refresh > 0) {
       const date = Date.now();
@@ -152,33 +155,41 @@ export class EventNotifier {
     }
     return false;
   }
-}
 
-/**
- * Get the event title.
- *
- * @param key - The event key.
- * @param event - The event object.
- *
- * @returns {string} - The event title.
- */
-function getTitle(key: string, event: Event) {
-  switch (key) {
-    case "boss":
-      return `${event.name} appears in ${event.zone} (${event.territory}) at ${time(
-        event.timestamp,
-        "t"
-      )}\n\nNext expected boss is ${event.nextExpectedName} at ${time(event.nextExpected, "t")}`;
-    case "helltide":
-      return `Helltide occuring in ${territory[event.zone]} until ${time(
-        event.timestamp + 3600,
-        "t"
-      )}, next helltide at ${time(event.timestamp + 8100, "t")}${
-        event.refresh > 0 ? `\n\nChests refresh: ${time(event.refresh, "R")}` : ""
-      }`;
-    case "legion":
-      return `Legion appears ${time(event.timestamp, "R")}, next legion at ${time(event.timestamp + 1800, "t")}`;
-    default:
-      return key;
+  /**
+   * Get the event title.
+   *
+   * @param key - The event key.
+   * @param event - The event object.
+   *
+   * @returns {string} - The event title.
+   */
+
+  private getTitle(key: string, event: Event, locale: Locales = "en") {
+    switch (key) {
+      case "boss":
+        return L[locale].events.WORLD_BOSS({
+          name: event.name,
+          zone: event.zone,
+          territory: event.territory,
+          time: time(event.timestamp, "t"),
+          nextName: event.nextExpectedName,
+          nextTime: time(event.nextExpected, "t"),
+        });
+      case "helltide":
+        return L[locale].events.HELLTIDE({
+          zone: territory[event.zone],
+          time: time(event.timestamp + 3600, "t"),
+          nextTime: time(event.timestamp + 8100, "t"),
+          refresh: event.refresh > 0 ? time(event.refresh, "R") : "/",
+        });
+      case "legion":
+        return L[locale].events.LEGION({
+          time: time(event.timestamp, "R"),
+          nextTime: time(event.timestamp + 1800, "t"),
+        });
+      default:
+        return key;
+    }
   }
 }
