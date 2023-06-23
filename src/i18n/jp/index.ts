@@ -3,7 +3,7 @@ import type { Translation } from "../i18n-types";
 const jp = {
   settings: {
     locale: {
-      SUCCESS: "Discordサーバーの言語が **{locale}** に更新されました。",
+      SUCCESS: "あなたのDiscordサーバーのロケールが **{locale}** に更新されました。",
     },
     notifications: {
       NO_PERMISSIONS: "{channel} でメッセージを送信する権限がありません。",
@@ -19,20 +19,20 @@ const jp = {
     },
   },
   armory: {
-    BAD_FORMAT: "入力されたプレーヤーは無効です、次の形式である必要があります: `プレイヤー名#1234`。",
+    BAD_FORMAT: "入力されたプレイヤーは無効です、次の形式である必要があります: `プレイヤー名#1234`。",
     PLAYER_NOT_FOUND:
       "プレイヤー **{player}** が見つかりません、名前を正しく入力したか、そのプレイヤーが存在するか確認してください。",
     NO_CHARACTERS: "プレイヤーにはキャラクターがいません。",
     NO_CHARACTER: "キャラクターが見つかりません。名前を正しく入力したか、少なくとも1文字が存在することを確認してください。",
     SELECT_CHARACTER: "armoryを取得するキャラクターを選択してください。",
     MULTIPLE_CHARACTERS: "このプレイヤーは複数のキャラクターを持っています。1つ選択してください。",
-    PLAYER_CHOICE: "{name} ({characters} characters)",
+    PLAYER_CHOICE: "{name} ({characters} キャラクター)",
     NOT_TRACKED_YET: '"{player}" は現在追跡されていません、追跡するには送信してください。',
   },
   events: {
-    WORLD_BOSS: "{name} が {zone} ({territory}) に {time} 出現します。\n\n次回のボスは {nextName} 、{nextTime} 予定。",
+    WORLD_BOSS: "{name} が {zone} ({territory}) に {time} 出現します。\n\n次回のボスは {nextTime} に {nextName} と予測されます。",
     HELLTIDE: "{time} まで {zone} でヘルタイドが発生、次回のヘルタイドは {nextTime}\n\nチェスト更新: {refresh}",
-    LEGION: "レギオンイベントは {time} に出現し、次回は {nextTime} に出現します。",
+    LEGION: "レギオンは {time} に出現、次回のレギオンは {nextTime} に出現します。",
   },
   embeds: {
     ARMORY: {
