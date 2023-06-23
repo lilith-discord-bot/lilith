@@ -64,12 +64,13 @@ export class EventNotifier {
 
       const cachedEvent = JSON.parse(cache!) as Event;
 
-      if (!cache || cachedEvent.timestamp !== value.timestamp) {
+      const date = Date.now();
+
+      if (!cache || cachedEvent.timestamp !== value.timestamp || this.checkRefresh(value)) {
         await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
 
         this.client.logger.info(value);
 
-        const date = Date.now();
         const event = new Date(value.timestamp * 1000).getTime();
 
         if (event < date - duration.minutes(2)) {
@@ -132,13 +133,24 @@ export class EventNotifier {
               });
             }
 
-            await wait(250);
+            // await wait(250);
           }
         }
 
         this.client.logger.info(`Event ${key} has been broadcasted to ${guilds.length} guilds.`);
       }
     }
+  }
+
+  private checkRefresh(event: Event) {
+    if (event.refresh && event.refresh > 0) {
+      const date = Date.now();
+
+      if (date / 1000 > event.refresh) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
@@ -161,7 +173,9 @@ function getTitle(key: string, event: Event) {
       return `Helltide occuring in ${territory[event.zone]} until ${time(
         event.timestamp + 3600,
         "t"
-      )}, next helltide at ${time(event.timestamp + 8100, "t")}`;
+      )}, next helltide at ${time(event.timestamp + 8100, "t")}${
+        event.refresh > 0 ? `\n\nChests refresh: ${time(event.refresh, "R")}` : ""
+      }`;
     case "legion":
       return `Legion appears ${time(event.timestamp, "R")}, next legion at ${time(event.timestamp + 1800, "t")}`;
     default:

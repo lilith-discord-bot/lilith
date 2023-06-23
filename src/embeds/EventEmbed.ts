@@ -2,6 +2,7 @@ import { Embed } from "./Embed";
 
 import { Event } from "../types";
 import { ARMORY_URL, CDN } from "../utils/Constants";
+import { getChestsKey } from "../utils/Predict";
 
 export const territory = {
   kehj: "Kehjistan",
@@ -28,7 +29,7 @@ function getURL(key: string, event: Event) {
     case "boss":
       return `${CDN}/map_data/worldboss/${normalize(event.zone, event.territory!)}.png`;
     case "helltide":
-      return `${CDN}/map_data/helltide/${normalize(territory[event.zone])}.png`;
+      return `${CDN}/map_data/helltide/${event.zone}_${getChestsKey(event)}.png`;
     case "legion":
       return `${CDN}/map_data/legion/${normalize(event.zone, event.territory!)}.png`;
     default:
