@@ -3,7 +3,7 @@ import type { Translation } from "../i18n-types";
 const fr = {
   settings: {
     locale: {
-      SUCCESS: "La langue de votre serveur Discord a été mis à jour en **{locale}**.",
+      SUCCESS: "La langue de votre serveur Discord a été mise à jour en **{locale}**.",
     },
     notifications: {
       NO_PERMISSIONS: "Je n'ai pas l'autorisation d'envoyer des messages dans {channel}.",
@@ -23,8 +23,8 @@ const fr = {
     PLAYER_NOT_FOUND:
       "Je n'ai pas pu trouver le joueur **{player}**, vérifiez que vous avez tapé le nom correctement ou que le joueur existe.",
     NO_CHARACTERS: "Le joueur ne possède aucun personnage.",
-    NO_CHARACTER: "Aucun personnage trouvé, assurez-vous que vous avez tapé le nom correctement ou qu'il existe au moins un personnage avec ce nom.",
-    SELECT_CHARACTER: "Sélectionnez un personnage pour voir sont armurerie.",
+    NO_CHARACTER: "Aucun personnage trouvé, assurez-vous d'avoir tapé le nom correctement ou qu'au moins un personnage avec ce nom existe.",
+    SELECT_CHARACTER: "Sélectionnez un personnage pour voir son armurerie.",
     MULTIPLE_CHARACTERS: "Ce joueur a plusieurs personnages. Veuillez en sélectionner un.",
     PLAYER_CHOICE: "{name} ({characters} personnages)",
     // No idea how to rewrite that one but i feel like it should be rewrote
@@ -32,43 +32,43 @@ const fr = {
   },
   events: {
     WORLD_BOSS: "{name} apparaît dans {zone} ({territory}) à {time}.\n\nLe prochain boss attendu est {nextName} à {nextTime}",
-    HELLTIDE: "Vagues infernale actuellement à {zone} jusqu'à {time}, prochaine vagues infernale à {nextTime}\n\nNouveau coffre: {refresh}",
+    HELLTIDE: "Vagues infernales actuellement à {zone} jusqu'à {time}, prochaines vagues infernales à {nextTime}\n\nNouveaux coffres : {refresh}",
     LEGION: "Legion apparaît à {time}, prochaine legion à {nextTime}",
   },
   embeds: {
     ARMORY: {
       STATISTICS_TITLE: "Statistiques",
       STATISTICS_VALUE:
-        "Niveau de Monde: {worldTier}\nMonstres tués: {monstersKilled}\nÉlites tués: {elitesKilled}\nOr collecté: {goldsCollected}",
+        "Niveau de Monde : {worldTier}\nMonstres tués : {monstersKilled}\nÉlites tués : {elitesKilled}\nOr collecté : {goldsCollected}",
       CHARACTER_CREATION_TITLE: "Création du personnage",
       LAST_PLAYED_TITLE: "Dernière connexion",
       PLAYED_TIME_TITLE: "Temps de jeu",
-      EQUIPPED_ITEMS_TITLE: "Objets équipés",
+      EQUIPPED_ITEMS_TITLE: "Équipement",
       STATUS_TITLE: "Statut",
       MODE_TITLE: "Mode",
     },
     HELP: {
       TITLE: "Commandes de {username}",
       DESCRIPTION:
-        "Voici une liste de toutes mes commandes. Nous ajouterons bientôt la possibilité d'obtenir plus d'informations sur chaque commande !",
+        "Voici une liste de toutes mes commandes. Nous ajouterons bientôt la possibilité d'obtenir plus d'informations sur chacune d'entre elles !",
     },
     INFO: {
       STATISTICS_TITLE: "Statistiques",
-      STATISTICS_VALUE: "Serveurs: {servers}\nUtilisateurs: {users}",
+      STATISTICS_VALUE: "Serveurs : {servers}\nUtilisateurs : {users}",
       DEBUG_TITLE: "Debug",
-      DEBUG_VALUE: "Clusters: {clusters}\nShards: {shards}\nShardID: {shardId}\nClusterID: {clusterId}",
-      DESCRIPTION: "{username} est un bot Discord qui fournit des informations sur Diablo 4 développé par glazk0 & Marco.",
+      DEBUG_VALUE: "Clusters : {clusters}\nShards : {shards}\nShardID : {shardId}\nClusterID : {clusterId}",
+      DESCRIPTION: "{username} est un bot Discord qui fournit de l'information sur Diablo 4 développé par glazk0 & Marco.",
     },
     SETTINGS: {
       TITLE: "Paramètres de notification de votre serveur",
-      VALUE: "Canal: {channel}\nRôle: {role}",
+      VALUE: "Canal : {channel}\nRôle : {role}",
     },
   },
   misc: {
     INVALID_QUERY: "Requête invalide.",
     NO_DATE_FOUND: "Aucune date trouvée.",
     NO_PLAYED_TIME: "Aucun temps de jeu trouvé.",
-    NO_EQUIPPED_ITEMS: "Aucun objets équipé trouvé.",
+    NO_EQUIPPED_ITEMS: "Aucun équipement trouvé.",
   },
 } satisfies Translation;
 
