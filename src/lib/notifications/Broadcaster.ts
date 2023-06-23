@@ -1,11 +1,10 @@
 import {
-  Channel,
   Guild,
   GuildScheduledEventCreateOptions,
+  Message,
   MessageCreateOptions,
   MessagePayload,
   NewsChannel,
-  PermissionFlagsBits,
   TextChannel,
 } from "discord.js";
 
@@ -30,26 +29,39 @@ export class Broadcaster {
    * @param message - The message to broadcast.
    * @param key - The key to use for the message.
    */
-  async broadcast(channel: Channel, message: string | MessagePayload | MessageCreateOptions, key?: string): Promise<void> {
-    await this.client.cluster.broadcastEval(
-      async (c, { channelId, message }) => {
+  async broadcast(
+    channelId: string,
+    message: string | MessagePayload | MessageCreateOptions,
+    oldMessageId: string | null,
+    key?: string
+  ): Promise<(Message<true> | null)[]> {
+    return (await this.client.cluster.broadcastEval(
+      async (c, { channelId, message, oldMessageId }) => {
         let channel = c.channels.cache.get(channelId);
 
         if (!channel) return;
 
         channel = channel as TextChannel | NewsChannel;
 
-        //  && m.embeds.length > 0 && m.embeds[0].footer?.text === key
-        let messages = (await channel.messages.fetch()).filter((m) => m.author.id === c.user?.id);
+        // Remove old message before sending message
+        let oldMessage = oldMessageId
+          ? await channel.messages.fetch(oldMessageId).catch((e) => {
+              console.error(`Unable to send fetch message ${oldMessageId}:`, e.message);
+              return null;
+            })
+          : null;
+        if (oldMessage)
+          await oldMessage.delete().catch((e) => console.error(`Unable to remove message with id: ${oldMessageId}`));
 
-        if (messages.size > 0) await messages.map((m) => m.delete());
-
-        await channel.send(message as string | MessagePayload | MessageCreateOptions).catch(() => {});
+        return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch((e) => {
+          console.error(`Unable to send message`, e.message);
+          return null;
+        });
       },
       {
-        context: { channelId: channel.id, message },
+        context: { channelId, message, oldMessageId },
       }
-    );
+    )) as (Message<true> | null)[];
   }
 
   /**

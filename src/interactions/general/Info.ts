@@ -4,25 +4,61 @@ import {
   ApplicationCommandType,
   ButtonBuilder,
   ButtonStyle,
-  CommandInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
+  InteractionResponse,
 } from "discord.js";
+import { inject, injectable } from "tsyringe";
 
+import { Client } from "../../core/Client";
 import { Context, Interaction } from "../../core/Interaction";
-import { InfoEmbed } from "../../utils/embeds/InfoEmbed";
-import { BOT_INVITE, SUPPORT_SERVER } from "../../utils/Constants";
 
+import { InfoEmbed } from "../../embeds/InfoEmbed";
+
+import { BOT_INVITE, SUPPORT_SERVER, clientSymbol } from "../../utils/Constants";
+
+export const helpersButtons = new ActionRowBuilder<ButtonBuilder>({
+  components: [
+    new ButtonBuilder({
+      label: "Invite me",
+      style: ButtonStyle.Link,
+      url: BOT_INVITE,
+    }),
+    new ButtonBuilder({
+      label: "Support",
+      style: ButtonStyle.Link,
+      url: SUPPORT_SERVER,
+    }),
+    new ButtonBuilder({
+      label: "GitHub",
+      style: ButtonStyle.Link,
+      url: "https://github.com/glazk0/lilith",
+    }),
+  ],
+});
+
+@injectable()
 export default class Info extends Interaction {
-  static enabled = true;
+  public enabled = true;
 
-  static command: ApplicationCommandData = {
+  public readonly category = "General";
+
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "info",
     description: "Displays Lilith's info.",
   };
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
-    const guilds = await ctx.client.cluster.broadcastEval((client) => client.guilds.cache.size);
-    const users = await ctx.client.cluster.broadcastEval((client) =>
+  constructor(@inject(clientSymbol) private client: Client) {
+    super();
+  }
+
+  public async run(
+    interaction: ChatInputCommandInteraction<CacheType>,
+    ctx: Context
+  ): Promise<InteractionResponse<boolean>> {
+    const guilds = await this.client.cluster.broadcastEval((client) => client.guilds.cache.size);
+    const users = await this.client.cluster.broadcastEval((client) =>
       client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)
     );
 
@@ -32,31 +68,11 @@ export default class Info extends Interaction {
       shardId: interaction.guild?.shardId || 0,
     };
 
-    const buttons = new ActionRowBuilder<ButtonBuilder>({
-      components: [
-        new ButtonBuilder({
-          label: "Invite me",
-          style: ButtonStyle.Link,
-          url: BOT_INVITE.replace("{{id}}", ctx.client.user!.id),
-        }),
-        new ButtonBuilder({
-          label: "Support",
-          style: ButtonStyle.Link,
-          url: SUPPORT_SERVER,
-        }),
-        new ButtonBuilder({
-          label: "GitHub",
-          style: ButtonStyle.Link,
-          url: "https://github.com/glazk0/lilith",
-        }),
-      ],
-    });
-
     const embed = new InfoEmbed(data, ctx);
 
-    await interaction.reply({
+    return await interaction.reply({
       embeds: [embed],
-      components: [buttons],
+      components: [helpersButtons],
     });
   }
 }

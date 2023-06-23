@@ -1,8 +1,10 @@
 import { container } from "tsyringe";
+
 import { Client } from "../core/Client";
 import { request, wait } from "../utils/Commons";
 import { DATABASE_URL, MAP_API_URL, clientSymbol, languages } from "../utils/Constants";
 import { getLeaderboard, getPlayer } from "./API";
+import { Map } from "../types";
 
 export class Worker {
   /**
@@ -83,18 +85,7 @@ export class Worker {
    * Refresh the map cache.
    */
   async refreshMap() {
-    const data = (await request(MAP_API_URL, true)) as {
-      alchemists: any[];
-      altars: any[];
-      cellars: any[];
-      dungeons: any[];
-      healers: any[];
-      helltideChests: any[];
-      jewelers: any[];
-      occultists: any[];
-      stableMasters: any[];
-      waypoints: any[];
-    };
+    const data = (await request(MAP_API_URL, true)) as Map;
 
     if (!data) return this.client.logger.error("Failed to fetch map data.");
 

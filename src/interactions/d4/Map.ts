@@ -3,13 +3,17 @@ import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   AutocompleteInteraction,
-  CommandInteraction,
-  hyperlink,
+  CacheType,
+  ChatInputCommandInteraction,
+  InteractionResponse,
 } from "discord.js";
+import { inject, injectable } from "tsyringe";
 
+import { Client } from "../../core/Client";
 import { Context, Interaction } from "../../core/Interaction";
 
-import { MAP_URL } from "../../utils/Constants";
+import { clientSymbol } from "../../utils/Constants";
+import { MapEmbed } from "../../embeds/MapEmbed";
 
 const nodes = [
   {
@@ -29,12 +33,16 @@ const nodes = [
     value: "dungeons",
   },
   {
-    name: "Healer",
-    value: "healers",
+    name: "Campaign Dungeon",
+    value: "campaignDungeons",
   },
   {
-    name: "Helltide Chest",
-    value: "helltideChests",
+    name: "Side Quest Dungeon",
+    value: "sideQuestDungeons",
+  },
+  {
+    name: "Healer",
+    value: "healers",
   },
   {
     name: "Jeweler",
@@ -52,12 +60,27 @@ const nodes = [
     name: "Waypoint",
     value: "waypoints",
   },
+  {
+    name: "Campaign Quest",
+    value: "campaignQuests",
+  },
+  {
+    name: "Side Quest",
+    value: "sideQuests",
+  },
+  {
+    name: "Event",
+    value: "events",
+  },
 ];
 
+@injectable()
 export default class Map extends Interaction {
-  static enabled = true;
+  public readonly enabled = true;
 
-  static command: ApplicationCommandData = {
+  public readonly category = "Diablo 4";
+
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "map",
     description: "Give information about specific things on the map.",
@@ -79,34 +102,48 @@ export default class Map extends Interaction {
     ],
   };
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
+  constructor(@inject(clientSymbol) private client: Client) {
+    super();
+  }
+
+  public async run(
+    interaction: ChatInputCommandInteraction<CacheType>,
+    { i18n }: Context
+  ): Promise<InteractionResponse<boolean>> {
     const { options } = interaction;
 
-    let query = (options.get("query")?.value || null) as string;
+    const query = options.getString("query", true);
+    const type = options.getString("type", true);
 
-    if (!query) return await interaction.reply("Invalid query.");
+    if (!query) return await interaction.reply(i18n.misc.INVALID_QUERY());
 
     let [name] = query.split("/@");
 
     name = name.replace(/%20/g, " ");
 
-    await interaction.reply(hyperlink(`See ${name} location on Diablo 4 Map`, `${MAP_URL}/nodes/${query}?ref=glazk0`));
+    let description = "";
+
+    const data = await this.client.cache.get(`map:${type}`);
+
+    if (data) description = JSON.parse(data).find((node: any) => node.name === name)?.description;
+
+    const embed = new MapEmbed(name, description, query);
+
+    return await interaction.reply({ embeds: [embed] });
   }
 
-  static async autocomplete(interaction: AutocompleteInteraction, ctx: Context): Promise<any> {
+  public async autocomplete(interaction: AutocompleteInteraction<CacheType>): Promise<any> {
     const type = interaction.options.getString("type", true);
 
     if (!type) return await interaction.respond([]);
 
-    let data = await ctx.client.cache.get(`map:${type}`);
+    let data = await this.client.cache.get(`map:${type}`);
 
     if (!data) return await interaction.respond([]);
 
     let nodes = JSON.parse(data) as any[];
 
     const value = interaction.options.getFocused();
-
-    if (!value) return await interaction.respond([]);
 
     nodes = [
       ...nodes?.filter((node: any) => node.name.toLowerCase().indexOf(value.toLowerCase()) === 0),

@@ -1,13 +1,15 @@
-import { MessageCreateOptions, MessagePayload, NewsChannel, Role, TextChannel, time } from "discord.js";
+import { Message, MessageCreateOptions, MessagePayload, time } from "discord.js";
 
 import { Client } from "../../core/Client";
-import { Event } from "../../types";
+import { Event, EventsList } from "../../types";
 import { duration, wait } from "../../utils/Commons";
-import { EventEmbed } from "../../utils/embeds/EventEmbed";
+import { EventEmbed, territory } from "../../embeds/EventEmbed";
 import { Broadcaster } from "./Broadcaster";
 import { container } from "tsyringe";
 import { clientSymbol } from "../../utils/Constants";
 import { getEvents, getStatus } from "../API";
+import L from "../../i18n/i18n-node";
+import { Locales } from "../../i18n/i18n-types";
 
 const refreshInterval = duration.seconds(60);
 
@@ -60,91 +62,134 @@ export class EventNotifier {
     }
 
     for (let [key, value] of Object.entries(events)) {
-      let cache = await this.client.cache.get(`events:${key}`);
+      let cache = await this.client.cache.get(`events:${this.client.user?.id}:${key}`);
 
       const cachedEvent = JSON.parse(cache!) as Event;
 
-      if (!cache || cachedEvent.timestamp !== value.timestamp) {
-        await this.client.cache.set(`events:${key}`, JSON.stringify(value));
+      const date = Date.now();
 
-        const date = Date.now();
+      if (!cache || cachedEvent.timestamp !== value.timestamp || this.checkRefresh(value)) {
+        await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
+
         const event = new Date(value.timestamp * 1000).getTime();
 
-        if (event < date - duration.minutes(5)) {
+        if (event < date - duration.minutes(2)) {
           this.client.logger.info(`Event ${key} is outdated, skipping...`);
           continue;
         }
 
-        const guilds = await this.client.repository.guild.getAllByEvent(key as keyof typeof events);
+        const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
 
         this.client.logger.info(`Found ${guilds.length} guilds with event ${key}.`);
 
         for (const guild of guilds) {
           this.client.logger.info(`Checking guild ${guild.id}...`);
 
-          const embed = new EventEmbed(key, value, { client: this.client, guild });
+          const embed = new EventEmbed(key, value);
 
           let message: string | MessagePayload | MessageCreateOptions = {
-            content: getTitle(key, value),
+            content: this.getTitle(key, value, guild.locale as Locales),
             embeds: [embed],
           };
 
-          const setting = guild.settings.events[key as keyof typeof guild.settings.events];
+          const settings = guild.events.filter((event) => event.type === (key as EventsList));
 
-          if (!setting.enabled) continue;
+          if (!settings || settings.length === 0) continue;
 
-          this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`);
+          for (let setting of settings) {
+            this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`);
 
-          if (setting.role) {
-            const role = setting.role as any as Role;
-            message.content += ` - <@&${role.id}>`;
-            message.allowedMentions = {
-              roles: [role.id],
-            };
+            if (setting.roleId) {
+              message.content += ` - <@&${setting.roleId}>`;
+              message.allowedMentions = {
+                roles: [setting.roleId],
+              };
+            }
+
+            // if (setting.schedule) {
+            //   // TODO: Implement schedule
+            // }
+
+            if (!setting.channelId) {
+              this.client.logger.info(`Event ${key} has no channel set, skipping...`);
+              continue;
+            }
+
+            const response = (await this.broadcaster.broadcast(
+              setting.channelId,
+              message,
+              setting.messageId
+            )) as (Message<true> | null)[];
+
+            if (response && response.length >= 1) {
+              await this.client.database.event.update({
+                data: { messageId: response[0]?.id },
+                where: {
+                  type_channelId: {
+                    type: key,
+                    channelId: setting.channelId,
+                  },
+                },
+              });
+            }
+
+            // await wait(250);
           }
-
-          if (setting.schedule) {
-            // TODO: Implement schedule
-          }
-
-          let channel = setting.channel as any as TextChannel | NewsChannel;
-
-          if (!channel) {
-            this.client.logger.info(`Event ${key} has no channel set, skipping...`);
-            continue;
-          }
-
-          await this.broadcaster.broadcast(channel, message);
-
-          await wait(250);
         }
 
         this.client.logger.info(`Event ${key} has been broadcasted to ${guilds.length} guilds.`);
       }
     }
   }
-}
 
-/**
- * Get the event title.
- *
- * @param key - The event key.
- * @param event - The event object.
- *
- * @returns {string} - The event title.
- */
-function getTitle(key: string, event: Event) {
-  switch (key) {
-    case "boss":
-      return `${event.name} appears in ${event.zone} (${event.territory}) at ${time(event.timestamp, "t")}`;
-    case "helltide":
-      return `Helltide occuring until ${time(event.timestamp + 3600, "t")}, next helltide at ${time(
-        event.timestamp + 8100,
-        "t"
-      )}`;
-    case "legion":
-      return `Legion appears ${time(event.timestamp, "R")}, next legion at ${time(event.timestamp + 1800, "t")}`;
-    default:
-      return key;
+  /**
+   * TODO - Implement refresh
+   */
+  private checkRefresh(event: Event) {
+    if (event.refresh && event.refresh > 0) {
+      const date = Date.now();
+
+      if (date / 1000 > event.refresh) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Get the event title.
+   *
+   * @param key - The event key.
+   * @param event - The event object.
+   *
+   * @returns {string} - The event title.
+   */
+
+  private getTitle(key: string, event: Event, locale: Locales = "en") {
+    switch (key) {
+      case "boss":
+        return L[locale].events.WORLD_BOSS({
+          name: event.name,
+          zone: event.zone,
+          territory: event.territory,
+          time: time(event.timestamp, "t"),
+          nextName: event.nextExpectedName,
+          nextTime: time(event.nextExpected, "t"),
+        });
+      case "helltide":
+        return L[locale].events.HELLTIDE({
+          zone: territory[event.zone],
+          time: time(event.timestamp + 3600, "t"),
+          nextTime: time(event.timestamp + 8100, "t"),
+          refresh: event.refresh > 0 ? time(event.refresh, "R") : "/",
+        });
+      case "legion":
+        return L[locale].events.LEGION({
+          time: time(event.timestamp, "R"),
+          nextTime: time(event.timestamp + 1800, "t"),
+        });
+      default:
+        return key;
+    }
   }
 }

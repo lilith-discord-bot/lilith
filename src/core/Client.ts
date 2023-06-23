@@ -1,19 +1,20 @@
 import "reflect-metadata";
 
 import { ClusterClient, getInfo } from "discord-hybrid-sharding";
-import { ClientOptions, Client as DiscordClient } from "discord.js";
-import { DataSource } from "typeorm";
+import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
 
 import EventHandler from "../events/EventHandler";
 
 import { Logger } from "../lib/Logger";
 import { registerClientEvents } from "../lib/RegisterEvents";
-import { database } from "../lib/db/postgresql/Database";
 import { redis } from "../lib/db/redis/Redis";
 
 import { GuildRepository } from "../lib/db/postgresql/repository/Guild";
 import { clientSymbol, options } from "../utils/Constants";
 import { container } from "tsyringe";
+import { PrismaClient } from "@prisma/client";
+import { database } from "../lib/db/postgresql/Database";
+import { Interaction } from "./Interaction";
 
 export class Client extends DiscordClient {
   /**
@@ -21,34 +22,34 @@ export class Client extends DiscordClient {
    * @type {ClusterClient<DiscordClient>}
    * @readonly
    */
-  readonly cluster: ClusterClient<DiscordClient>;
+  public readonly cluster: ClusterClient<DiscordClient>;
 
   /**
    * The event handler.
    * @type {EventHandler}
    * @readonly
    */
-  readonly eventHandler: EventHandler;
+  public readonly eventHandler: EventHandler;
 
   /**
    * Redis cache.
    * @type {typeof redis}
    * @readonly
    */
-  readonly cache: typeof redis;
+  public readonly cache: typeof redis;
 
   /**
    * The datasource
-   * @type {DataSource}
+   * @type {PrismaClient}
    */
-  readonly database: DataSource;
+  public readonly database: PrismaClient;
 
   /**
    * Differents repositories.
    * @type {object}
    * @readonly
    */
-  readonly repository: {
+  public readonly repository: {
     guild: GuildRepository;
   };
 
@@ -56,7 +57,13 @@ export class Client extends DiscordClient {
    * The logger class.
    * @type {typeof Logger}
    */
-  readonly logger: typeof Logger;
+  public readonly logger: typeof Logger;
+
+  /**
+   * The client's interactions.
+   * @type {Collection<string, Interaction>}
+   */
+  public interactions: Collection<string, Interaction>;
 
   /**
    * Creates a new client.
@@ -98,7 +105,6 @@ export class Client extends DiscordClient {
     await registerClientEvents();
 
     await this.cache.connect();
-    await this.database.initialize();
 
     try {
       await super.login(process.env.TOKEN);
@@ -116,6 +122,15 @@ export class Client extends DiscordClient {
   async destroy(): Promise<void> {
     await super.destroy();
     process.exit(0);
+  }
+
+  /**
+   * Sets the interactions.
+   *
+   * @param interactions - The interactions.
+   */
+  setInteractions(interactions: Collection<string, Interaction>): void {
+    this.interactions = interactions;
   }
 }
 

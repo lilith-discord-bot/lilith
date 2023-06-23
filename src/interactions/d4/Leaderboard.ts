@@ -2,20 +2,24 @@ import {
   ApplicationCommandData,
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  CommandInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
+  InteractionResponse,
 } from "discord.js";
 
 import { Context, Interaction } from "../../core/Interaction";
 
-import { leaderboardEmbed } from "../../utils/embeds/LeaderboardEmbed";
 import { classesChoices, modesChoices } from "../../utils/Constants";
+import { leaderboardEmbed } from "../../embeds/LeaderboardEmbed";
 
 import { getLeaderboard } from "../../lib/API";
 
 export default class Leaderboard extends Interaction {
-  static enabled = true;
+  public readonly enabled = false;
 
-  static command: ApplicationCommandData = {
+  public readonly category = "Diablo 4";
+
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "leaderboard",
     description: "Displays the leaderboard for a given class and mode.",
@@ -35,16 +39,14 @@ export default class Leaderboard extends Interaction {
     ],
   };
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
-    const { options } = interaction;
-
-    const classe = options.get("class")?.value as any;
-    const mode = options.get("mode")?.value as any;
+  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
+    const classe = interaction.options.getString("class", true) as any;
+    const mode = interaction.options.getString("mode", true) as any;
 
     const res = await getLeaderboard(classe, mode);
 
     const embed = new leaderboardEmbed(res);
 
-    await interaction.reply({ embeds: [embed] });
+    return await interaction.reply({ embeds: [embed] });
   }
 }

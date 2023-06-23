@@ -3,18 +3,24 @@ import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
   AutocompleteInteraction,
-  CommandInteraction,
+  CacheType,
+  ChatInputCommandInteraction,
+  InteractionResponse,
   hyperlink,
 } from "discord.js";
+import { inject, injectable } from "tsyringe";
 
+import { Client } from "../../core/Client";
 import { Context, Interaction } from "../../core/Interaction";
 
-import { DATABASE_URL, discordToLanguage } from "../../utils/Constants";
-
+import { DATABASE_URL, clientSymbol, discordToLanguage } from "../../utils/Constants";
+@injectable()
 export default class Item extends Interaction {
-  static enabled = true;
+  public readonly enabled = true;
 
-  static command: ApplicationCommandData = {
+  public readonly category = "Diablo 4";
+
+  public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
     name: "item",
     description: "Give information about specific item.",
@@ -29,24 +35,31 @@ export default class Item extends Interaction {
     ],
   };
 
-  static async run(interaction: CommandInteraction, ctx: Context): Promise<any> {
+  constructor(@inject(clientSymbol) private client: Client) {
+    super();
+  }
+
+  public async run(
+    interaction: ChatInputCommandInteraction<CacheType>,
+    { i18n }: Context
+  ): Promise<InteractionResponse<boolean>> {
     const { options } = interaction;
 
     let query = (options.get("query")?.value || null) as string;
 
-    if (!query) return await interaction.reply("Invalid query.");
+    if (!query) return await interaction.reply(i18n.misc.INVALID_QUERY());
 
     const [url, label] = query.split(":");
 
-    await interaction.reply(
+    return await interaction.reply(
       hyperlink(`See ${label} on Diablo 4 Database`, `${DATABASE_URL}/${url}`, "Click here to see the Diablo 4 Database")
     );
   }
 
-  static async autocomplete(interaction: AutocompleteInteraction, ctx: Context): Promise<any> {
+  public async autocomplete(interaction: AutocompleteInteraction<CacheType>): Promise<any> {
     const language = discordToLanguage[interaction.guild?.preferredLocale || interaction.locale] || "us";
 
-    let data = await ctx.client.cache.get(`database:${language}`);
+    let data = await this.client.cache.get(`database:${language}`);
 
     if (!data) return await interaction.respond([]);
 

@@ -1,5 +1,5 @@
-import fs from "node:fs";
-import path from "node:path";
+import { readdirSync } from "node:fs";
+import { join, resolve } from "node:path";
 
 import {
   AutocompleteInteraction,
@@ -7,21 +7,28 @@ import {
   Collection,
   CommandInteraction,
   Events,
+  REST,
+  Routes,
   StringSelectMenuInteraction,
 } from "discord.js";
+import { container } from "tsyringe";
 
 import { Event } from "../core/Event";
 import { Context, Interaction } from "../core/Interaction";
+
+import L from "../i18n/i18n-node";
+
+import { Guild } from "../types/Database";
 
 // TODO : Refactor this, it works for now
 export default class InteractionHandler extends Event {
   /**
    * The interactions collection.
    *
-   * @type {Collection<string, any>}
+   * @type {Collection<string, Interaction>}
    * @readonly
    */
-  private readonly interactions = new Collection<string, any>();
+  private readonly interactions: Collection<string, Interaction>;
 
   constructor() {
     super("onInteraction", Events.InteractionCreate);
@@ -33,65 +40,54 @@ export default class InteractionHandler extends Event {
 
   /**
    * Initializes the interaction handler.
-   *
-   * @returns {Promise<void>} - Returns nothing.
    */
   async init(): Promise<void> {
-    const dir = path.join(__dirname, "..", "interactions");
+    const dir = readdirSync(join(resolve("interactions")));
 
-    let loadedCommands = [];
+    this.client.logger.info(`Loading ${dir.length} interactions categories.`);
 
-    let files = await fs.readdirSync(dir);
+    for (const category of dir) {
+      const files = readdirSync(join(resolve("interactions", category)));
 
-    if (!files) return;
+      this.client.logger.info(`Loading ${files.length} interactions from category ${category}.`);
 
-    const categories = files.filter?.((file) => !file.endsWith(".js"));
+      for (const file of files) {
+        if (!file.endsWith(".js")) continue;
+        const commandClass = (await import(join(resolve(), "interactions", category, file))).default;
+        const interaction = container.resolve<Interaction>(commandClass);
+        this.client.logger.info(`Loading interaction ${interaction.command.name}.`);
+        this.interactions.set(interaction.command.name, interaction);
+      }
+    }
 
-    categories.forEach((category) => {
-      files = files.concat(
-        fs.readdirSync(path.join(dir, category)).map((file) => path.join(path.resolve(dir, category, file)))
-      );
-    });
+    this.client.setInteractions(this.interactions);
 
-    loadedCommands = (
-      await Promise.all(
-        files.map(async (file) => {
-          if (!file.endsWith(".js")) return undefined;
-          try {
-            const Handler = (await import(file)).default;
-            return Handler.prototype instanceof Interaction ? Handler : undefined;
-          } catch (error) {
-            this.client.logger.error(error);
-            return undefined;
-          }
-        })
-      )
-    ).filter((handler) => handler) as any[];
-
-    loadedCommands
-      .filter((command) => command.enabled)
-      .flat()
-      .filter((c) => c)
-      .forEach((command) => {
-        this.interactions.set(command.command.name, command);
-      });
-
-    this.create();
-
-    this.client.logger.info(`Loaded ${this.interactions.size} interactions`);
+    this.refresh();
   }
 
-  private async create(): Promise<void> {
-    const ready = this.client.readyAt ? Promise.resolve() : new Promise((resolve) => this.client.once("ready", resolve));
+  /**
+   * Refreshes the interactions.
+   * This will update the interactions on Discord.
+   */
+  private async refresh() {
+    const ready = this.client.readyAt
+      ? Promise.resolve()
+      : new Promise((resolve) => this.client.once(Events.ClientReady, resolve));
 
     await ready;
 
-    for (const [name, command] of this.interactions) {
-      try {
-        await this.client.application?.commands.create(command.command);
-      } catch (error) {
-        this.client.logger.error(`Failed to load interaction ${name}: ${error}`);
-      }
+    const rest = new REST().setToken(process.env.TOKEN);
+
+    try {
+      this.client.logger.info(`Started refreshing ${this.interactions.size} application (/) commands.`);
+
+      const data = (await rest.put(Routes.applicationCommands(this.client.user.id), {
+        body: this.interactions.filter((interaction) => interaction.enabled).map((interaction) => interaction.command),
+      })) as any;
+
+      this.client.logger.info(`Successfully reloaded ${data.length} application (/) commands.`);
+    } catch (error) {
+      this.client.logger.error(`Failed to reload application (/) commands: ${error}`);
     }
   }
 
@@ -106,26 +102,28 @@ export default class InteractionHandler extends Event {
     if (!this.client.isReady) return undefined;
     if (!interaction) return undefined;
 
-    let guild = null;
+    let guild = null as Guild | null;
 
     if (interaction.inGuild()) guild = await this.client.repository.guild.findOrCreate(interaction.guildId);
 
     let context = {} as Context;
 
-    context.client = this.client;
+    context.i18n = L[guild.locale || "en"];
     context.guild = guild;
 
     if (interaction.isChatInputCommand()) {
       if (!this.interactions.has(interaction.commandName)) return undefined;
 
+      this.client.logger.info(`Command ${interaction.commandName} was executed in ${interaction.guildId || "DM"}`);
+
       const command = this.interactions.get(interaction.commandName);
 
       if (!command) return undefined;
 
-      this.client.logger.info(`Command ${command.name} was executed.`);
+      this.client.logger.info(`Command ${command.command.name} was executed in ${interaction.guildId || "DM"}`);
 
       try {
-        await command.run?.(interaction, context);
+        await command.run(interaction, context);
       } catch (error) {
         this.client.logger.error(`Failed to run interaction ${interaction.commandName}: ${error}`);
       }
@@ -143,7 +141,7 @@ export default class InteractionHandler extends Event {
       try {
         await command.autocomplete?.(interaction, context);
       } catch (error) {
-        this.client.logger.error(`Failed to run autocomplete for interaction ${command.name}: ${error}`);
+        this.client.logger.error(`Failed to run autocomplete for interaction ${command.command.name}: ${error}`);
       }
     }
 

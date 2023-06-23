@@ -3,11 +3,16 @@ import { ActivityType, ClientOptions, GatewayIntentBits, Locale, Partials, Prese
 import { ClassesChoices, ModesChoices } from "../types";
 
 /**
+ * Our CDN.
+ * @type {string}
+ */
+export const CDN = "https://s3.glazk0.dev/lilith";
+
+/**
  * The bot invite link.
  * @type {string}
  */
-export const BOT_INVITE =
-  "https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions=17876191071232&scope=bot%20applications.commands";
+export const BOT_INVITE = "https://lilith.mom/invite";
 
 /**
  * The support server invite link.
@@ -183,3 +188,17 @@ export const discordToLanguage = {
   ru: "ru",
   "es-ES": "es",
 } as Record<Locale, string>;
+
+/**
+ * Match locales to their names.
+ */
+export const localesMap = {
+  en: "English",
+  fr: "Français",
+  de: "Deutsch",
+  it: "Italiano",
+  jp: "日本語",
+  br: "Português",
+  es: "Español",
+  pl: "Polski",
+} as Record<string, string>;

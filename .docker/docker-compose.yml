@@ -1,3 +1,5 @@
+version: "3"
+
 services:
   bot:
     depends_on:
@@ -23,8 +25,7 @@ services:
   redis:
     image: redis:7.0.11
     # TODO: configure redis properly, either by using arguments or using a separate volume for configs.
-    environment:
-      - REDIS_ARGS=--requirepass ${REDIS_PASSWORD}
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
       - network
     ports:

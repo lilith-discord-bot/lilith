@@ -37,15 +37,12 @@ npm install
 ```env
 TOKEN=your_token_here
 
-#API
-ARMORY_URL=api_url 
-ARMORY_API_URL=api_url 
-
 #Database
 POSTGRES_HOST=postgres_database_host # Doesn't need to be set if running with Docker.
 POSTGRES_USER=postgres_database_user
 POSTGRES_PASSWORD=postgres_database_password
 POSTGRES_DATABASE=postgres_database
+DATABASE_URL="postgresql://user:password@host:5432/database"
 
 #Cache
 REDIS_HOST=redis_host # Doesn't need to be set if running with Docker.
@@ -59,7 +56,14 @@ REDIS_PASSWORD=redis_password
 npm run bot:up
 ```
 
-Other commands:
+If you're running docker, you can just use
+```bash
+docker run --name bot -e REDIS_HOST=redis -e REDIS_PASSWORD=password -e DATABASE_URL=something://user:password@host:port/database ghcr.io/lilith-discord-bot/lilith:latest
+```
+> you still have to run Redis and a database, if you don't wanna bother with that, `npm run bot:up` sets everything up for you using compose
+
+
+### Other commands:
 
 - `npm run bot:stop` - Stop the bot
 - `npm run bot:restart` - Restart the bot
