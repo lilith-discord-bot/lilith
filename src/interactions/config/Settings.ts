@@ -4,8 +4,7 @@ import {
   ApplicationCommandType,
   CacheType,
   ChannelType,
-  CommandInteraction,
-  CommandInteractionOptionResolver,
+  ChatInputCommandInteraction,
   GuildChannel,
   InteractionResponse,
   NewsChannel,
@@ -13,13 +12,14 @@ import {
   TextChannel,
   ThreadChannel,
 } from "discord.js";
-
 import { inject, injectable } from "tsyringe";
+
 import { Client } from "../../core/Client";
 import { Context, Interaction } from "../../core/Interaction";
+
+import { SettingsEmbed } from "../../embeds/SettingsEmbed";
 import { EventsList } from "../../types";
 import { clientSymbol, eventsChoices } from "../../utils/Constants";
-import { SettingsEmbed } from "../../embeds/SettingsEmbed";
 
 @injectable()
 export default class Settings extends Interaction {
@@ -32,6 +32,7 @@ export default class Settings extends Interaction {
     name: "settings",
     description: "Manage your actual guild settings.",
     defaultMemberPermissions: [PermissionFlagsBits.ManageGuild],
+    dmPermission: false,
     options: [
       {
         type: ApplicationCommandOptionType.SubcommandGroup,
@@ -171,11 +172,11 @@ export default class Settings extends Interaction {
     super();
   }
 
-  public async run(interaction: CommandInteraction<CacheType>, ctx: Context): Promise<InteractionResponse<boolean>> {
-    if (!interaction.inGuild() || !interaction.guild)
-      return await interaction.reply({ content: "This command is only available in guilds." });
-
-    const options = interaction.options as CommandInteractionOptionResolver;
+  public async run(
+    interaction: ChatInputCommandInteraction<CacheType>,
+    ctx: Context
+  ): Promise<InteractionResponse<boolean>> {
+    const options = interaction.options;
 
     const group = options.getSubcommandGroup();
     const subcommand = options.getSubcommand();
@@ -221,7 +222,7 @@ export default class Settings extends Interaction {
             }
 
             await interaction.reply({
-              content: `Notifications for **${event}** have been updated.`,
+              content: `Notifications for **${event}** have been enabled.`,
               ephemeral: true,
             });
             break;
@@ -297,7 +298,7 @@ export default class Settings extends Interaction {
           case "test":
             if (!currentEvent) {
               return await interaction.reply({
-                content: `Notifications for **${event}** are not enabled or the channel is not the good one.`,
+                content: `Notifications for **${event}** are not enabled or this channel is the wrong one.`,
                 ephemeral: true,
               });
             }
@@ -324,12 +325,6 @@ export default class Settings extends Interaction {
                 ephemeral: true,
               });
             }
-
-            await channelElement
-              .send({
-                content: `This is a test notification for **${event}**.`,
-              })
-              .then((message) => setTimeout(() => message.delete(), 5000));
 
             await interaction.reply({
               content: `Notifications for **${event}** are working fine.`,

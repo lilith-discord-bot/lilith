@@ -11,6 +11,7 @@ export type Event = {
   timestamp: number;
   expected: number;
   nextExpected: number;
+  refresh?: number;
   territory?: string;
   zone: string;
 };
