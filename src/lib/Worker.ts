@@ -92,7 +92,6 @@ export class Worker {
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         const value = data[key as keyof typeof data];
-        console.log(key, value);
         await this.client.cache.set(`map:${key}`, JSON.stringify(value));
       }
     }
