@@ -3,19 +3,19 @@ import type { Translation } from "../i18n-types";
 const fr = {
   settings: {
     locale: {
-      SUCCESS: "Les paramètres de votre serveur Discord ont été mis à jour en **{locale}**.",
+      SUCCESS: "La langue de votre serveur Discord a été mis à jour en **{locale}**.",
     },
     notifications: {
       NO_PERMISSIONS: "Je n'ai pas l'autorisation d'envoyer des messages dans {channel}.",
       ALREADY_ENABLED: "Les notifications pour **{event}** sont déjà activées.",
-      ENABLED: "Les notifications pour **{event}** ont été activées et seront envoyées à {channel}.",
-      NOT_ENABLED: "Les notifications pour **{event}** ne sont pas activés.",
-      UPDATED: "Les notifications pour **{event}** ont été mises à jour et seront envoyées à {channel}.",
-      DISABLED: "Les notifications pour **{event}** ont été désactivés.",
-      ALREADY_DISABLED: "Les notifications pour **{event}** sont déjà désactivés.",
+      ENABLED: "Les notifications pour **{event}** ont été activées et seront envoyées dans {channel}.",
+      NOT_ENABLED: "Les notifications pour **{event}** ne sont pas activées.",
+      UPDATED: "Les notifications pour **{event}** ont été mises à jour et seront envoyées dans {channel}.",
+      DISABLED: "Les notifications pour **{event}** ont été désactivées.",
+      ALREADY_DISABLED: "Les notifications pour **{event}** sont déjà désactivées.",
       NO_EVENTS: "Aucun événement n'est activé.",
       NO_EVENTS_IN_CHANNEL: "Aucun événement n'est activé dans {channel}.",
-      EVENTS_WORKING: "Les notifications pour **{event}** fonctionnent et seront envoyées à {channel}.",
+      EVENTS_WORKING: "Les notifications pour **{event}** fonctionnent et seront envoyées dans {channel}.",
     },
   },
   armory: {
@@ -27,27 +27,28 @@ const fr = {
     SELECT_CHARACTER: "Sélectionnez un personnage pour voir sont armurerie.",
     MULTIPLE_CHARACTERS: "Ce joueur a plusieurs personnages. Veuillez en sélectionner un.",
     PLAYER_CHOICE: "{name} ({characters} personnages)",
+    // No idea how to rewrite that one but i feel like it should be rewrote
     NOT_TRACKED_YET: '"{player}" n\'est pas suivi actuellement, envoyez-le pour le suivre.',
   },
   events: {
     WORLD_BOSS: "{name} apparaît dans {zone} ({territory}) à {time}.\n\nLe prochain boss attendu est {nextName} à {nextTime}",
-    HELLTIDE: "Vagues infernales actuellement à {zone} jusqu'à {time}, prochaine vagues infernales à {nextTime}\n\nNouveau coffre: {refresh}",
+    HELLTIDE: "Vagues infernale actuellement à {zone} jusqu'à {time}, prochaine vagues infernale à {nextTime}\n\nNouveau coffre: {refresh}",
     LEGION: "Legion apparaît à {time}, prochaine legion à {nextTime}",
   },
   embeds: {
     ARMORY: {
       STATISTICS_TITLE: "Statistiques",
       STATISTICS_VALUE:
-        "Niveau de Monde: {worldTier}\nMonstres tués: {monstersKilled}\nÉlites tuées: {elitesKilled}\nOr collecté: {goldsCollected}",
+        "Niveau de Monde: {worldTier}\nMonstres tués: {monstersKilled}\nÉlites tués: {elitesKilled}\nOr collecté: {goldsCollected}",
       CHARACTER_CREATION_TITLE: "Création du personnage",
-      LAST_PLAYED_TITLE: "Dernière fois joué",
+      LAST_PLAYED_TITLE: "Dernière connexion",
       PLAYED_TIME_TITLE: "Temps de jeu",
       EQUIPPED_ITEMS_TITLE: "Objets équipés",
       STATUS_TITLE: "Statut",
       MODE_TITLE: "Mode",
     },
     HELP: {
-      TITLE: "{username}'s commandes",
+      TITLE: "Commandes de {username}",
       DESCRIPTION:
         "Voici une liste de toutes mes commandes. Nous ajouterons bientôt la possibilité d'obtenir plus d'informations sur chaque commande !",
     },
