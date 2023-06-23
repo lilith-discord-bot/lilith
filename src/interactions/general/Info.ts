@@ -11,7 +11,7 @@ import {
 import { inject, injectable } from "tsyringe";
 
 import { Client } from "../../core/Client";
-import { Interaction } from "../../core/Interaction";
+import { Context, Interaction } from "../../core/Interaction";
 
 import { InfoEmbed } from "../../embeds/InfoEmbed";
 
@@ -53,7 +53,10 @@ export default class Info extends Interaction {
     super();
   }
 
-  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
+  public async run(
+    interaction: ChatInputCommandInteraction<CacheType>,
+    ctx: Context
+  ): Promise<InteractionResponse<boolean>> {
     const guilds = await this.client.cluster.broadcastEval((client) => client.guilds.cache.size);
     const users = await this.client.cluster.broadcastEval((client) =>
       client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)
@@ -65,7 +68,7 @@ export default class Info extends Interaction {
       shardId: interaction.guild?.shardId || 0,
     };
 
-    const embed = new InfoEmbed(data);
+    const embed = new InfoEmbed(data, ctx);
 
     return await interaction.reply({
       embeds: [embed],

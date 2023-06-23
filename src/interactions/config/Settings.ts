@@ -313,7 +313,10 @@ export default class Settings extends Interaction {
                 ephemeral: true,
               });
 
-            const embed = new SettingsEmbed(events);
+            const embed = new SettingsEmbed(events, {
+              i18n,
+              guild,
+            });
 
             await interaction.reply({ embeds: [embed], ephemeral: true });
             break;

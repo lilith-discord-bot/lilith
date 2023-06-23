@@ -12,7 +12,7 @@ export class SettingsEmbed extends Embed {
     this.data.fields = events.map((event) => ({
       name: event.type,
       value: i18n.embeds.SETTINGS.VALUE({
-        channel: event.channelId,
+        channel: event.channelId ? `<#${event.channelId}>` : "/",
         role: event.roleId ? `<@&${event.roleId}>` : "/",
       }),
       inline: false,

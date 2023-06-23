@@ -8,7 +8,7 @@ import {
 import { inject, injectable } from "tsyringe";
 
 import { Client } from "../../core/Client";
-import { Interaction } from "../../core/Interaction";
+import { Context, Interaction } from "../../core/Interaction";
 
 import { HelpEmbed } from "../../embeds/HelpEmbed";
 
@@ -32,10 +32,13 @@ export default class Help extends Interaction {
     super();
   }
 
-  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
+  public async run(
+    interaction: ChatInputCommandInteraction<CacheType>,
+    ctx: Context
+  ): Promise<InteractionResponse<boolean>> {
     const commands = this.client.interactions;
 
-    const embed = new HelpEmbed(commands);
+    const embed = new HelpEmbed(commands, ctx);
 
     return await interaction.reply({ embeds: [embed], components: [helpersButtons] });
   }
