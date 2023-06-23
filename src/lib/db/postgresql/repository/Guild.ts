@@ -178,6 +178,12 @@ export class GuildRepository {
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
   }
 
+  /**
+   * Update the locale for a guild.
+   *
+   * @param guildId - The guild ID.
+   * @param locale - The locale.
+   */
   async updateLocale(guildId: string, locale: Locales): Promise<void> {
     let guild = await this.findOrCreate(guildId);
 

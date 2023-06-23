@@ -211,7 +211,7 @@ export default class Settings extends Interaction {
     switch (subcommand) {
       case "locale":
         try {
-          await this.client.repository.guild.updateLocale(guild.id, locale as Locales);
+          await this.client.repository.guild.updateLocale(interaction.guild.id, locale as Locales);
         } catch (error) {
           this.client.logger.error(error);
         }
