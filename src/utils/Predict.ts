@@ -137,7 +137,7 @@ export const map = {
   },
   step: {
     "1B_2A": 0,
-    "2B_1A": 1,
+    "1A_2B": 1,
   },
   hawe: {
     "1B_2A": 0,
