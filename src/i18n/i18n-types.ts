@@ -21,6 +21,13 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	settings: {
+		locale: {
+			/**
+			 * Y​o​u​r​ ​D​i​s​c​o​r​d​ ​s​e​r​v​e​r​ ​l​o​c​a​l​e​ ​h​a​s​ ​b​e​e​n​ ​u​p​d​a​t​e​d​ ​t​o​ ​*​*​{​l​o​c​a​l​e​}​*​*​.
+			 * @param {unknown} locale
+			 */
+			SUCCESS: RequiredParams<'locale'>
+		}
 		notifications: {
 			/**
 			 * I​ ​d​o​n​'​t​ ​h​a​v​e​ ​p​e​r​m​i​s​s​i​o​n​s​ ​t​o​ ​s​e​n​d​ ​m​e​s​s​a​g​e​s​ ​i​n​ ​{​c​h​a​n​n​e​l​}​.
@@ -74,13 +81,6 @@ type RootTranslation = {
 			 * @param {unknown} event
 			 */
 			EVENTS_WORKING: RequiredParams<'channel' | 'event'>
-		}
-		locale: {
-			/**
-			 * Y​o​u​r​ ​D​i​s​c​o​r​d​ ​s​e​r​v​e​r​ ​l​o​c​a​l​e​ ​h​a​s​ ​b​e​e​n​ ​u​p​d​a​t​e​d​ ​t​o​ ​*​*​{​l​o​c​a​l​e​}​*​*​.
-			 * @param {unknown} locale
-			 */
-			SUCCESS: RequiredParams<'locale'>
 		}
 	}
 	armory: {
@@ -151,16 +151,134 @@ type RootTranslation = {
 		 */
 		LEGION: RequiredParams<'nextTime' | 'time'>
 	}
+	embeds: {
+		ARMORY: {
+			/**
+			 * S​t​a​t​i​s​t​i​c​s
+			 */
+			STATISTICS_TITLE: string
+			/**
+			 * W​o​r​l​d​ ​T​i​e​r​:​ ​{​w​o​r​l​d​T​i​e​r​}​
+		​M​o​n​s​t​e​r​s​ ​k​i​l​l​e​d​:​ ​{​m​o​n​s​t​e​r​s​K​i​l​l​e​d​}​
+		​E​l​i​t​e​s​ ​k​i​l​l​e​d​:​ ​{​e​l​i​t​e​s​K​i​l​l​e​d​}​
+		​G​o​l​d​s​ ​c​o​l​l​e​c​t​e​d​:​ ​{​g​o​l​d​s​C​o​l​l​e​c​t​e​d​}
+			 * @param {unknown} elitesKilled
+			 * @param {unknown} goldsCollected
+			 * @param {unknown} monstersKilled
+			 * @param {unknown} worldTier
+			 */
+			STATISTICS_VALUE: RequiredParams<'elitesKilled' | 'goldsCollected' | 'monstersKilled' | 'worldTier'>
+			/**
+			 * C​h​a​r​a​c​t​e​r​ ​c​r​e​a​t​i​o​n
+			 */
+			CHARACTER_CREATION_TITLE: string
+			/**
+			 * L​a​s​t​ ​p​l​a​y​e​d
+			 */
+			LAST_PLAYED_TITLE: string
+			/**
+			 * P​l​a​y​e​d​ ​t​i​m​e
+			 */
+			PLAYED_TIME_TITLE: string
+			/**
+			 * E​q​u​i​p​p​e​d​ ​i​t​e​m​s
+			 */
+			EQUIPPED_ITEMS_TITLE: string
+			/**
+			 * S​t​a​t​u​s
+			 */
+			STATUS_TITLE: string
+			/**
+			 * M​o​d​e
+			 */
+			MODE_TITLE: string
+		}
+		HELP: {
+			/**
+			 * {​u​s​e​r​n​a​m​e​}​'​s​ ​c​o​m​m​a​n​d​s
+			 * @param {unknown} username
+			 */
+			TITLE: RequiredParams<'username'>
+			/**
+			 * H​e​r​e​'​s​ ​a​ ​l​i​s​t​ ​o​f​ ​a​l​l​ ​m​y​ ​c​o​m​m​a​n​d​s​.​ ​W​e​'​l​l​ ​b​e​ ​a​d​d​i​n​g​ ​t​h​e​ ​a​b​i​l​i​t​y​ ​t​o​ ​g​e​t​ ​m​o​r​e​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​e​a​c​h​ ​c​o​m​m​a​n​d​ ​s​o​o​n​!
+			 */
+			DESCRIPTION: string
+		}
+		INFO: {
+			/**
+			 * S​t​a​t​i​s​t​i​c​s
+			 */
+			STATISTICS_TITLE: string
+			/**
+			 * S​e​r​v​e​r​s​:​ ​{​s​e​r​v​e​r​s​}​
+		​U​s​e​r​s​:​ ​{​u​s​e​r​s​}
+			 * @param {unknown} servers
+			 * @param {unknown} users
+			 */
+			STATISTICS_VALUE: RequiredParams<'servers' | 'users'>
+			/**
+			 * D​e​b​u​g
+			 */
+			DEBUG_TITLE: string
+			/**
+			 * C​l​u​s​t​e​r​s​:​ ​{​c​l​u​s​t​e​r​s​}​
+		​S​h​a​r​d​s​:​ ​{​s​h​a​r​d​s​}​
+		​S​h​a​r​d​I​D​:​ ​{​s​h​a​r​d​I​d​}​
+		​C​l​u​s​t​e​r​I​D​:​ ​{​c​l​u​s​t​e​r​I​d​}
+			 * @param {unknown} clusterId
+			 * @param {unknown} clusters
+			 * @param {unknown} shardId
+			 * @param {unknown} shards
+			 */
+			DEBUG_VALUE: RequiredParams<'clusterId' | 'clusters' | 'shardId' | 'shards'>
+			/**
+			 * {​u​s​e​r​n​a​m​e​}​ ​i​s​ ​a​ ​D​i​s​c​o​r​d​ ​b​o​t​ ​t​h​a​t​ ​p​r​o​v​i​d​e​s​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​D​i​a​b​l​o​ ​4​ ​d​e​v​e​l​o​p​e​d​ ​b​y​ ​g​l​a​z​k​0​ ​&​ ​M​a​r​c​o​.
+			 * @param {unknown} username
+			 */
+			DESCRIPTION: RequiredParams<'username'>
+		}
+		SETTINGS: {
+			/**
+			 * Y​o​u​r​ ​s​e​r​v​e​r​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​s​e​t​t​i​n​g​s
+			 */
+			TITLE: string
+			/**
+			 * C​h​a​n​n​e​l​:​ ​{​c​h​a​n​n​e​l​}​
+		​R​o​l​e​:​ ​{​r​o​l​e​}
+			 * @param {unknown} channel
+			 * @param {unknown} role
+			 */
+			VALUE: RequiredParams<'channel' | 'role'>
+		}
+	}
 	misc: {
 		/**
 		 * I​n​v​a​l​i​d​ ​q​u​e​r​y​.
 		 */
 		INVALID_QUERY: string
+		/**
+		 * N​o​ ​d​a​t​e​ ​f​o​u​n​d​.
+		 */
+		NO_DATE_FOUND: string
+		/**
+		 * N​o​ ​p​l​a​y​e​d​ ​t​i​m​e​ ​f​o​u​n​d​.
+		 */
+		NO_PLAYED_TIME: string
+		/**
+		 * N​o​ ​e​q​u​i​p​p​e​d​ ​i​t​e​m​s​ ​f​o​u​n​d​.
+		 */
+		NO_EQUIPPED_ITEMS: string
 	}
 }
 
 export type TranslationFunctions = {
 	settings: {
+		locale: {
+			/**
+			 * Your Discord server locale has been updated to **{locale}**.
+			 */
+			SUCCESS: (arg: { locale: unknown }) => LocalizedString
+		}
 		notifications: {
 			/**
 			 * I don't have permissions to send messages in {channel}.
@@ -202,12 +320,6 @@ export type TranslationFunctions = {
 			 * Notifications for **{event}** are working and will be sent to {channel}.
 			 */
 			EVENTS_WORKING: (arg: { channel: unknown, event: unknown }) => LocalizedString
-		}
-		locale: {
-			/**
-			 * Your Discord server locale has been updated to **{locale}**.
-			 */
-			SUCCESS: (arg: { locale: unknown }) => LocalizedString
 		}
 	}
 	armory: {
@@ -262,11 +374,109 @@ export type TranslationFunctions = {
 		 */
 		LEGION: (arg: { nextTime: unknown, time: unknown }) => LocalizedString
 	}
+	embeds: {
+		ARMORY: {
+			/**
+			 * Statistics
+			 */
+			STATISTICS_TITLE: () => LocalizedString
+			/**
+			 * World Tier: {worldTier}
+		Monsters killed: {monstersKilled}
+		Elites killed: {elitesKilled}
+		Golds collected: {goldsCollected}
+			 */
+			STATISTICS_VALUE: (arg: { elitesKilled: unknown, goldsCollected: unknown, monstersKilled: unknown, worldTier: unknown }) => LocalizedString
+			/**
+			 * Character creation
+			 */
+			CHARACTER_CREATION_TITLE: () => LocalizedString
+			/**
+			 * Last played
+			 */
+			LAST_PLAYED_TITLE: () => LocalizedString
+			/**
+			 * Played time
+			 */
+			PLAYED_TIME_TITLE: () => LocalizedString
+			/**
+			 * Equipped items
+			 */
+			EQUIPPED_ITEMS_TITLE: () => LocalizedString
+			/**
+			 * Status
+			 */
+			STATUS_TITLE: () => LocalizedString
+			/**
+			 * Mode
+			 */
+			MODE_TITLE: () => LocalizedString
+		}
+		HELP: {
+			/**
+			 * {username}'s commands
+			 */
+			TITLE: (arg: { username: unknown }) => LocalizedString
+			/**
+			 * Here's a list of all my commands. We'll be adding the ability to get more information about each command soon!
+			 */
+			DESCRIPTION: () => LocalizedString
+		}
+		INFO: {
+			/**
+			 * Statistics
+			 */
+			STATISTICS_TITLE: () => LocalizedString
+			/**
+			 * Servers: {servers}
+		Users: {users}
+			 */
+			STATISTICS_VALUE: (arg: { servers: unknown, users: unknown }) => LocalizedString
+			/**
+			 * Debug
+			 */
+			DEBUG_TITLE: () => LocalizedString
+			/**
+			 * Clusters: {clusters}
+		Shards: {shards}
+		ShardID: {shardId}
+		ClusterID: {clusterId}
+			 */
+			DEBUG_VALUE: (arg: { clusterId: unknown, clusters: unknown, shardId: unknown, shards: unknown }) => LocalizedString
+			/**
+			 * {username} is a Discord bot that provides information about Diablo 4 developed by glazk0 & Marco.
+			 */
+			DESCRIPTION: (arg: { username: unknown }) => LocalizedString
+		}
+		SETTINGS: {
+			/**
+			 * Your server notifications settings
+			 */
+			TITLE: () => LocalizedString
+			/**
+			 * Channel: {channel}
+		Role: {role}
+			 */
+			VALUE: (arg: { channel: unknown, role: unknown }) => LocalizedString
+		}
+	}
 	misc: {
 		/**
 		 * Invalid query.
 		 */
 		INVALID_QUERY: () => LocalizedString
+		/**
+		 * No date found.
+		 */
+		NO_DATE_FOUND: () => LocalizedString
+		/**
+		 * No played time found.
+		 */
+		NO_PLAYED_TIME: () => LocalizedString
+		/**
+		 * No equipped items found.
+		 */
+		NO_EQUIPPED_ITEMS: () => LocalizedString
 	}
 }
 

@@ -71,8 +71,6 @@ export class EventNotifier {
       if (!cache || cachedEvent.timestamp !== value.timestamp || this.checkRefresh(value)) {
         await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
 
-        this.client.logger.info(value);
-
         const event = new Date(value.timestamp * 1000).getTime();
 
         if (event < date - duration.minutes(2)) {

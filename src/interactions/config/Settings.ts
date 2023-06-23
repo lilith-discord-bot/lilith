@@ -208,23 +208,22 @@ export default class Settings extends Interaction {
 
     const currentEvent = guild?.events.find((item) => item.type === event && channel.id === item.channelId);
 
-    console.log(group);
-    console.log(subcommand);
-    console.log(locale);
+    switch (subcommand) {
+      case "locale":
+        try {
+          await this.client.repository.guild.updateLocale(guild.id, locale as Locales);
+        } catch (error) {
+          this.client.logger.error(error);
+        }
+
+        await interaction.reply({
+          content: i18n.settings.locale.SUCCESS({ locale: localesMap[locale as Locales] }),
+          ephemeral: true,
+        });
+        break;
+    }
 
     switch (group) {
-      // case "locale":
-      //   try {
-      //     await this.client.repository.guild.updateLocale(guild.id, locale as Locales);
-      //   } catch (error) {
-      //     this.client.logger.error(error);
-      //   }
-
-      //   await interaction.reply({
-      //     content: i18n.settings.locale.SUCCESS({ locale: localesMap[locale as Locales] }),
-      //     ephemeral: true,
-      //   });
-      //   break;
       case "notifications":
         switch (subcommand) {
           case "enable":

@@ -4,57 +4,57 @@ import { Embed } from "./Embed";
 
 import { PlayerArmory } from "../types";
 import { getTimestamp, secondsToDhms } from "../utils/Commons";
+import { Context } from "../core/Interaction";
 
 export class ArmoryEmbed extends Embed {
-  constructor(character: PlayerArmory) {
+  constructor(character: PlayerArmory, { i18n }: Context) {
     super();
 
-    this.data.title = `Armory @ ${character.character} LvL. ${character.level} (${character.class})`;
+    this.data.title = `${character.character} LvL. ${character.level} (${character.class})`;
 
     this.data.thumbnail = {
       url: this.client.user?.displayAvatarURL() || "",
     };
 
-    const stats = `World Tier: ${String(
-      character.worldTier + 1
-    )}\nMonsters killed: ${character.monstersKilled.toLocaleString(
-      "en-US"
-    )}\nElites killed: ${character.elitesKilled.toLocaleString(
-      "en-US"
-    )}\nGolds collected: ${character.goldCollected.toLocaleString("en-US")}`;
+    const stats = i18n.embeds.ARMORY.STATISTICS_VALUE({
+      worldTier: String(character.worldTier + 1),
+      monstersKilled: character.monstersKilled.toLocaleString("en-US"),
+      elitesKilled: character.elitesKilled.toLocaleString("en-US"),
+      goldsCollected: character.goldCollected.toLocaleString("en-US"),
+    });
 
     this.data.fields = [
       {
-        name: underscore("Statistics"),
+        name: underscore(i18n.embeds.ARMORY.STATISTICS_TITLE()),
         value: stats,
       },
       {
-        name: underscore("Character created"),
-        value: getTimestamp(character.createdAt, "f") || "No date found",
+        name: underscore(i18n.embeds.ARMORY.CHARACTER_CREATION_TITLE()),
+        value: getTimestamp(character.createdAt, "f") || i18n.misc.NO_DATE_FOUND(),
         inline: false,
       },
       {
-        name: underscore("Last login"),
-        value: getTimestamp(character.lastLogin, "R") || "No date found",
+        name: underscore(i18n.embeds.ARMORY.LAST_PLAYED_TITLE()),
+        value: getTimestamp(character.lastLogin, "R") || i18n.misc.NO_DATE_FOUND(),
         inline: false,
       },
       {
-        name: underscore("Played time"),
-        value: secondsToDhms(character.secondsPlayed) || "No played time",
+        name: underscore(i18n.embeds.ARMORY.PLAYED_TIME_TITLE()),
+        value: secondsToDhms(character.secondsPlayed) || i18n.misc.NO_PLAYED_TIME(),
         inline: false,
       },
       {
-        name: underscore("Equipped items"),
+        name: underscore(i18n.embeds.ARMORY.EQUIPPED_ITEMS_TITLE()),
         value:
           character.equipment.map((item) => `${item.name} (${item.quality} ${item.itemtype})`).join("\n") ||
-          "No equipped items",
+          i18n.misc.NO_EQUIPPED_ITEMS(),
       },
       {
-        name: underscore("Status"),
+        name: underscore(i18n.embeds.ARMORY.STATUS_TITLE()),
         value: character.dead ? "Dead" : "Alive",
       },
       {
-        name: underscore("Mode"),
+        name: underscore(i18n.embeds.ARMORY.MODE_TITLE()),
         value: character.hardcore ? "Hardcore" : "Softcore",
       },
     ];

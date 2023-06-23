@@ -21,9 +21,9 @@ import { getPlayer, getPlayerArmory } from "../../lib/API";
 
 import { PlayerArmory } from "../../types";
 
+import { ArmoryEmbed } from "../../embeds/ArmoryEmbed";
 import { getArmoryLink } from "../../utils/Commons";
 import { clientSymbol } from "../../utils/Constants";
-import { ArmoryEmbed } from "../../embeds/ArmoryEmbed";
 
 const armoryLink = (battleTag: string, heroId: string) =>
   new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -57,7 +57,7 @@ export default class Armory extends Interaction {
 
   public async run(
     interaction: ChatInputCommandInteraction<CacheType>,
-    { i18n }: Context
+    { i18n, guild }: Context
   ): Promise<InteractionResponse<boolean>> {
     let player = interaction.options.getString("player", true);
 
@@ -92,7 +92,7 @@ export default class Armory extends Interaction {
 
       if (!character) return await interaction.reply(i18n.armory.NO_CHARACTER());
 
-      const embed = new ArmoryEmbed(character);
+      const embed = new ArmoryEmbed(character, { i18n, guild });
 
       return await interaction.reply({
         embeds: [embed],
@@ -169,14 +169,14 @@ export default class Armory extends Interaction {
     await interaction.respond(choices);
   }
 
-  public async selectMenu(interaction: StringSelectMenuInteraction<CacheType>, { i18n }: Context): Promise<any> {
+  public async selectMenu(interaction: StringSelectMenuInteraction<CacheType>, { i18n, guild }: Context): Promise<any> {
     const [player, characterId] = interaction.values[0].split("_");
 
     const character = await getPlayerArmory(player, characterId);
 
     if (!character) return await interaction.reply(i18n.armory.NO_CHARACTER());
 
-    const embed = new ArmoryEmbed(character);
+    const embed = new ArmoryEmbed(character, { i18n, guild });
 
     await interaction.update({
       content: null,
