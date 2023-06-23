@@ -15,6 +15,8 @@ import {
 import { Event } from "../core/Event";
 import { Context, Interaction } from "../core/Interaction";
 import { container } from "tsyringe";
+import L from "../i18n/i18n-node";
+import { detectLocale } from "../i18n/i18n-util";
 
 // TODO : Refactor this, it works for now
 export default class InteractionHandler extends Event {
@@ -104,7 +106,7 @@ export default class InteractionHandler extends Event {
 
     let context = {} as Context;
 
-    context.client = this.client;
+    context.i18n = L[guild.locale || "en"];
     context.guild = guild;
 
     if (interaction.isChatInputCommand()) {
@@ -135,7 +137,7 @@ export default class InteractionHandler extends Event {
       if (!command) return undefined;
 
       try {
-        await command.autocomplete?.(interaction);
+        await command.autocomplete?.(interaction, context);
       } catch (error) {
         this.client.logger.error(`Failed to run autocomplete for interaction ${command.command.name}: ${error}`);
       }
@@ -153,7 +155,7 @@ export default class InteractionHandler extends Event {
       if (!command) return undefined;
 
       try {
-        await command.selectMenu?.(interaction);
+        await command.selectMenu?.(interaction, context);
       } catch (error) {
         this.client.logger.error(`Failed to run interaction ${selectMenu.customId}: ${error}`);
       }

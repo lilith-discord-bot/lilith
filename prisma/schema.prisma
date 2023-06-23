@@ -13,6 +13,7 @@ datasource db {
 model Guild {
   id      String  @id @default(uuid())
   guildId String  @unique
+  locale  String  @default("en")
   events  Event[]
 }
 

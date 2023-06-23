@@ -5,6 +5,8 @@ import { clientSymbol } from "../../../../utils/Constants";
 import { Event, Prisma } from "@prisma/client";
 import { EventsList } from "../../../../types";
 import { Guild } from "../../../../types/Database";
+import { Locales } from "../../../../i18n/i18n-types";
+import { locales } from "../../../../i18n/i18n-util";
 
 export class GuildRepository {
   /**
@@ -40,12 +42,16 @@ export class GuildRepository {
       let guild = await this.guilds.findUnique({ where: { guildId }, include: { events: true } });
 
       if (!guild) {
-        guild = await this.guilds.create({
-          data: {
-            guildId,
-          },
-          include: { events: true },
-        });
+        try {
+          guild = await this.guilds.create({
+            data: {
+              guildId,
+            },
+            include: { events: true },
+          });
+        } catch (error) {
+          this.client.logger.error(`Failed to create guild ${guildId}.`, error);
+        }
       }
 
       await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
@@ -140,6 +146,8 @@ export class GuildRepository {
           },
         },
       });
+
+      guild = await this.findOrCreate(guildId, true);
     } catch (error) {
       this.client.logger.error(error);
     }
@@ -161,6 +169,29 @@ export class GuildRepository {
 
     try {
       await this.client.database.event.delete({ where: { type_channelId: { type, channelId } } });
+
+      guild = await this.findOrCreate(guildId, true);
+    } catch (error) {
+      this.client.logger.error(error);
+    }
+
+    await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
+  }
+
+  async updateLocale(guildId: string, locale: Locales): Promise<void> {
+    let guild = await this.findOrCreate(guildId);
+
+    if (!guild) return;
+
+    try {
+      await this.guilds.update({
+        data: {
+          locale,
+        },
+        where: {
+          guildId,
+        },
+      });
 
       guild = await this.findOrCreate(guildId, true);
     } catch (error) {

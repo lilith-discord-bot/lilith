@@ -188,3 +188,17 @@ export const discordToLanguage = {
   ru: "ru",
   "es-ES": "es",
 } as Record<Locale, string>;
+
+/**
+ * Match locales to their names.
+ */
+export const localesMap = {
+  en: "English",
+  fr: "Français",
+  de: "Deutsch",
+  it: "Italiano",
+  jp: "日本語",
+  br: "Português",
+  es: "Español",
+  pl: "Polski",
+} as Record<string, string>;
