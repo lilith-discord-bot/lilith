@@ -101,9 +101,12 @@ export default class InteractionHandler extends Event {
     context.i18n = L[(guild && guild.locale) || "en"];
     context.guild = guild;
 
-    if (!this.interactions.has(interaction.commandName)) return undefined;
+    let command = null as Interaction | null;
 
-    const command = this.interactions.get(interaction.commandName);
+    if (interaction.isChatInputCommand() || interaction.isAutocomplete()) {
+      command = this.interactions.get(interaction.commandName);
+      if (!this.interactions.has(interaction.commandName)) return undefined;
+    }
 
     if (interaction.isChatInputCommand()) {
       this.client.logger.info(`Command ${command.command.name} was executed in ${interaction.guildId || "DM"}`);
@@ -130,7 +133,7 @@ export default class InteractionHandler extends Event {
 
       if (!this.interactions.has(id)) return undefined;
 
-      const command = this.interactions.get(id);
+      command = this.interactions.get(id);
 
       if (!command) return undefined;
 
