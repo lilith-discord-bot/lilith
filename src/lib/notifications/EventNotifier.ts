@@ -123,17 +123,13 @@ export class EventNotifier {
             )) as (Message<true> | null)[];
 
             if (response && response.length >= 1) {
-              await this.client.database.event.update({
-                data: { messageId: response[0]?.id },
-                where: {
-                  type_channelId: {
-                    type: key,
-                    channelId: setting.channelId,
-                  },
-                },
-              });
+              await this.client.repository.guild.updateEventMessageId(
+                guild.guildId,
+                key as EventsList,
+                setting.channelId,
+                response[0]?.id
+              );
             }
-
             // await wait(250);
           }
         }

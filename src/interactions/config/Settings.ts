@@ -329,10 +329,10 @@ export default class Settings extends Interaction {
 
               if (!channel) continue;
 
-              let message = getTitle(event.type, value, guild.locale as Locales);
+              let content = getTitle(event.type, value, guild.locale as Locales);
 
               if (event.roleId) {
-                message += ` - <@&${event.roleId}>`;
+                content += ` - <@&${event.roleId}>`;
               }
 
               const oldMessage = event.messageId
@@ -345,24 +345,23 @@ export default class Settings extends Interaction {
               if (oldMessage)
                 await oldMessage
                   .delete()
-                  .catch((e) => console.error(`Unable to remove message with id: ${event.messageId}`));
+                  .catch((e) => console.error(`Unable to remove message with id: ${event.messageId}`, e));
 
-              await channel
-                .send({
-                  content: message,
-                  embeds: [embed],
-                })
-                .then(async (message) => {
-                  await this.client.database.event.update({
-                    data: { messageId: message.id },
-                    where: {
-                      type_channelId: {
-                        type: event.type,
-                        channelId: event.channelId,
-                      },
-                    },
-                  });
-                });
+              const message = await channel.send({
+                content,
+                embeds: [embed],
+              });
+
+              try {
+                await this.client.repository.guild.updateEventMessageId(
+                  interaction.guild.id,
+                  event.type as EventsList,
+                  channel.id,
+                  message.id
+                );
+              } catch (error) {
+                this.client.logger.error(`Unable to update event ${event.type} in guild ${interaction.guild.id}`);
+              }
             }
 
             await interaction.reply({
