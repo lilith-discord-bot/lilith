@@ -16,6 +16,7 @@ const de = {
       NO_EVENTS: "Es wurden keinen Benachrichtigungen für Ereignisse aktiviert.",
       NO_EVENTS_IN_CHANNEL: "In {channel} wurden keine Ereignisse aktiviert.",
       EVENTS_WORKING: "Benachrichtigungen für **{event}** funktionieren und werden in {channel} veröffentlicht.",
+      REFRESHED: "Notifications for **{event}** have been refreshed and will be sent to {channels}.",
     },
   },
   armory: {
@@ -33,14 +34,14 @@ const de = {
     WORLD_BOSS:
       "{name} erscheint in {zone} ({territory}) {time}.\n\nDanach wird wahrscheinlich {nextName} erscheinen um {nextTime} Uhr",
     HELLTIDE:
-      "Die Höllenflut erscheint in {zone} bis {time}. Die nächste Höllenflut erscheint um {nextTime} Uhr.\n\nDie Kisten erneuern sich um {refresh} Uhr.",
+      "Die Höllenflut erscheint in {zone} bis {time} Uhr. Die nächste Höllenflut erscheint um {nextTime} Uhr.\n\nDie Kisten erneuern sich {refresh}.",
     LEGION: "Die Legion erscheint {time}, die nächste Legion erscheint danach um {nextTime} Uhr.",
   },
   embeds: {
     ARMORY: {
       STATISTICS_TITLE: "Statistik",
       STATISTICS_VALUE:
-        "Weltstufe: {worldTier}\nMonster getötet: {monstersKilled}\nElitemonster getötet: {elitesKilled}\nGold aufgesammelt: {goldsCollected}",
+        "Weltstufe: {worldTier}\nMonster getötet: {monstersKilled}\nElitemonster getötet: {elitesKilled}\nGold aufgesammelt: {goldCollected}",
       CHARACTER_CREATION_TITLE: "Charaktererstellung",
       LAST_PLAYED_TITLE: "Zuletzt gespielt",
       PLAYED_TIME_TITLE: "Spielzeit",

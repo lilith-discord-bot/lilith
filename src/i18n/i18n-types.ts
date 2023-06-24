@@ -81,6 +81,12 @@ type RootTranslation = {
 			 * @param {unknown} event
 			 */
 			EVENTS_WORKING: RequiredParams<'channel' | 'event'>
+			/**
+			 * N​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​ ​*​*​{​e​v​e​n​t​}​*​*​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​f​r​e​s​h​e​d​ ​a​n​d​ ​w​i​l​l​ ​b​e​ ​s​e​n​t​ ​t​o​ ​{​c​h​a​n​n​e​l​s​}​.
+			 * @param {unknown} channels
+			 * @param {unknown} event
+			 */
+			REFRESHED: RequiredParams<'channels' | 'event'>
 		}
 	}
 	armory: {
@@ -161,13 +167,13 @@ type RootTranslation = {
 			 * W​o​r​l​d​ ​T​i​e​r​:​ ​{​w​o​r​l​d​T​i​e​r​}​
 		​M​o​n​s​t​e​r​s​ ​k​i​l​l​e​d​:​ ​{​m​o​n​s​t​e​r​s​K​i​l​l​e​d​}​
 		​E​l​i​t​e​s​ ​k​i​l​l​e​d​:​ ​{​e​l​i​t​e​s​K​i​l​l​e​d​}​
-		​G​o​l​d​s​ ​c​o​l​l​e​c​t​e​d​:​ ​{​g​o​l​d​s​C​o​l​l​e​c​t​e​d​}
+		​G​o​l​d​ ​c​o​l​l​e​c​t​e​d​:​ ​{​g​o​l​d​C​o​l​l​e​c​t​e​d​}
 			 * @param {unknown} elitesKilled
-			 * @param {unknown} goldsCollected
+			 * @param {unknown} goldCollected
 			 * @param {unknown} monstersKilled
 			 * @param {unknown} worldTier
 			 */
-			STATISTICS_VALUE: RequiredParams<'elitesKilled' | 'goldsCollected' | 'monstersKilled' | 'worldTier'>
+			STATISTICS_VALUE: RequiredParams<'elitesKilled' | 'goldCollected' | 'monstersKilled' | 'worldTier'>
 			/**
 			 * C​h​a​r​a​c​t​e​r​ ​c​r​e​a​t​i​o​n
 			 */
@@ -320,6 +326,10 @@ export type TranslationFunctions = {
 			 * Notifications for **{event}** are working and will be sent to {channel}.
 			 */
 			EVENTS_WORKING: (arg: { channel: unknown, event: unknown }) => LocalizedString
+			/**
+			 * Notifications for **{event}** have been refreshed and will be sent to {channels}.
+			 */
+			REFRESHED: (arg: { channels: unknown, event: unknown }) => LocalizedString
 		}
 	}
 	armory: {
@@ -384,9 +394,9 @@ export type TranslationFunctions = {
 			 * World Tier: {worldTier}
 		Monsters killed: {monstersKilled}
 		Elites killed: {elitesKilled}
-		Golds collected: {goldsCollected}
+		Gold collected: {goldCollected}
 			 */
-			STATISTICS_VALUE: (arg: { elitesKilled: unknown, goldsCollected: unknown, monstersKilled: unknown, worldTier: unknown }) => LocalizedString
+			STATISTICS_VALUE: (arg: { elitesKilled: unknown, goldCollected: unknown, monstersKilled: unknown, worldTier: unknown }) => LocalizedString
 			/**
 			 * Character creation
 			 */

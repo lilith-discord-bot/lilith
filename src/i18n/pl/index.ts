@@ -16,6 +16,7 @@ const pl = {
       NO_EVENTS: "There are no events enabled.",
       NO_EVENTS_IN_CHANNEL: "There are no events enabled in {channel}.",
       EVENTS_WORKING: "Notifications for **{event}** are working and will be sent to {channel}.",
+      REFRESHED: "Notifications for **{event}** have been refreshed and will be sent to {channels}.",
     },
   },
   armory: {
@@ -38,7 +39,7 @@ const pl = {
     ARMORY: {
       STATISTICS_TITLE: "Statistics",
       STATISTICS_VALUE:
-        "World Tier: {worldTier}\nMonsters killed: {monstersKilled}\nElites killed: {elitesKilled}\nGolds collected: {goldsCollected}",
+        "World Tier: {worldTier}\nMonsters killed: {monstersKilled}\nElites killed: {elitesKilled}\nGolds collected: {goldCollected}",
       CHARACTER_CREATION_TITLE: "Character creation",
       LAST_PLAYED_TITLE: "Last played",
       PLAYED_TIME_TITLE: "Played time",
