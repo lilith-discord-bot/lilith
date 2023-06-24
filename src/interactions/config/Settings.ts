@@ -18,10 +18,13 @@ import { Client } from "../../core/Client";
 import { Context, Interaction } from "../../core/Interaction";
 
 import { SettingsEmbed } from "../../embeds/SettingsEmbed";
+
+import L from "../../i18n/i18n-node";
+import { Locales } from "../../i18n/i18n-types";
+import { locales } from "../../i18n/i18n-util";
+
 import { EventsList } from "../../types";
 import { clientSymbol, eventsChoices, localesMap } from "../../utils/Constants";
-import { locales } from "../../i18n/i18n-util";
-import { Locales } from "../../i18n/i18n-types";
 
 @injectable()
 export default class Settings extends Interaction {
@@ -217,7 +220,7 @@ export default class Settings extends Interaction {
         }
 
         await interaction.reply({
-          content: i18n.settings.locale.SUCCESS({ locale: localesMap[locale as Locales] }),
+          content: L[locale].settings.locale.SUCCESS({ locale: localesMap[locale as Locales] }),
           ephemeral: true,
         });
         break;

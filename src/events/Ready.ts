@@ -1,6 +1,5 @@
 import { Events } from "discord.js";
 
-import { Client } from "../core/Client";
 import { Event } from "../core/Event";
 import { Worker } from "../lib/Worker";
 import { EventNotifier } from "../lib/notifications/EventNotifier";
