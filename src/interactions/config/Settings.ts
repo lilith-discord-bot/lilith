@@ -36,7 +36,7 @@ export default class Settings extends Interaction {
     type: ApplicationCommandType.ChatInput,
     name: "settings",
     description: "Manage your actual guild settings.",
-    defaultMemberPermissions: [PermissionFlagsBits.ManageGuild],
+    defaultMemberPermissions: PermissionFlagsBits.ManageGuild,
     dmPermission: false,
     options: [
       {
