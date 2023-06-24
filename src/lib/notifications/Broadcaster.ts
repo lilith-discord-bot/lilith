@@ -5,7 +5,10 @@ import {
   MessageCreateOptions,
   MessagePayload,
   NewsChannel,
+  PrivateThreadChannel,
+  PublicThreadChannel,
   TextChannel,
+  ThreadChannel,
 } from "discord.js";
 
 import { container } from "tsyringe";
@@ -32,8 +35,7 @@ export class Broadcaster {
   async broadcast(
     channelId: string,
     message: string | MessagePayload | MessageCreateOptions,
-    oldMessageId: string | null,
-    key?: string
+    oldMessageId: string | null
   ): Promise<(Message<true> | null)[]> {
     return (await this.client.cluster.broadcastEval(
       async (c, { channelId, message, oldMessageId }) => {
@@ -41,7 +43,11 @@ export class Broadcaster {
 
         if (!channel) return;
 
-        channel = channel as TextChannel | NewsChannel;
+        channel = channel as TextChannel | NewsChannel | PublicThreadChannel | PrivateThreadChannel;
+
+        if (!channel.isTextBased()) return;
+
+        console.log("Sending message to channel", channel.id, typeof channel);
 
         // Remove old message before sending message
         let oldMessage = oldMessageId
@@ -50,6 +56,7 @@ export class Broadcaster {
               return null;
             })
           : null;
+
         if (oldMessage)
           await oldMessage.delete().catch((e) => console.error(`Unable to remove message with id: ${oldMessageId}`));
 
