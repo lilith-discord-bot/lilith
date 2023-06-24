@@ -8,7 +8,7 @@ If you want to contribute to this project, please mind joining the [Discord serv
 
 ## Installation
 
-We recommend using our hosted version of [Lilith](https://discord.com/api/oauth2/authorize?client_id=1116120688814723142&permissions=17876191054848&scope=bot%20applications.commands), but if you want to host it yourself, follow the instructions below.
+We recommend using our hosted version of [Lilith](https://lilith.mom), but if you want to host it yourself, follow the instructions below.
 
 ### Requirements
 
@@ -23,7 +23,7 @@ We recommend using our hosted version of [Lilith](https://discord.com/api/oauth2
 1. Clone the repository
 
 ```bash
-git clone https://github.com/glazk0/lilith.git
+git clone https://github.com/lilith-discord-bot/lilith.git
 ```
 
 2. Install dependencies
@@ -57,11 +57,12 @@ npm run bot:up
 ```
 
 If you're running docker, you can just use
+
 ```bash
 docker run --name bot -e REDIS_HOST=redis -e REDIS_PASSWORD=password -e DATABASE_URL=something://user:password@host:port/database ghcr.io/lilith-discord-bot/lilith:latest
 ```
-> you still have to run Redis and a database, if you don't wanna bother with that, `npm run bot:up` sets everything up for you using compose
 
+> you still have to run Redis and a database, if you don't wanna bother with that, `npm run bot:up` sets everything up for you using compose
 
 ### Other commands:
 
@@ -71,7 +72,7 @@ docker run --name bot -e REDIS_HOST=redis -e REDIS_PASSWORD=password -e DATABASE
 
 ## Issues
 
-If you find a bug or have a feature request, please [open an issue](https://github.com/glazk0/lilith/issues/new/choose) on GitHub.
+If you find a bug or have a feature request, please [open an issue](https://github.com/lilith-discord-bot/lilith/issues/new/choose) on GitHub.
 
 ## License
 

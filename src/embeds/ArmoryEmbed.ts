@@ -20,7 +20,7 @@ export class ArmoryEmbed extends Embed {
       worldTier: String(character.worldTier + 1),
       monstersKilled: character.monstersKilled.toLocaleString("en-US"),
       elitesKilled: character.elitesKilled.toLocaleString("en-US"),
-      goldsCollected: character.goldCollected.toLocaleString("en-US"),
+      goldCollected: character.goldCollected.toLocaleString("en-US"),
     });
 
     this.data.fields = [

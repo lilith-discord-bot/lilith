@@ -16,6 +16,7 @@ const fr = {
       NO_EVENTS: "Aucun événement n'est activé.",
       NO_EVENTS_IN_CHANNEL: "Aucun événement n'est activé dans {channel}.",
       EVENTS_WORKING: "Les notifications pour **{event}** fonctionnent et seront envoyées dans {channel}.",
+      REFRESHED: "Notifications for **{event}** have been refreshed and will be sent to {channels}.",
     },
   },
   armory: {
@@ -23,7 +24,8 @@ const fr = {
     PLAYER_NOT_FOUND:
       "Je n'ai pas pu trouver le joueur **{player}**, vérifiez que vous avez tapé le nom correctement ou que le joueur existe.",
     NO_CHARACTERS: "Le joueur ne possède aucun personnage.",
-    NO_CHARACTER: "Aucun personnage trouvé, assurez-vous d'avoir tapé le nom correctement ou qu'au moins un personnage avec ce nom existe.",
+    NO_CHARACTER:
+      "Aucun personnage trouvé, assurez-vous d'avoir tapé le nom correctement ou qu'au moins un personnage avec ce nom existe.",
     SELECT_CHARACTER: "Sélectionnez un personnage pour voir son armurerie.",
     MULTIPLE_CHARACTERS: "Ce joueur a plusieurs personnages. Veuillez en sélectionner un.",
     PLAYER_CHOICE: "{name} ({characters} personnages)",
@@ -31,15 +33,17 @@ const fr = {
     NOT_TRACKED_YET: '"{player}" n\'est pas suivi actuellement, envoyez-le pour le suivre.',
   },
   events: {
-    WORLD_BOSS: "{name} apparaît dans {zone} ({territory}) à {time}.\n\nLe prochain boss attendu est {nextName} à {nextTime}",
-    HELLTIDE: "Vagues infernales actuellement à {zone} jusqu'à {time}, prochaines vagues infernales à {nextTime}\n\nNouveaux coffres : {refresh}",
+    WORLD_BOSS:
+      "{name} apparaît dans {zone} ({territory}) à {time}.\n\nLe prochain boss attendu est {nextName} à {nextTime}",
+    HELLTIDE:
+      "Vagues infernales actuellement à {zone} jusqu'à {time}, prochaines vagues infernales à {nextTime}\n\nNouveaux coffres : {refresh}",
     LEGION: "Legion apparaît à {time}, prochaine legion à {nextTime}",
   },
   embeds: {
     ARMORY: {
       STATISTICS_TITLE: "Statistiques",
       STATISTICS_VALUE:
-        "Niveau de Monde : {worldTier}\nMonstres tués : {monstersKilled}\nÉlites tués : {elitesKilled}\nOr collecté : {goldsCollected}",
+        "Niveau de Monde : {worldTier}\nMonstres tués : {monstersKilled}\nÉlites tués : {elitesKilled}\nOr collecté : {goldCollected}",
       CHARACTER_CREATION_TITLE: "Création du personnage",
       LAST_PLAYED_TITLE: "Dernière connexion",
       PLAYED_TIME_TITLE: "Temps de jeu",

@@ -16,6 +16,7 @@ const jp = {
       NO_EVENTS: "有効なイベントはありません。",
       NO_EVENTS_IN_CHANNEL: "{channel} で有効になっているイベントはありません。",
       EVENTS_WORKING: "**{event}** の通知は機能しており、{channel} に送信されます。",
+      REFRESHED: "Notifications for **{event}** have been refreshed and will be sent to {channels}.",
     },
   },
   armory: {
@@ -38,7 +39,7 @@ const jp = {
     ARMORY: {
       STATISTICS_TITLE: "統計",
       STATISTICS_VALUE:
-        "ワールドティア: {worldTier}\nモンスターキル: {monstersKilled}\nエリートキル: {elitesKilled}\n獲得ゴールド: {goldsCollected}",
+        "ワールドティア: {worldTier}\nモンスターキル: {monstersKilled}\nエリートキル: {elitesKilled}\n獲得ゴールド: {goldCollected}",
       CHARACTER_CREATION_TITLE: "キャラクター作成",
       LAST_PLAYED_TITLE: "最後のプレイ",
       PLAYED_TIME_TITLE: "プレイ時間",
@@ -48,8 +49,7 @@ const jp = {
     },
     HELP: {
       TITLE: "{username} コマンド",
-      DESCRIPTION:
-        "これが私の全てのコマンドリストです。各コマンドに関する詳細情報を取得する機能を近々追加する予定です！",
+      DESCRIPTION: "これが私の全てのコマンドリストです。各コマンドに関する詳細情報を取得する機能を近々追加する予定です！",
     },
     INFO: {
       STATISTICS_TITLE: "統計",
