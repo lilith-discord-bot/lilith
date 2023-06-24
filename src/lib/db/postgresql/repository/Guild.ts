@@ -156,6 +156,40 @@ export class GuildRepository {
   }
 
   /**
+   * Update an event message ID.
+   *
+   * @param guildId - The guild ID.
+   * @param type - The event type.
+   * @param channelId - The channel ID.
+   * @param messageId - The message ID.
+   */
+  async updateEventMessageId(guildId: string, type: EventsList, channelId: string, messageId: string): Promise<void> {
+    let guild = await this.findOrCreate(guildId);
+
+    if (!guild) return;
+
+    try {
+      await this.client.database.event.update({
+        data: {
+          messageId,
+        },
+        where: {
+          type_channelId: {
+            type,
+            channelId,
+          },
+        },
+      });
+
+      guild = await this.findOrCreate(guildId, true);
+    } catch (error) {
+      this.client.logger.error(error);
+    }
+
+    await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
+  }
+
+  /**
    * Remove an event from a guild.
    *
    * @param guildId - The guild ID.

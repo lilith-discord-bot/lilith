@@ -47,7 +47,6 @@ export class Broadcaster {
 
         if (!channel.isTextBased()) return;
 
-        // Remove old message before sending message
         const oldMessage = oldMessageId
           ? ((await channel.messages.fetch(oldMessageId).catch((e) => {
               console.error(`Unable to send fetch message ${oldMessageId}:`, e.message);
