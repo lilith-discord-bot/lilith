@@ -31,10 +31,10 @@ const de = {
   },
   events: {
     WORLD_BOSS:
-      "{name} erscheint in {zone} ({territory}) {time}.\n\nDanach wird wahrscheinlich {nextName} erscheinen um {nextTime}",
+      "{name} erscheint in {zone} ({territory}) {time}.\n\nDanach wird wahrscheinlich {nextName} erscheinen um {nextTime} Uhr",
     HELLTIDE:
-      "Die Höllenflut erscheint in {zone} bis {time}. Die nächste Höllenflut erscheint um {nextTime}\n\nDie Kisten erneuern sich um {refresh}",
-    LEGION: "Die Legion erscheint {time}, die nächste Legion erscheint danach um {nextTime}",
+      "Die Höllenflut erscheint in {zone} bis {time}. Die nächste Höllenflut erscheint um {nextTime} Uhr.\n\nDie Kisten erneuern sich um {refresh} Uhr.",
+    LEGION: "Die Legion erscheint {time}, die nächste Legion erscheint danach um {nextTime} Uhr.",
   },
   embeds: {
     ARMORY: {
