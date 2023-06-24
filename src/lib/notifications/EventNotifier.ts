@@ -73,10 +73,10 @@ export class EventNotifier {
 
         const event = new Date(value.timestamp * 1000).getTime();
 
-        if (event < date - duration.minutes(10)) {
-          this.client.logger.info(`Event ${key} is outdated, skipping...`);
-          continue;
-        }
+        // if (event < date - duration.minutes(10)) {
+        //   this.client.logger.info(`Event ${key} is outdated, skipping...`);
+        //   continue;
+        // }
 
         const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
 
