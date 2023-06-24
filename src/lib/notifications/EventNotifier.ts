@@ -1,15 +1,15 @@
-import { Message, MessageCreateOptions, MessagePayload, time } from "discord.js";
+import { Message, MessageCreateOptions, MessagePayload } from "discord.js";
 
-import { Client } from "../../core/Client";
-import { Event, EventsList } from "../../types";
-import { duration, wait } from "../../utils/Commons";
-import { EventEmbed, territory } from "../../embeds/EventEmbed";
-import { Broadcaster } from "./Broadcaster";
 import { container } from "tsyringe";
+import { Client } from "../../core/Client";
+import { EventEmbed } from "../../embeds/EventEmbed";
+import { Locales } from "../../i18n/i18n-types";
+import { Event, EventsList } from "../../types";
+import { duration } from "../../utils/Commons";
 import { clientSymbol } from "../../utils/Constants";
 import { getEvents, getStatus } from "../API";
-import L from "../../i18n/i18n-node";
-import { Locales } from "../../i18n/i18n-types";
+import { Broadcaster } from "./Broadcaster";
+import { getTitle } from "./NotifierUtils";
 
 const refreshInterval = duration.seconds(60);
 
@@ -73,10 +73,11 @@ export class EventNotifier {
 
         const event = new Date(value.timestamp * 1000).getTime();
 
-        // if (event < date - duration.minutes(10)) {
-        //   this.client.logger.info(`Event ${key} is outdated, skipping...`);
-        //   continue;
-        // }
+        // if event is too recent from 1 minute, skip
+        if (event - date < duration.minutes(1) && key === "helltide") {
+          this.client.logger.info(`Event ${key} is too recent, skipping...`);
+          continue;
+        }
 
         const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
 
@@ -88,7 +89,7 @@ export class EventNotifier {
           const embed = new EventEmbed(key, value);
 
           let message: string | MessagePayload | MessageCreateOptions = {
-            content: this.getTitle(key, value, guild.locale as Locales),
+            content: getTitle(key, value, guild.locale as Locales),
             embeds: [embed],
           };
 
@@ -154,42 +155,5 @@ export class EventNotifier {
       }
     }
     return false;
-  }
-
-  /**
-   * Get the event title.
-   *
-   * @param key - The event key.
-   * @param event - The event object.
-   *
-   * @returns {string} - The event title.
-   */
-
-  private getTitle(key: string, event: Event, locale: Locales = "en") {
-    switch (key) {
-      case "boss":
-        return L[locale].events.WORLD_BOSS({
-          name: event.name,
-          zone: event.zone,
-          territory: event.territory,
-          time: time(event.timestamp, "t"),
-          nextName: event.nextExpectedName,
-          nextTime: time(event.nextExpected, "t"),
-        });
-      case "helltide":
-        return L[locale].events.HELLTIDE({
-          zone: territory[event.zone],
-          time: time(event.timestamp + 3600, "t"),
-          nextTime: time(event.timestamp + 8100, "t"),
-          refresh: event.refresh > 0 ? time(event.refresh, "R") : "/",
-        });
-      case "legion":
-        return L[locale].events.LEGION({
-          time: time(event.timestamp, "R"),
-          nextTime: time(event.timestamp + 1800, "t"),
-        });
-      default:
-        return key;
-    }
   }
 }
