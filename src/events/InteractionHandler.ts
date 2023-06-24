@@ -108,7 +108,7 @@ export default class InteractionHandler extends Event {
 
     let context = {} as Context;
 
-    context.i18n = L[guild.locale || "en"];
+    context.i18n = L[(guild && guild.locale) || "en"];
     context.guild = guild;
 
     if (interaction.isChatInputCommand()) {
