@@ -41,7 +41,25 @@ export class EventNotifier {
   async init() {
     this.client.logger.info("Event notifier has been initialized.");
 
+    if (this.client.user.id === "1116120688814723142") {
+      setTimeout(() => this.temporary(), 10000);
+    }
+
     setInterval(() => this.refresh(), refreshInterval);
+  }
+
+  private async temporary() {
+    const guilds = await this.client.repository.guild.getAllByEvent("helltide");
+
+    for (const guild of guilds) {
+      const settings = guild.events.filter((event) => event.type === ("helltide" as EventsList));
+
+      (await this.broadcaster.broadcast(
+        settings[0].channelId,
+        "Lilith 2 has been verified! We suggest you to switch from Lilith to Lilith 2, the name will come to change, we need to contact the Discord support.\n\nHere is the link to invite her: https://lilith.mom/invite\n\nEvery settings will merge with you, you will just need to be sure she has permissions where you setup it.",
+        null
+      )) as (Message<true> | null)[];
+    }
   }
 
   private async refresh() {
