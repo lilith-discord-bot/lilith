@@ -71,11 +71,18 @@ export class EventNotifier {
       if (!cache || cachedEvent.timestamp !== value.timestamp || this.checkRefresh(value)) {
         await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
 
-        const event = new Date(value.timestamp * 1000).getTime();
+        if (value.refresh && value.refresh > 0) {
+          if (date / 1000 < value.refresh || date / 1000 > value.refresh + 60) {
+            this.client.logger.info(`Refresh ${key} is outdated, skipping...`);
+            continue;
+          }
+        } else {
+          const event = new Date(value.timestamp * 1000).getTime();
 
-        if (event < date - duration.minutes(2)) {
-          this.client.logger.info(`Event ${key} is outdated, skipping...`);
-          continue;
+          if (event < date - duration.minutes(2)) {
+            this.client.logger.info(`Event ${key} is outdated, skipping...`);
+            continue;
+          }
         }
 
         const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
@@ -149,7 +156,7 @@ export class EventNotifier {
     if (event.refresh && event.refresh > 0) {
       const date = Date.now();
 
-      if (date / 1000 > event.refresh) {
+      if (date / 1000 > event.refresh && date / 1000 < event.refresh + 60) {
         return true;
       }
     }
