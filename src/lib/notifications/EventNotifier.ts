@@ -68,22 +68,15 @@ export class EventNotifier {
 
       const date = Date.now();
 
-      if (!cache || cachedEvent.timestamp !== value.timestamp || this.checkRefresh(value)) {
+      if (!cache || cachedEvent.timestamp !== value.timestamp) {
         await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
 
-        if (value.refresh && value.refresh > 0) {
-          if (date / 1000 < value.refresh || date / 1000 > value.refresh + 60) {
-            this.client.logger.info(`Refresh ${key} is outdated, skipping...`);
-            continue;
-          }
-        } else {
-          const event = new Date(value.timestamp * 1000).getTime();
+        const event = new Date(value.timestamp * 1000).getTime();
 
-          if (event < date - duration.minutes(2)) {
-            this.client.logger.info(`Event ${key} is outdated, skipping...`);
-            continue;
-          }
-        }
+        // if (event < date - duration.minutes(10)) {
+        //   this.client.logger.info(`Event ${key} is outdated, skipping...`);
+        //   continue;
+        // }
 
         const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
 
