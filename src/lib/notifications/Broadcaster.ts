@@ -43,18 +43,16 @@ export class Broadcaster {
 
         if (!channel) return;
 
-        channel = channel as TextChannel | NewsChannel | PublicThreadChannel | PrivateThreadChannel;
+        channel = channel as TextChannel | NewsChannel;
 
         if (!channel.isTextBased()) return;
 
-        console.log("Sending message to channel", channel.id, typeof channel);
-
         // Remove old message before sending message
-        let oldMessage = oldMessageId
-          ? await channel.messages.fetch(oldMessageId).catch((e) => {
+        const oldMessage = oldMessageId
+          ? ((await channel.messages.fetch(oldMessageId).catch((e) => {
               console.error(`Unable to send fetch message ${oldMessageId}:`, e.message);
               return null;
-            })
+            })) as Message<true>)
           : null;
 
         if (oldMessage)
