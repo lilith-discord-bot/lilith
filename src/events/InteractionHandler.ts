@@ -1,16 +1,7 @@
 import { readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 
-import {
-  AutocompleteInteraction,
-  CacheType,
-  Collection,
-  CommandInteraction,
-  Events,
-  REST,
-  Routes,
-  StringSelectMenuInteraction,
-} from "discord.js";
+import { CacheType, Collection, CommandInteraction, Events, REST, Routes, StringSelectMenuInteraction } from "discord.js";
 import { container } from "tsyringe";
 
 import { Event } from "../core/Event";
@@ -20,7 +11,6 @@ import L from "../i18n/i18n-node";
 
 import { Guild } from "../types/Database";
 
-// TODO : Refactor this, it works for now
 export default class InteractionHandler extends Event {
   /**
    * The interactions collection.
@@ -111,15 +101,11 @@ export default class InteractionHandler extends Event {
     context.i18n = L[(guild && guild.locale) || "en"];
     context.guild = guild;
 
+    if (!this.interactions.has(interaction.commandName)) return undefined;
+
+    const command = this.interactions.get(interaction.commandName);
+
     if (interaction.isChatInputCommand()) {
-      if (!this.interactions.has(interaction.commandName)) return undefined;
-
-      this.client.logger.info(`Command ${interaction.commandName} was executed in ${interaction.guildId || "DM"}`);
-
-      const command = this.interactions.get(interaction.commandName);
-
-      if (!command) return undefined;
-
       this.client.logger.info(`Command ${command.command.name} was executed in ${interaction.guildId || "DM"}`);
 
       try {
@@ -130,14 +116,6 @@ export default class InteractionHandler extends Event {
     }
 
     if (interaction.isAutocomplete()) {
-      const autocomplete = interaction as AutocompleteInteraction;
-
-      if (!this.interactions.has(autocomplete.commandName)) return undefined;
-
-      const command = this.interactions.get(autocomplete.commandName);
-
-      if (!command) return undefined;
-
       try {
         await command.autocomplete?.(interaction, context);
       } catch (error) {
