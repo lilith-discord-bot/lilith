@@ -1,19 +1,20 @@
 import "reflect-metadata";
 
+import { PrismaClient } from "@prisma/client";
 import { ClusterClient, getInfo } from "discord-hybrid-sharding";
 import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
+import { container } from "tsyringe";
 
-import EventHandler from "../events/EventHandler";
+import { EventHandler } from "../events/EventHandler";
 
 import { Logger } from "../lib/Logger";
 import { registerClientEvents } from "../lib/RegisterEvents";
-import { redis } from "../lib/db/redis/Redis";
-
 import { GuildRepository } from "../lib/db/postgresql/repository/Guild";
-import { clientSymbol, options } from "../utils/Constants";
-import { container } from "tsyringe";
-import { PrismaClient } from "@prisma/client";
+import { redis } from "../lib/db/redis/Redis";
 import { database } from "../lib/db/postgresql/Database";
+
+import { clientSymbol, options } from "../utils/Constants";
+
 import { Interaction } from "./Interaction";
 
 export class Client extends DiscordClient {

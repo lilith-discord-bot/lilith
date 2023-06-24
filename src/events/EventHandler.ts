@@ -2,13 +2,14 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 import { Collection, Events } from "discord.js";
+import { container } from "tsyringe";
 
 import { Client } from "../core/Client";
 import { Event } from "../core/Event";
-import { container } from "tsyringe";
+
 import { clientSymbol } from "../utils/Constants";
 
-export default class EventHandler {
+export class EventHandler {
   /**
    * The client.
    * @type {Client}
@@ -45,7 +46,7 @@ export default class EventHandler {
     if (this.handlers.size > 0) this.handlers.clear();
 
     for (const file of files) {
-      const handler = new (await import(path.join(dir, file))).default(this.client) as Event;
+      const handler = new (await import(path.join(dir, file))).default() as Event;
 
       this.handlers.set(handler.event, handler);
     }

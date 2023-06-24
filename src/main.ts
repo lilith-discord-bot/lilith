@@ -1,17 +1,14 @@
 import "reflect-metadata";
 
 import { config } from "dotenv";
-
-config();
-
 import path from "node:path";
 import { ClusterManager } from "discord-hybrid-sharding";
+
+config();
 
 import { Logger } from "./lib/Logger";
 import { registerClusterEvents } from "./lib/RegisterEvents";
 import { database } from "./lib/db/postgresql/Database";
-
-// TODO : See docs for more information and maybe add plugins to handle reclustering
 
 database.$connect();
 
@@ -24,6 +21,7 @@ const manager = new ClusterManager(path.join(__dirname, "./core/Client.js"), {
 });
 
 registerClusterEvents(manager, Logger);
+
 manager
   .spawn({
     timeout: -1,
