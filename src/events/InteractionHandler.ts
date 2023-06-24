@@ -66,19 +66,70 @@ export default class InteractionHandler extends Event {
 
     await ready;
 
-    const rest = new REST().setToken(process.env.TOKEN);
+    const currentInteractions = await this.client.application.commands.fetch();
 
-    try {
-      this.client.logger.info(`Started refreshing ${this.interactions.size} application (/) commands.`);
+    this.client.logger.info("Synchronizing interactions.");
 
-      const data = (await rest.put(Routes.applicationCommands(this.client.user.id), {
-        body: this.interactions.filter((interaction) => interaction.enabled).map((interaction) => interaction.command),
-      })) as any;
+    const interactions = this.interactions
+      .filter((interaction) => interaction.enabled)
+      .map((interaction) => interaction.command);
 
-      this.client.logger.info(`Successfully reloaded ${data.length} application (/) commands.`);
-    } catch (error) {
-      this.client.logger.error(`Failed to reload application (/) commands: ${error}`);
+    const newInteractions = interactions.filter(
+      (interaction) => !currentInteractions.some((i) => i.name === interaction.name)
+    );
+
+    for (let newInteraction of newInteractions) {
+      await this.client.application.commands.create(newInteraction);
     }
+
+    if (newInteractions.length > 0) this.client.logger.info(`Created ${newInteractions.length} interaction(s).`);
+
+    const deletedInteractions = currentInteractions
+      .filter((interaction) => !interactions.some((i) => i.name === interaction.name))
+      .toJSON();
+
+    for (let deletedInteraction of deletedInteractions) {
+      await deletedInteraction.delete();
+    }
+
+    if (deletedInteractions.length > 0) this.client.logger.info(`Deleted ${deletedInteractions.length} interaction(s).`);
+
+    const updatedInteractions = interactions.filter((interaction) =>
+      currentInteractions.some((i) => i.name === interaction.name)
+    );
+
+    let updatedInteractionsCount = 0;
+
+    for (let updatedInteraction of updatedInteractions) {
+      const newInteraction = updatedInteraction;
+      const previousInteraction = currentInteractions.find((i) => i.name === updatedInteraction.name);
+      let modified = false;
+      if (previousInteraction.name !== newInteraction.name) modified = true;
+      if (previousInteraction.defaultMemberPermissions !== newInteraction.defaultMemberPermissions) modified = true;
+      if (previousInteraction.dmPermission !== newInteraction.dmPermission) modified = true;
+      if (modified) {
+        await previousInteraction.edit(newInteraction);
+        updatedInteractionsCount++;
+      }
+    }
+
+    if (updatedInteractionsCount > 0) this.client.logger.info(`Updated ${updatedInteractionsCount} interaction(s).`);
+
+    this.client.logger.info("Interactions synchronized.");
+
+    // const rest = new REST().setToken(process.env.TOKEN);
+
+    // try {
+    //   this.client.logger.info(`Started refreshing ${this.interactions.size} application (/) commands.`);
+
+    //   const data = (await rest.put(Routes.applicationCommands(this.client.user.id), {
+    //     body: this.interactions.filter((interaction) => interaction.enabled).map((interaction) => interaction.command),
+    //   })) as any;
+
+    //   this.client.logger.info(`Successfully reloaded ${data.length} application (/) commands.`);
+    // } catch (error) {
+    //   this.client.logger.error(`Failed to reload application (/) commands: ${error}`);
+    // }
   }
 
   /**

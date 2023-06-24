@@ -3,11 +3,6 @@ import { Logger } from "../lib/Logger";
 import { Client } from "../core/Client";
 import { ARMORY_URL } from "./Constants";
 
-// @ts-ignore
-BigInt.prototype.toJSON = function () {
-  return this.toString();
-};
-
 /**
  * Wait for a given amount of milliseconds.
  *
