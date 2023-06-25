@@ -29,6 +29,7 @@ const de = {
     MULTIPLE_CHARACTERS: "Dieser BattleTag hat mehrere Charaktere. Bitte einen auswählen.",
     PLAYER_CHOICE: "{name} ({characters} Charaktere)",
     NOT_TRACKED_YET: '"{player}" ist aktuell nicht in der Datenbank vorhanden, bestätigen zum Hinzufügen.',
+    PLAYER_IN_QUEUE: "The player **{player}** is currently in the queue.",
   },
   events: {
     WORLD_BOSS:

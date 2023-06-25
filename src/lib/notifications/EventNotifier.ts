@@ -149,7 +149,7 @@ export class EventNotifier {
       if (key === "helltide") {
         const delayTime = eventDate + duration.seconds(30);
 
-        if (now >= delayTime) {
+        if (now <= delayTime) {
           this.client.logger.info("Event needs to be delayed");
           return false;
         }

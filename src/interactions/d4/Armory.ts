@@ -71,6 +71,9 @@ export default class Armory extends Interaction {
 
     if (!res) return await interaction.reply(i18n.armory.PLAYER_NOT_FOUND({ player }));
 
+    // Error means the player is in the queue
+    if (res.error) return await interaction.reply(i18n.armory.PLAYER_IN_QUEUE({ player }));
+
     if (!res.characters || res.characters.length <= 0) return await interaction.reply(i18n.armory.NO_CHARACTERS());
 
     const cached = await this.client.cache.get(`players:${player}`);
@@ -81,7 +84,6 @@ export default class Armory extends Interaction {
         name: player.split("-")[0],
         characters: res.characters.map((character) => character.name),
       };
-
       await this.client.cache.set(`players:${player}`, JSON.stringify(playerObj));
     }
 

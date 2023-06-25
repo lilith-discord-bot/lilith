@@ -14,7 +14,7 @@ import { HelpEmbed } from "../../embeds/HelpEmbed";
 
 import { clientSymbol } from "../../utils/Constants";
 
-import { helpersButtons } from "./Info";
+import { helpersButtons } from "./About";
 
 @injectable()
 export default class Help extends Interaction {
@@ -36,7 +36,11 @@ export default class Help extends Interaction {
     interaction: ChatInputCommandInteraction<CacheType>,
     ctx: Context
   ): Promise<InteractionResponse<boolean>> {
-    const commands = this.client.interactions;
+    let commands = this.client.interactions;
+
+    commands = commands.filter(
+      (command) => command.enabled && interaction.memberPermissions.has(command.command.defaultMemberPermissions)
+    );
 
     const embed = new HelpEmbed(commands, ctx);
 
