@@ -69,15 +69,15 @@ export class EventNotifier {
       const date = Date.now();
 
       if (!cache || cachedEvent.timestamp !== value.timestamp) {
-        await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
-
         const event = new Date(value.timestamp * 1000).getTime();
 
-        // if event is too recent from 1 minute, skip
-        if (event - date < duration.minutes(1) && key === "helltide") {
-          this.client.logger.info(`Event ${key} is too recent, skipping...`);
-          continue;
-        }
+        // // if event is too recent from 1 minute, skip
+        // if (event - date < duration.minutes(30) && key === "helltide") {
+        //   this.client.logger.info(`Event ${key} is too recent, skipping...`);
+        //   continue;
+        // }
+
+        await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
 
         const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
 
