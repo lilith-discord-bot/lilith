@@ -16,7 +16,7 @@ const de = {
       NO_EVENTS: "Es wurden keinen Benachrichtigungen für Ereignisse aktiviert.",
       NO_EVENTS_IN_CHANNEL: "In {channel} wurden keine Ereignisse aktiviert.",
       EVENTS_WORKING: "Benachrichtigungen für **{event}** funktionieren und werden in {channel} veröffentlicht.",
-      REFRESHED: "Notifications for **{event}** have been refreshed and will be sent to {channels}.",
+      REFRESHED: "Benachrichtigungen für **{event}** wurden aktualisiert und werden hier veröffentlicht: {channels}.",
     },
   },
   armory: {
@@ -32,10 +32,10 @@ const de = {
   },
   events: {
     WORLD_BOSS:
-      "{name} erscheint in {zone} ({territory}) {time}.\n\nDanach wird wahrscheinlich {nextName} erscheinen um {nextTime} Uhr",
+      "{name} erscheint in {zone} ({territory}) um {time} Uhr.\n\nDanach wird wahrscheinlich {nextName} erscheinen um {nextTime} Uhr",
     HELLTIDE:
-      "Die Höllenflut erscheint in {zone} bis {time} Uhr. Die nächste Höllenflut erscheint um {nextTime} Uhr.\n\nDie Kisten erneuern sich {refresh}.",
-    LEGION: "Die Legion erscheint {time}, die nächste Legion erscheint danach um {nextTime} Uhr.",
+      "Die Höllenflut erscheint in {zone} bis {time} Uhr. Die nächste Höllenflut erscheint um {nextTime} Uhr.\n\nAktualisierung der Kisten: {refresh}.",
+    LEGION: "Standortaktualisierung der Legion: {time}, die nächste Legion erscheint danach um {nextTime} Uhr.",
   },
   embeds: {
     ARMORY: {
