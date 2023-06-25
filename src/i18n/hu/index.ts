@@ -1,4 +1,4 @@
-import type { BaseTranslation } from "../i18n-types";
+import type { Translation } from "../i18n-types";
 
 const hu = {
   settings: {
@@ -70,6 +70,6 @@ const hu = {
     NO_PLAYED_TIME: "Nincs talált játékidő.",
     NO_EQUIPPED_ITEMS: "Nincs talált felszerelés.",
   },
-} satisfies BaseTranslation;
+} satisfies Translation;
 
 export default hu;
