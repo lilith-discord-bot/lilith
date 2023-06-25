@@ -29,8 +29,8 @@ const fr = {
     SELECT_CHARACTER: "Sélectionnez un personnage pour voir son armurerie.",
     MULTIPLE_CHARACTERS: "Ce joueur a plusieurs personnages. Veuillez en sélectionner un.",
     PLAYER_CHOICE: "{name} ({characters} personnages)",
-    // No idea how to rewrite that one but i feel like it should be rewrote
     NOT_TRACKED_YET: '"{player}" n\'est pas suivi actuellement, envoyez-le pour le suivre.',
+    PLAYER_IN_QUEUE: "Le joueur **{player}** est actuellement dans la file d'attente.",
   },
   events: {
     WORLD_BOSS:

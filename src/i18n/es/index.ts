@@ -29,6 +29,7 @@ const es = {
     MULTIPLE_CHARACTERS: "Este jugador tiene varios personajes. Por favor, selecciona uno.",
     PLAYER_CHOICE: "{name} ({characters} personajes)",
     NOT_TRACKED_YET: '"{player}" no está siendo rastreado actualmente, envía para comenzar a rastrearlo.',
+    PLAYER_IN_QUEUE: "The player **{player}** is currently in the queue.",
   },
   events: {
     WORLD_BOSS:

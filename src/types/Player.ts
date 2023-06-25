@@ -12,6 +12,7 @@ export type Player = {
 };
 
 export type PlayerResearch = {
+  error?: string;
   dungeons_completed: number;
   players_killed: number;
   bosses_killed: number;
@@ -22,7 +23,7 @@ export type PlayerResearch = {
       class: string;
       level: number;
       lastUpdate: string;
-    },
+    }
   ];
 };
 

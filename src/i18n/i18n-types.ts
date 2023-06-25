@@ -126,6 +126,11 @@ type RootTranslation = {
 		 * @param {unknown} player
 		 */
 		NOT_TRACKED_YET: RequiredParams<'player'>
+		/**
+		 * T​h​e​ ​p​l​a​y​e​r​ ​*​*​{​p​l​a​y​e​r​}​*​*​ ​i​s​ ​c​u​r​r​e​n​t​l​y​ ​i​n​ ​t​h​e​ ​q​u​e​u​e​.
+		 * @param {unknown} player
+		 */
+		PLAYER_IN_QUEUE: RequiredParams<'player'>
 	}
 	events: {
 		/**
@@ -365,6 +370,10 @@ export type TranslationFunctions = {
 		 * "{player}" isn't currently tracked, send to track it.
 		 */
 		NOT_TRACKED_YET: (arg: { player: unknown }) => LocalizedString
+		/**
+		 * The player **{player}** is currently in the queue.
+		 */
+		PLAYER_IN_QUEUE: (arg: { player: unknown }) => LocalizedString
 	}
 	events: {
 		/**
