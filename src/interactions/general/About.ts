@@ -38,14 +38,14 @@ export const helpersButtons = new ActionRowBuilder<ButtonBuilder>({
 });
 
 @injectable()
-export default class Info extends Interaction {
+export default class About extends Interaction {
   public enabled = true;
 
   public readonly category = "General";
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "info",
+    name: "about",
     description: "Displays Lilith's info.",
   };
 
