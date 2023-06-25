@@ -28,7 +28,7 @@ const hu = {
     SELECT_CHARACTER: "Válassz egy karaktert, hogy megnézhesd a felszereléseit.",
     MULTIPLE_CHARACTERS: "Ennek a játékosnak több karaktere is van. Kérlek válassz egyet.",
     PLAYER_CHOICE: "{name} ({characters} karakterei)",
-    NOT_TRACKED_YET: '"{player}" jelenleg még nincs nyomon követve, próbáld meg beküldeni itt: https://d4armory.io .',
+    NOT_TRACKED_YET: '"{player}" jelenleg még nincs nyomon követve, próbáld meg beküldeni a nyomon követéshez.',
   },
   events: {
     WORLD_BOSS: "{name} várható helye {zone} ({territory}), {time}-kor.\n\nKövetkező  várható boss {nextTime}-kor: {nextName}",
