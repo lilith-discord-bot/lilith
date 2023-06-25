@@ -200,9 +200,11 @@ export const getChestsKey = (event: Event) => {
 
   if (event.refresh === 0 || (now > event.timestamp && now < event.refresh)) {
     hour = new Date(event.timestamp * 1000).getUTCHours();
-  } else if (event.refresh > 0 && now > event.refresh) {
+  } else if (event.refresh > 0 && now >= event.refresh) {
     hour = new Date(event.refresh * 1000).getUTCHours();
   }
+
+  console.log(hour, event);
 
   const key = getZones(event.zone).map((zone) => {
     const chest = hour % chests[zone].length;
