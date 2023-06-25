@@ -61,17 +61,13 @@ export class EventNotifier {
       return;
     }
 
-    for (let [key, value] of Object.entries(events)) {
+    for (let [key, event] of Object.entries(events)) {
       let cache = await this.client.cache.get(`events:${this.client.user?.id}:${key}`);
 
-      const cachedEvent = JSON.parse(cache!) as Event;
+      const oldEvent = JSON.parse(cache!) as Event;
 
-      const date = Date.now();
-
-      if (!cache || cachedEvent.timestamp !== value.timestamp) {
-        const event = new Date(value.timestamp * 1000).getTime();
-
-        await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(value));
+      if (!cache || this.validate(key, oldEvent, event)) {
+        await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(event));
 
         const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
 
@@ -80,10 +76,10 @@ export class EventNotifier {
         for (const guild of guilds) {
           this.client.logger.info(`Checking guild ${guild.id}...`);
 
-          const embed = new EventEmbed(key, value);
+          const embed = new EventEmbed(key, event);
 
           let message: string | MessagePayload | MessageCreateOptions = {
-            content: getTitle(key, value, guild.locale as Locales),
+            content: getTitle(key, event, guild.locale as Locales),
             embeds: [embed],
           };
 
@@ -124,6 +120,7 @@ export class EventNotifier {
                 response[0]?.id
               );
             }
+
             // await wait(250);
           }
         }
@@ -134,16 +131,47 @@ export class EventNotifier {
   }
 
   /**
-   * TODO - Implement refresh
+   * Validates the event by checking if it's outdated or not and if it has been updated.
+   *
+   * @param key - The event key
+   * @param event - The event data
+   *
+   * @returns - Whether the event is valid or not
    */
-  private checkRefresh(event: Event) {
-    if (event.refresh && event.refresh > 0) {
-      const date = Date.now();
+  private validate(key: string, oldEvent: Event, event: Event) {
+    const now = Date.now();
+    const eventDate = new Date(event.timestamp * 1000).getTime();
 
-      if (date / 1000 > event.refresh && date / 1000 < event.refresh + 60) {
+    if (oldEvent.timestamp !== event.timestamp) {
+      if (key === "helltide") {
+        const delayTime = eventDate + duration.seconds(30);
+
+        if (now > delayTime) {
+          this.client.logger.info("Event needs to be delayed");
+          return false;
+        }
+      }
+
+      if (now < eventDate + duration.minutes(5)) {
+        this.client.logger.info("Event is not outdated");
         return true;
       }
     }
+
+    if (event.refresh && event.refresh > 0) {
+      const refreshDate = new Date(event.refresh * 1000).getTime();
+      const maxRefreshTime = refreshDate + duration.seconds(30);
+
+      this.client.logger.info(`Event is refreshable, checking if it's time to refresh...`);
+
+      if (now > refreshDate && now <= maxRefreshTime) {
+        this.client.logger.info("Refreshing event...");
+        return true;
+      }
+    }
+
+    this.client.logger.info("Event is outdated");
+
     return false;
   }
 }

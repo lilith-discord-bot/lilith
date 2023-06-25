@@ -55,7 +55,9 @@ export class Broadcaster {
           : null;
 
         if (oldMessage)
-          await oldMessage.delete().catch((e) => console.error(`Unable to remove message with id: ${oldMessageId}`));
+          await oldMessage
+            .delete()
+            .catch((e) => console.error(`Unable to remove message with id: ${oldMessageId}`, e.message));
 
         return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch((e) => {
           console.error(`Unable to send message`, e.message);
