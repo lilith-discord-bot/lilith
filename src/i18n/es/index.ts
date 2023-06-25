@@ -1,75 +1,78 @@
-import type { BaseTranslation } from "../i18n-types";
-
+import type { BaseTranslation, Translation } from "../i18n-types";
 const es = {
   settings: {
     locale: {
-      SUCCESS: "Your Discord server locale has been updated to **{locale}**.",
+      SUCCESS: "La configuración regional de tu servidor de Discord se ha actualizado a **{locale}**.",
     },
     notifications: {
-      NO_PERMISSIONS: "I don't have permissions to send messages in {channel}.",
-      ALREADY_ENABLED: "Notifications for **{event}** are already enabled.",
-      ENABLED: "Notifications for **{event}** have been enabled and will be sent to {channel}.",
-      NOT_ENABLED: "Notifications for **{event}** are not enabled.",
-      UPDATED: "Notifications for **{event}** have been updated and will be sent to {channel}.",
-      DISABLED: "Notifications for **{event}** have been disabled.",
-      ALREADY_DISABLED: "Notifications for **{event}** are already disabled.",
-      NO_EVENTS: "There are no events enabled.",
-      NO_EVENTS_IN_CHANNEL: "There are no events enabled in {channel}.",
-      EVENTS_WORKING: "Notifications for **{event}** are working and will be sent to {channel}.",
-      REFRESHED: "Notifications for **{event}** have been refreshed and will be sent to {channels}.",
+      NO_PERMISSIONS: "No tengo permisos para enviar mensajes en {channel}.",
+      ALREADY_ENABLED: "Las notificaciones para {event} ya están activadas.",
+      ENABLED: "Se han activado las notificaciones para {event} y se enviarán a {channel}.",
+      NOT_ENABLED: "Las notificaciones para {event} no están activadas.",
+      UPDATED: "Se han actualizado las notificaciones para {event} y se enviarán a {channel}.",
+      DISABLED: "Se han desactivado las notificaciones para {event}.",
+      ALREADY_DISABLED: "Las notificaciones para {event} ya están desactivadas.",
+      NO_EVENTS: "No hay eventos activados.",
+      NO_EVENTS_IN_CHANNEL: "No hay eventos activados en {channel}.",
+      EVENTS_WORKING: "Las notificaciones para {event} están funcionando y se enviarán a {channel}.",
+      REFRESHED: "Se han actualizado las notificaciones para {event} y se enviarán a {channels}.",
     },
   },
   armory: {
-    BAD_FORMAT: "The player you provided is not valid, it needs to be in the following format: `Player#1234`.",
+    BAD_FORMAT: "El jugador que proporcionaste no es válido, debe estar en el siguiente formato: Jugador#1234.",
     PLAYER_NOT_FOUND:
-      "I couldn't find the player **{player}**, make sure you typed the name correctly or that the player exists.",
-    NO_CHARACTERS: "The player doesn't have any characters.",
-    NO_CHARACTER: "No character found, make sure you typed the name correctly or that at least one character exists.",
-    SELECT_CHARACTER: "Select a character to get the armory of.",
-    MULTIPLE_CHARACTERS: "This player has multiple characters. Please select one.",
-    PLAYER_CHOICE: "{name} ({characters} characters)",
-    NOT_TRACKED_YET: '"{player}" isn\'t currently tracked, send to track it.',
+      "No pude encontrar al jugador {player}, asegúrate de haber escrito correctamente el nombre o de que el jugador exista.",
+    NO_CHARACTERS: "El jugador no tiene ningún personaje.",
+    NO_CHARACTER:
+      "No se encontró ningún personaje, asegúrate de haber escrito correctamente el nombre o de que al menos exista un personaje.",
+    SELECT_CHARACTER: "Selecciona un personaje para obtener el armamento.",
+    MULTIPLE_CHARACTERS: "Este jugador tiene varios personajes. Por favor, selecciona uno.",
+    PLAYER_CHOICE: "{name} ({characters} personajes)",
+    NOT_TRACKED_YET: '"{player}" no está siendo rastreado actualmente, envía para comenzar a rastrearlo.',
   },
   events: {
-    WORLD_BOSS: "{name} appears in {zone} ({territory}) at {time}.\n\nNext expected boss is {nextName} at {nextTime}",
-    HELLTIDE: "Helltide occuring in {zone} until {time}, next helltide at {nextTime}\n\nChests refresh: {refresh}",
-    LEGION: "Legion appears {time}, next legion at {nextTime}",
+    WORLD_BOSS:
+      "{name} aparece en {zone} ({territory}) a las {time}.\n\nEl próximo jefe esperado es {nextName} a las {nextTime}",
+    HELLTIDE:
+      "Helltide ocurriendo en {zone} hasta las {time}, próximo Helltide a las {nextTime}\n\nActualización de cofres: {refresh}",
+    LEGION: "Legion aparece a las {time}, próximo Legion a las {nextTime}",
   },
   embeds: {
     ARMORY: {
-      STATISTICS_TITLE: "Statistics",
+      STATISTICS_TITLE: "Estadísticas",
       STATISTICS_VALUE:
-        "World Tier: {worldTier}\nMonsters killed: {monstersKilled}\nElites killed: {elitesKilled}\nGold collected: {goldCollected}",
-      CHARACTER_CREATION_TITLE: "Character creation",
-      LAST_PLAYED_TITLE: "Last played",
-      PLAYED_TIME_TITLE: "Played time",
-      EQUIPPED_ITEMS_TITLE: "Equipped items",
-      STATUS_TITLE: "Status",
-      MODE_TITLE: "Mode",
+        "Nivel Mundial: {worldTier}\nMonstruos eliminados: {monstersKilled}\nÉlites eliminadas: {elitesKilled}\nOro recolectado: {goldCollected}",
+      CHARACTER_CREATION_TITLE: "Creación de personaje",
+      LAST_PLAYED_TITLE: "Última partida",
+      PLAYED_TIME_TITLE: "Tiempo de juego",
+      EQUIPPED_ITEMS_TITLE: "Objetos equipados",
+      STATUS_TITLE: "Estado",
+      MODE_TITLE: "Modo",
     },
     HELP: {
-      TITLE: "{username}'s commands",
+      TITLE: "Comandos de {username}",
       DESCRIPTION:
-        "Here's a list of all my commands. We'll be adding the ability to get more information about each command soon!",
+        "Aquí tienes una lista de todos mis comandos. ¡Pronto agregaremos la capacidad de obtener más información sobre cada comando!",
     },
     INFO: {
-      STATISTICS_TITLE: "Statistics",
-      STATISTICS_VALUE: "Servers: {servers}\nUsers: {users}",
-      DEBUG_TITLE: "Debug",
-      DEBUG_VALUE: "Clusters: {clusters}\nShards: {shards}\nShardID: {shardId}\nClusterID: {clusterId}",
-      DESCRIPTION: "{username} is a Discord bot that provides information about Diablo 4 developed by glazk0 & Marco.",
+      STATISTICS_TITLE: "Estadísticas",
+      STATISTICS_VALUE: "Servidores: {servers}\nUsuarios: {users}",
+      DEBUG_TITLE: "Depuración",
+      DEBUG_VALUE: "Clusters: {clusters}\nFragmentos: {shards}\nID de fragmento: {shardId}\nID de clúster: {clusterId}",
+      DESCRIPTION:
+        "{username} es un bot de Discord que proporciona información sobre Diablo 4 desarrollado por glazk0 y Marco.",
     },
     SETTINGS: {
-      TITLE: "Your server notifications settings",
-      VALUE: "Channel: {channel}\nRole: {role}",
+      TITLE: "Configuración de notificaciones de tu servidor",
+      VALUE: "Canal: {channel}\nRol: {role}",
     },
   },
   misc: {
-    INVALID_QUERY: "Invalid query.",
-    NO_DATE_FOUND: "No date found.",
-    NO_PLAYED_TIME: "No played time found.",
-    NO_EQUIPPED_ITEMS: "No equipped items found.",
+    INVALID_QUERY: "Consulta inválida.",
+    NO_DATE_FOUND: "No se encontró fecha.",
+    NO_PLAYED_TIME: "No se encontró tiempo de juego.",
+    NO_EQUIPPED_ITEMS: "No se encontraron objetos equipados.",
   },
-} satisfies BaseTranslation;
+} satisfies Translation;
 
 export default es;

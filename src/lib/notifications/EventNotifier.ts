@@ -1,6 +1,7 @@
 import { Message, MessageCreateOptions, MessagePayload } from "discord.js";
-
 import { container } from "tsyringe";
+import { CronJob } from "cron";
+
 import { Client } from "../../core/Client";
 import { EventEmbed } from "../../embeds/EventEmbed";
 import { Locales } from "../../i18n/i18n-types";
@@ -41,7 +42,7 @@ export class EventNotifier {
   async init() {
     this.client.logger.info("Event notifier has been initialized.");
 
-    setInterval(() => this.refresh(), refreshInterval);
+    new CronJob("0 */1 * * * *", () => this.refresh(), null, true, "Europe/Brussels").start();
   }
 
   private async refresh() {
@@ -66,9 +67,9 @@ export class EventNotifier {
 
       const oldEvent = JSON.parse(cache!) as Event;
 
-      if (!cache || this.validate(key, oldEvent, event)) {
-        await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(event));
+      await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(event));
 
+      if (this.validate(key, oldEvent, event, !cache)) {
         const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
 
         this.client.logger.info(`Found ${guilds.length} guilds with event ${key}.`);
@@ -138,15 +139,17 @@ export class EventNotifier {
    *
    * @returns - Whether the event is valid or not
    */
-  private validate(key: string, oldEvent: Event, event: Event) {
+  private validate(key: string, oldEvent: Event, event: Event, refresh = false) {
     const now = Date.now();
     const eventDate = new Date(event.timestamp * 1000).getTime();
+
+    if (refresh) return true;
 
     if (oldEvent.timestamp !== event.timestamp) {
       if (key === "helltide") {
         const delayTime = eventDate + duration.seconds(30);
 
-        if (now < delayTime) {
+        if (now <= delayTime) {
           this.client.logger.info("Event needs to be delayed");
           return false;
         }
@@ -160,7 +163,7 @@ export class EventNotifier {
 
     if (event.refresh && event.refresh > 0) {
       const refreshDate = new Date(event.refresh * 1000).getTime();
-      const maxRefreshTime = refreshDate + duration.seconds(30);
+      const maxRefreshTime = refreshDate + duration.seconds(60);
 
       this.client.logger.info(`Event is refreshable, checking if it's time to refresh...`);
 
