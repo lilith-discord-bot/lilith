@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import { config } from "dotenv";
-import path from "node:path";
+import { join, resolve } from "node:path";
 import { ClusterManager } from "discord-hybrid-sharding";
 
 config();
@@ -12,7 +12,7 @@ import { database } from "./lib/db/postgresql/Database";
 
 database.$connect();
 
-const manager = new ClusterManager(path.join(__dirname, "./core/Client.js"), {
+const manager = new ClusterManager(join(resolve("core", "Client.js")), {
   totalShards: "auto",
   totalClusters: "auto",
   mode: "process",
