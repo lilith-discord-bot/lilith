@@ -194,7 +194,7 @@ export const getZones = (zone: string) => {
  * @returns - The key of the chest.
  */
 
-export const getChestsKey = (event: Event) => {
+export const getChestsKey = (event: HelltideEvent) => {
   const now = new Date().getTime() / 1000;
 
   let hour;
