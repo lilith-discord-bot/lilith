@@ -29,6 +29,7 @@ export type PlayerResearch = {
 
 export type PlayerArmory = {
   character: string;
+  queue: number;
   lastUpdate: string;
   accountLastUpdate: string;
   class: string;
@@ -52,8 +53,13 @@ export type Equipment = {
   tex: number;
   itemtype: string;
   power: number;
-  quality: string;
-  affixes: string[];
+  required_level: number;
+  upgrades: number;
+  quality_level: string;
+  quality_modifier: number;
+  base_affixes: string[];
+  strikethrough_affixes: string[];
+  added_affixes: string[];
 };
 
 export type Skill = {

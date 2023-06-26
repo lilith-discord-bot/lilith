@@ -46,7 +46,7 @@ export class ArmoryEmbed extends Embed {
       {
         name: underscore(i18n.embeds.ARMORY.EQUIPPED_ITEMS_TITLE()),
         value:
-          character.equipment.map((item) => `${item.name} (${item.quality} ${item.itemtype})`).join("\n") ||
+          character.equipment.map((item) => `${item.name} (${item.quality_level} ${item.itemtype})`).join("\n") ||
           i18n.misc.NO_EQUIPPED_ITEMS(),
       },
       {
