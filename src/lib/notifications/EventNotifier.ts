@@ -145,16 +145,9 @@ export class EventNotifier {
 
     if (refresh) return true;
 
-    if (oldEvent.timestamp !== event.timestamp) {
-      if (key === "helltide") {
-        const delayTime = eventDate + duration.seconds(30);
+    const delayed = key === "helltide" && now >= eventDate + duration.minutes(1) && now <= eventDate + duration.minutes(2);
 
-        if (now <= delayTime) {
-          this.client.logger.info("Event needs to be delayed");
-          return false;
-        }
-      }
-
+    if (oldEvent.timestamp !== event.timestamp || delayed) {
       if (now < eventDate + duration.minutes(5)) {
         this.client.logger.info("Event is not outdated");
         return true;
@@ -173,7 +166,7 @@ export class EventNotifier {
       }
     }
 
-    this.client.logger.info("Event is outdated");
+    this.client.logger.info("Event is outdated or delayed, skipping...");
 
     return false;
   }
