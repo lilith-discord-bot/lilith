@@ -1,11 +1,11 @@
+import { CronJob } from "cron";
 import { Message, MessageCreateOptions, MessagePayload } from "discord.js";
 import { container } from "tsyringe";
-import { CronJob } from "cron";
 
 import { Client } from "../../core/Client";
 import { EventEmbed } from "../../embeds/EventEmbed";
 import { Locales } from "../../i18n/i18n-types";
-import { Event, Events, EventsList, HelltideEvent } from "../../types";
+import { Events, EventsList, HelltideEvent } from "../../types";
 import { duration } from "../../utils/Commons";
 import { clientSymbol } from "../../utils/Constants";
 import { getEvents, getStatus } from "../API";
@@ -41,21 +41,18 @@ export class EventNotifier {
 
   async init() {
     this.client.logger.info("Event notifier has been initialized.");
-
     new CronJob("0 */1 * * * *", () => this.refresh(), null, true, "Europe/Brussels").start();
   }
 
   private async refresh() {
     this.client.logger.info("Refreshing events...");
 
-    const status = await getStatus();
+    const [status, events] = await Promise.all([getStatus(), getEvents()]);
 
     if (!status || !status.event_service) {
       this.client.logger.info("Event service is not available, skipping...");
       return;
     }
-
-    const events = await getEvents();
 
     if (!events) {
       this.client.logger.info("No events found, skipping...");
@@ -73,6 +70,16 @@ export class EventNotifier {
       if (!exist || (exist.refreshTimestamp > 0 && !exist.refreshed)) {
         // If it doesn't exist, create it
         if (!exist) {
+          const now = Date.now();
+          const eventDate = new Date(event.timestamp * 1000).getTime();
+          const delayDate = new Date(event.timestamp * 1000).getTime() + duration.seconds(30);
+
+          // If the event is too recent, skip it
+          if (key === Events.Helltide && now < delayDate) {
+            this.client.logger.info(`Event ${key} is too recent, waiting...`);
+            continue;
+          }
+
           const refreshTimestamp = key === Events.Helltide ? (event as HelltideEvent).refresh : 0;
 
           try {
@@ -85,11 +92,8 @@ export class EventNotifier {
               },
             });
           } catch (error) {
-            this.client.logger.error(error);
+            this.client.logger.error(`Failed to create event ${key}: ${error.message}`);
           }
-
-          const now = Date.now();
-          const eventDate = new Date(event.timestamp * 1000).getTime();
 
           // If the event is too old, skip it
           if (now > eventDate + duration.minutes(5)) {
@@ -106,7 +110,7 @@ export class EventNotifier {
           const endDate = startDate + duration.hours(1);
 
           // If now is not between the start and end date, and before the refresh date, skip it
-          if (!(now >= startDate && now <= endDate) && now < refreshDate) {
+          if (!(now >= startDate && now <= endDate) || now < refreshDate) {
             this.client.logger.info(`Event ${key} is not ready to be refreshed, skipping...`);
             continue;
           }
@@ -121,7 +125,7 @@ export class EventNotifier {
               },
             });
           } catch (error) {
-            this.client.logger.error(error);
+            this.client.logger.error(`Failed to refresh event ${key}: ${error.message}`);
           }
         }
 
@@ -176,8 +180,6 @@ export class EventNotifier {
                 response[0]?.id
               );
             }
-
-            // await wait(250);
           }
         }
 
