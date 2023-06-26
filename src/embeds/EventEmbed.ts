@@ -1,6 +1,6 @@
 import { Embed } from "./Embed";
 
-import { Event } from "../types";
+import { BossEvent, Event, HelltideEvent, LegionEvent } from "../types";
 import { ARMORY_URL, CDN } from "../utils/Constants";
 import { getChestsKey } from "../utils/Predict";
 
@@ -27,11 +27,14 @@ export class EventEmbed extends Embed {
 function getURL(key: string, event: Event) {
   switch (key) {
     case "boss":
-      return `${CDN}/map_data/worldboss/${normalize(event.zone, event.territory!)}.png`;
+      const boss = event as BossEvent;
+      return `${CDN}/map_data/worldboss/${normalize(boss.zone, boss.territory!)}.png`;
     case "helltide":
-      return `${CDN}/map_data/helltide/${event.zone}_${getChestsKey(event)}.png`;
+      const helltide = event as HelltideEvent;
+      return `${CDN}/map_data/helltide/${helltide.zone}_${getChestsKey(helltide)}.png`;
     case "legion":
-      return `${CDN}/map_data/legion/${normalize(event.zone, event.territory!)}.png`;
+      const legion = event as LegionEvent;
+      return `${CDN}/map_data/legion/${normalize(legion.zone, legion.territory!)}.png`;
     default:
       return "https://cdn.discordapp.com/attachments/1117722541209956422/1118197134924185630/no_png.png";
   }

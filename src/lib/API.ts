@@ -1,4 +1,4 @@
-import { Classes, Events, Modes, Player, PlayerArmory, PlayerResearch, Stats, Status } from "../types";
+import { Classes, Events, Modes, Player, PlayerArmory, PlayerResearch, RawEvents, Stats, Status } from "../types";
 
 import { request } from "../utils/Commons";
 import { ARMORY_API_URL, ARMORY_URL } from "../utils/Constants";
@@ -8,7 +8,7 @@ import { ARMORY_API_URL, ARMORY_URL } from "../utils/Constants";
  *
  * @returns {Promise<Events | null>} The events.
  */
-export async function getEvents(): Promise<Events | null> {
+export async function getEvents(): Promise<RawEvents | null> {
   const res = await request(`${ARMORY_API_URL}/events/recent`, true);
   return res;
 }

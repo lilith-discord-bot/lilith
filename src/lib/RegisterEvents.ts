@@ -1,11 +1,13 @@
 import { Cluster, ClusterManager } from "discord-hybrid-sharding";
-
-import { Logger } from "./Logger";
-import { isDev } from "../utils/Commons";
-import { Client } from "../core/Client";
 import { Events } from "discord.js";
 import { container } from "tsyringe";
+
+import { Client } from "../core/Client";
+
+import { isDev } from "../utils/Commons";
 import { clientSymbol } from "../utils/Constants";
+
+import { Logger } from "./Logger";
 
 /**
  * Registers the client events.
@@ -59,9 +61,10 @@ export function registerClientEvents(): void {
     client.logger.warn(message);
   });
 
-  client.on(Events.Debug, (message: string) => {
-    if (isDev) client.logger.debug(message);
-  });
+  if (isDev)
+    client.on(Events.Debug, (message: string) => {
+      client.logger.debug(message);
+    });
 }
 
 /**
@@ -73,11 +76,10 @@ export function registerClientEvents(): void {
  * @returns {ClusterManager} The cluster manager.
  */
 export function registerClusterEvents(manager: ClusterManager, logger: typeof Logger): ClusterManager {
-  if (isDev) {
+  if (isDev)
     manager.on("debug", (message: string) => {
       logger.debug(message);
     });
-  }
 
   manager.on("clusterCreate", (cluster: Cluster) => {
     logger.info(`Launched cluster #${cluster.id}`);
