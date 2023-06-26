@@ -145,7 +145,7 @@ export class EventNotifier {
 
     if (refresh) return true;
 
-    const delayed = key === "helltide" && now >= eventDate + duration.minutes(1) && now <= eventDate + duration.minutes(2);
+    const delayed = key === "helltide" && now >= eventDate + duration.seconds(30) && now <= eventDate + duration.seconds(90);
 
     if (oldEvent.timestamp !== event.timestamp || delayed) {
       if (now < eventDate + duration.minutes(5)) {
