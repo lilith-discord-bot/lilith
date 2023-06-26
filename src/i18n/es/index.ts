@@ -33,7 +33,7 @@ const es = {
   },
   events: {
     WORLD_BOSS:
-      "{name} aparece en {zone} ({territory}) a las {time}.\n\nEl próximo jefe esperado es {nextName} a las {nextTime}",
+      "{name} aparece en {zone} ({territory}) a las {time} ({countdown}).\n\nEl próximo jefe esperado es {nextName} a las {nextTime}",
     HELLTIDE:
       "Helltide ocurriendo en {zone} hasta las {time}, próximo Helltide a las {nextTime}\n\nActualización de cofres: {refresh}",
     LEGION: "Legion aparece a las {time}, próximo Legion a las {nextTime}",

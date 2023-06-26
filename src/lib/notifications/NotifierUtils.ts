@@ -25,6 +25,7 @@ export const getTitle = (key: string, event: Event, locale: Locales = "en") => {
         zone: boss.zone,
         territory: boss.territory,
         time: time(boss.timestamp, "t"),
+        countdown: time(boss.timestamp, "R"),
         nextName: boss.nextExpectedName,
         nextTime: time(boss.nextExpected, "t"),
       });

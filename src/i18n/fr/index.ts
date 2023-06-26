@@ -34,7 +34,7 @@ const fr = {
   },
   events: {
     WORLD_BOSS:
-      "{name} apparaît dans {zone} ({territory}) à {time}.\n\nLe prochain boss attendu est {nextName} à {nextTime}",
+      "{name} apparaît dans {zone} ({territory}) à {time} ({countdown}).\n\nLe prochain boss attendu est {nextName} à {nextTime}",
     HELLTIDE:
       "Vagues infernales actuellement à {zone} jusqu'à {time}, prochaines vagues infernales à {nextTime}\n\nNouveaux coffres : {refresh}",
     LEGION: "Legion apparaît à {time}, prochaine legion à {nextTime}",
