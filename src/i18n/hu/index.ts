@@ -29,6 +29,7 @@ const hu = {
     MULTIPLE_CHARACTERS: "Ennek a játékosnak több karaktere is van. Kérlek válassz egyet.",
     PLAYER_CHOICE: "{name} ({characters} karakterei)",
     NOT_TRACKED_YET: '"{player}" jelenleg még nincs nyomon követve, próbáld meg beküldeni a nyomon követéshez.',
+    PLAYER_IN_QUEUE: "A **{player}** nevű játékos jelenleg sorban áll.",
   },
   events: {
     WORLD_BOSS: "{name} várható helye {zone} ({territory}), {time}-kor.\n\nKövetkező  várható boss {nextTime}-kor: {nextName}",
