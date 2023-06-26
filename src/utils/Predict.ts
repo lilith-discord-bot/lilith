@@ -1,4 +1,4 @@
-import { Event } from "../types";
+import { Event, HelltideEvent } from "../types";
 
 // Huge thanks to shalzuth
 
@@ -193,7 +193,7 @@ export const getZones = (zone: string) => {
  *
  * @returns - The key of the chest.
  */
-export const getChestsKey = (event: Event) => {
+export const getChestsKey = (event: HelltideEvent) => {
   const now = Math.floor(Date.now() / 1000);
 
   let hour;

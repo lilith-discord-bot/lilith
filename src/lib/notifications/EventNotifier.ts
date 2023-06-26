@@ -5,7 +5,7 @@ import { CronJob } from "cron";
 import { Client } from "../../core/Client";
 import { EventEmbed } from "../../embeds/EventEmbed";
 import { Locales } from "../../i18n/i18n-types";
-import { Event, EventsList } from "../../types";
+import { Event, Events, EventsList, HelltideEvent } from "../../types";
 import { duration } from "../../utils/Commons";
 import { clientSymbol } from "../../utils/Constants";
 import { getEvents, getStatus } from "../API";
@@ -63,13 +63,68 @@ export class EventNotifier {
     }
 
     for (let [key, event] of Object.entries(events)) {
-      let cache = await this.client.cache.get(`events:${this.client.user?.id}:${key}`);
+      const exist = await this.client.database.notification.findFirst({
+        where: {
+          type: key,
+          timestamp: event.timestamp,
+        },
+      });
 
-      const oldEvent = JSON.parse(cache!) as Event;
+      if (!exist || (exist.refreshTimestamp > 0 && !exist.refreshed)) {
+        // If it doesn't exist, create it
+        if (!exist) {
+          const refreshTimestamp = key === Events.Helltide ? (event as HelltideEvent).refresh : 0;
 
-      await this.client.cache.set(`events:${this.client.user?.id}:${key}`, JSON.stringify(event));
+          try {
+            await this.client.database.notification.create({
+              data: {
+                type: key,
+                data: event,
+                timestamp: event.timestamp,
+                refreshTimestamp: refreshTimestamp,
+              },
+            });
+          } catch (error) {
+            this.client.logger.error(error);
+          }
 
-      if (this.validate(key, oldEvent, event, !cache)) {
+          const now = Date.now();
+          const eventDate = new Date(event.timestamp * 1000).getTime();
+
+          // If the event is too old, skip it
+          if (now > eventDate + duration.minutes(5)) {
+            this.client.logger.info(`Event ${key} is too old, skipping...`);
+            continue;
+          }
+        }
+
+        // If it exists but it's not refreshed, refresh it
+        if (exist && exist.refreshTimestamp && exist.refreshTimestamp > 0 && !exist.refreshed) {
+          const now = Date.now();
+          const startDate = new Date(exist.timestamp * 1000).getTime();
+          const refreshDate = new Date(exist.refreshTimestamp * 1000).getTime();
+          const endDate = startDate + duration.hours(1);
+
+          // If now is not between the start and end date, and before the refresh date, skip it
+          if (!(now >= startDate && now <= endDate) && now < refreshDate) {
+            this.client.logger.info(`Event ${key} is not ready to be refreshed, skipping...`);
+            continue;
+          }
+
+          try {
+            await this.client.database.notification.update({
+              where: {
+                id: exist.id,
+              },
+              data: {
+                refreshed: true,
+              },
+            });
+          } catch (error) {
+            this.client.logger.error(error);
+          }
+        }
+
         const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
 
         this.client.logger.info(`Found ${guilds.length} guilds with event ${key}.`);
@@ -129,45 +184,5 @@ export class EventNotifier {
         this.client.logger.info(`Event ${key} has been broadcasted to ${guilds.length} guilds.`);
       }
     }
-  }
-
-  /**
-   * Validates the event by checking if it's outdated or not and if it has been updated.
-   *
-   * @param key - The event key
-   * @param event - The event data
-   *
-   * @returns - Whether the event is valid or not
-   */
-  private validate(key: string, oldEvent: Event, event: Event, refresh = false) {
-    const now = Date.now();
-    const eventDate = new Date(event.timestamp * 1000).getTime();
-
-    if (refresh) return true;
-
-    const delayed = key === "helltide" && now >= eventDate + duration.minutes(1) && now <= eventDate + duration.minutes(2);
-
-    if (oldEvent.timestamp !== event.timestamp || delayed) {
-      if (now < eventDate + duration.minutes(5)) {
-        this.client.logger.info("Event is not outdated");
-        return true;
-      }
-    }
-
-    if (event.refresh && event.refresh > 0) {
-      const refreshDate = new Date(event.refresh * 1000).getTime();
-      const maxRefreshTime = refreshDate + duration.seconds(60);
-
-      this.client.logger.info(`Event is refreshable, checking if it's time to refresh...`);
-
-      if (now > refreshDate && now <= maxRefreshTime) {
-        this.client.logger.info("Refreshing event...");
-        return true;
-      }
-    }
-
-    this.client.logger.info("Event is outdated or delayed, skipping...");
-
-    return false;
   }
 }
