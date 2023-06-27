@@ -24,7 +24,8 @@ const it = {
     PLAYER_NOT_FOUND:
       "Non è stato possibile verificare il giocatore **{player}**, assicurati di averlo scritto correttamente o che esista.",
     NO_CHARACTERS: "Non sono presenti personaggi associati al giocatore.",
-    NO_CHARACTER: "Nessun personaggio presente, assicurati di aver scritto il nome correttamente o che sia esista almeno un personaggio associato.",
+    NO_CHARACTER:
+      "Nessun personaggio presente, assicurati di aver scritto il nome correttamente o che sia esista almeno un personaggio associato.",
     SELECT_CHARACTER: "Seleziona un personaggio per cui ottenere l'armeria.",
     MULTIPLE_CHARACTERS: "Sono presenti più personaggi associati al giocatore. Selezionane uno.",
     PLAYER_CHOICE: "{name} ({characters} characters)",
@@ -34,7 +35,8 @@ const it = {
   events: {
     WORLD_BOSS:
       "{name} apparirà in {zone} ({territory}) alle ore {time} ({countdown}).\n\nIl prossimo boss sarà {nextName} alle ore {nextTime}",
-    HELLTIDE: "La Marea Infernale si manifesterà a {zone} alle ore {time}, la prossima Marea Infernale avverrà alle ore {nextTime}\n\nRigenerazione scrigni: {refresh}",
+    HELLTIDE:
+      "La Marea Infernale si manifesterà a {zone} alle ore {time}, la prossima Marea Infernale avverrà alle ore {nextTime}\n\nRigenerazione scrigni: {refresh}",
     LEGION: "La Legione apparirà alle ore {time}, la prossima Legione apparirà alle ore {nextTime}",
   },
   embeds: {
