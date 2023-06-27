@@ -129,61 +129,69 @@ export class EventNotifier {
           }
         }
 
-        const guilds = await this.client.repository.guild.getAllByEvent(key as EventsList);
+        const settings = await this.client.database.event.findMany({
+          where: {
+            type: key,
+          },
+          include: {
+            Guild: {
+              select: {
+                locale: true,
+              },
+            },
+          },
+        });
 
-        this.client.logger.info(`Found ${guilds.length} guilds with event ${key}.`);
+        if (!settings || settings.length === 0) continue;
 
-        for (const guild of guilds) {
-          this.client.logger.info(`Checking guild ${guild.id}...`);
+        const embed = new EventEmbed(key, event);
 
-          const embed = new EventEmbed(key, event);
+        let message: string | MessagePayload | MessageCreateOptions = {
+          content: null,
+          embeds: [embed],
+        };
 
-          let message: string | MessagePayload | MessageCreateOptions = {
-            content: getTitle(key, event, guild.locale as Locales),
-            embeds: [embed],
+        for (let setting of settings) {
+          message = {
+            content: getTitle(key, event, setting.Guild.locale as Locales),
+            ...message,
           };
 
-          const settings = guild.events.filter((event) => event.type === (key as EventsList));
+          this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${setting.guildId}...`);
 
-          if (!settings || settings.length === 0) continue;
+          if (setting.roleId) {
+            message.content += ` - <@&${setting.roleId}>`;
+            message.allowedMentions = {
+              roles: [setting.roleId],
+            };
+          }
 
-          for (let setting of settings) {
-            this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${guild.id}...`);
+          // if (setting.schedule) {
+          //   // TODO: Implement schedule
+          // }
 
-            if (setting.roleId) {
-              message.content += ` - <@&${setting.roleId}>`;
-              message.allowedMentions = {
-                roles: [setting.roleId],
-              };
-            }
+          if (!setting.channelId) {
+            this.client.logger.info(`Event ${key} has no channel set, skipping...`);
+            continue;
+          }
 
-            // if (setting.schedule) {
-            //   // TODO: Implement schedule
-            // }
+          const response = (await this.broadcaster.broadcast(
+            setting.channelId,
+            message,
+            setting.messageId
+          )) as (Message<true> | null)[];
 
-            if (!setting.channelId) {
-              this.client.logger.info(`Event ${key} has no channel set, skipping...`);
-              continue;
-            }
-
-            const response = (await this.broadcaster.broadcast(
+          if (response && response.length >= 1) {
+            await this.client.repository.guild.updateEventMessageId(
+              setting.guildId,
+              key as EventsList,
               setting.channelId,
-              message,
-              setting.messageId
-            )) as (Message<true> | null)[];
-
-            if (response && response.length >= 1) {
-              await this.client.repository.guild.updateEventMessageId(
-                guild.guildId,
-                key as EventsList,
-                setting.channelId,
-                response[0]?.id
-              );
-            }
+              response[0]?.id
+            );
           }
         }
 
-        this.client.logger.info(`Event ${key} has been broadcasted to ${guilds.length} guilds.`);
+        this.client.logger.info(`Event ${key} has been broadcasted to ${settings.length} guilds.`);
       }
     }
   }
