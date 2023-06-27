@@ -2,6 +2,7 @@ import {
   ApplicationCommandData,
   ApplicationCommandOptionType,
   ApplicationCommandType,
+  AutocompleteInteraction,
   CacheType,
   ChannelType,
   ChatInputCommandInteraction,
@@ -10,7 +11,6 @@ import {
   Message,
   NewsChannel,
   PermissionFlagsBits,
-  Role,
   TextChannel,
   ThreadChannel,
 } from "discord.js";
@@ -25,11 +25,11 @@ import L from "../../i18n/i18n-node";
 import { Locales } from "../../i18n/i18n-types";
 import { locales } from "../../i18n/i18n-util";
 
+import { Event } from "@prisma/client";
+import { EventEmbed } from "../../embeds/EventEmbed";
+import { getTitle } from "../../lib/notifications/NotifierUtils";
 import { Event as D4Event, EventsList } from "../../types";
 import { clientSymbol, eventsChoices, localesMap } from "../../utils/Constants";
-import { EventEmbed } from "../../embeds/EventEmbed";
-import { Event } from "@prisma/client";
-import { getTitle } from "../../lib/notifications/NotifierUtils";
 
 @injectable()
 export default class Settings extends Interaction {
@@ -47,7 +47,7 @@ export default class Settings extends Interaction {
       {
         type: ApplicationCommandOptionType.Subcommand,
         name: "locale",
-        description: "Change the locale of the bot for your guild.",
+        description: `Change the locale of ${this.client.user.username} for your guild.`,
         options: [
           {
             type: ApplicationCommandOptionType.String,
@@ -82,7 +82,7 @@ export default class Settings extends Interaction {
                 type: ApplicationCommandOptionType.Channel,
                 name: "channel",
                 description: "The channel to send notifications to.",
-                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText, ChannelType.PublicThread],
+                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
                 required: true,
               },
               {
@@ -113,7 +113,7 @@ export default class Settings extends Interaction {
                 type: ApplicationCommandOptionType.Channel,
                 name: "channel",
                 description: "The channel to send notifications to.",
-                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText, ChannelType.PublicThread],
+                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
                 required: true,
               },
               {
@@ -139,7 +139,7 @@ export default class Settings extends Interaction {
                 type: ApplicationCommandOptionType.Channel,
                 name: "channel",
                 description: "The channel to disable notifications to.",
-                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText, ChannelType.PublicThread],
+                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
                 required: true,
               },
             ],
@@ -159,6 +159,13 @@ export default class Settings extends Interaction {
                 name: "event",
                 description: "The event to refresh notifications for.",
                 choices: eventsChoices,
+                required: true,
+              },
+              {
+                type: ApplicationCommandOptionType.String,
+                name: "data",
+                description: "The data to refresh notifications for.",
+                autocomplete: true,
                 required: true,
               },
             ],
@@ -182,10 +189,12 @@ export default class Settings extends Interaction {
     const subcommand = options.getSubcommand();
 
     let locale = options.getString("value") as Locales;
+
     let event = options.getString("event") as EventsList;
     let channel = options.getChannel("channel") as GuildChannel;
     let role = options.getRole("role");
     let schedule = options.getBoolean("schedule");
+    let data = options.getString("data");
 
     switch (subcommand) {
       case "locale":
@@ -312,24 +321,26 @@ export default class Settings extends Interaction {
                 ephemeral: true,
               });
 
-            const cache = await this.client.cache.get(`events:${this.client.user.id}:${event}`);
+            const notification = await this.client.database.notification.findUnique({
+              where: {
+                id: data,
+              },
+            });
 
-            if (!cache)
+            if (!notification)
               return await interaction.reply({
                 content: i18n.settings.notifications.NO_EVENTS(),
                 ephemeral: true,
               });
 
-            const value = JSON.parse(cache) as any as D4Event;
-
             for (const event of currentEvents) {
-              const embed = new EventEmbed(event.type, value);
+              const embed = new EventEmbed(event.type, notification.data as D4Event);
 
               const channel = interaction.guild.channels.cache.get(event.channelId) as TextChannel | NewsChannel;
 
               if (!channel) continue;
 
-              let content = getTitle(event.type, value, guild.locale as Locales);
+              let content = getTitle(event.type, notification.data as D4Event, guild.locale as Locales);
 
               if (event.roleId) {
                 content += ` - <@&${event.roleId}>`;
@@ -375,6 +386,25 @@ export default class Settings extends Interaction {
         }
         break;
     }
+  }
+
+  public async autocomplete(interaction: AutocompleteInteraction<CacheType>, context: Context): Promise<any> {
+    const event = interaction.options.getString("event", true);
+
+    const notifications = await this.client.database.notification.findMany({
+      where: {
+        type: event,
+      },
+    });
+
+    if (!notifications.length) return await interaction.respond([]);
+
+    await interaction.respond(
+      notifications.map((notification) => ({
+        name: `${new Date(notification.timestamp * 1000).toUTCString()} UTC`,
+        value: notification.id,
+      }))
+    );
   }
 
   private checkPermission(
