@@ -1,6 +1,6 @@
 import { container } from "tsyringe";
 
-import { Client } from "../core/Client";
+import { Client } from "../structures/Client";
 import { request, wait } from "../utils/Commons";
 import { DATABASE_URL, MAP_API_URL, clientSymbol, languages } from "../utils/Constants";
 import { getLeaderboard, getPlayer } from "./API";

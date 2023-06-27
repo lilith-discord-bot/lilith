@@ -4,7 +4,7 @@ import { Embed } from "./Embed";
 
 import { PlayerArmory } from "../types";
 import { getTimestamp, secondsToDhms } from "../utils/Commons";
-import { Context } from "../core/Interaction";
+import { Context } from "../structures/Interaction";
 
 export class ArmoryEmbed extends Embed {
   constructor(character: PlayerArmory, { i18n }: Context) {

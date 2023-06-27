@@ -1,7 +1,7 @@
 import { Guild, GuildScheduledEventCreateOptions, Message, MessageCreateOptions, MessagePayload } from "discord.js";
 import { container } from "tsyringe";
 
-import { Client } from "../../core/Client";
+import { Client } from "../../structures/Client";
 
 import { clientSymbol } from "../../utils/Constants";
 

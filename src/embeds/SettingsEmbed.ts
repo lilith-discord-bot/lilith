@@ -1,4 +1,4 @@
-import { Context } from "../core/Interaction";
+import { Context } from "../structures/Interaction";
 import { Embed } from "./Embed";
 
 import { Event } from "@prisma/client";

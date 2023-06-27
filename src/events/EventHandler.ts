@@ -4,8 +4,8 @@ import path from "node:path";
 import { Collection, Events } from "discord.js";
 import { container } from "tsyringe";
 
-import { Client } from "../core/Client";
-import { Event } from "../core/Event";
+import { Client } from "../structures/Client";
+import { Event } from "../structures/Event";
 
 import { clientSymbol } from "../utils/Constants";
 

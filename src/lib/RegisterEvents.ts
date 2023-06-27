@@ -2,7 +2,7 @@ import { Cluster, ClusterManager } from "discord-hybrid-sharding";
 import { Events } from "discord.js";
 import { container } from "tsyringe";
 
-import { Client } from "../core/Client";
+import { Client } from "../structures/Client";
 
 import { isDev } from "../utils/Commons";
 import { clientSymbol } from "../utils/Constants";

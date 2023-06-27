@@ -1,6 +1,6 @@
 import { Guild, NewsChannel, Snowflake, TextChannel, TimestampStylesString, time } from "discord.js";
 import { Logger } from "../lib/Logger";
-import { Client } from "../core/Client";
+import { Client } from "../structures/Client";
 import { ARMORY_URL } from "./Constants";
 
 /**

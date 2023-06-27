@@ -1,6 +1,6 @@
 import { Events } from "discord.js";
 
-import { Event } from "../core/Event";
+import { Event } from "../structures/Event";
 import { Worker } from "../lib/Worker";
 import { EventNotifier } from "../lib/notifications/EventNotifier";
 

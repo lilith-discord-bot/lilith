@@ -8,8 +8,8 @@ import {
 } from "discord.js";
 import { inject, injectable } from "tsyringe";
 
-import { Interaction } from "../../core/Interaction";
-import { Client } from "../../core/Client";
+import { Interaction } from "../../structures/Interaction";
+import { Client } from "../../structures/Client";
 
 import { CDN, clientSymbol } from "../../utils/Constants";
 

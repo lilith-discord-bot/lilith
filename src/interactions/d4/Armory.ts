@@ -14,8 +14,8 @@ import {
 } from "discord.js";
 import { inject, injectable } from "tsyringe";
 
-import { Client } from "../../core/Client";
-import { Context, Interaction } from "../../core/Interaction";
+import { Client } from "../../structures/Client";
+import { Context, Interaction } from "../../structures/Interaction";
 
 import { getPlayer, getPlayerArmory } from "../../lib/API";
 

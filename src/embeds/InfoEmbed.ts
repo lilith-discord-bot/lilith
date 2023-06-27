@@ -1,6 +1,6 @@
 import { Embed } from "./Embed";
 
-import { Context } from "../core/Interaction";
+import { Context } from "../structures/Interaction";
 
 export class InfoEmbed extends Embed {
   constructor(data: any, { i18n }: Context) {
