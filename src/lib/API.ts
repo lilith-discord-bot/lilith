@@ -44,7 +44,7 @@ export async function getLeaderboard(classe: Classes = "allclasses", mode: Modes
  * @returns {Promise<PlayerResearch | null>} The player.
  */
 export async function getPlayer(battleTag: string): Promise<PlayerResearch | null> {
-  const res = await request(`${ARMORY_API_URL}/${battleTag}`, true);
+  const res = await request(`${ARMORY_API_URL}/armory/${battleTag}`, true);
   return res;
 }
 
@@ -56,7 +56,7 @@ export async function getPlayer(battleTag: string): Promise<PlayerResearch | nul
  * @returns {PlayerArmory | null} The player.
  */
 export async function getPlayerArmory(battleTag: string, heroId: string): Promise<PlayerArmory | null> {
-  const res = await request(`${ARMORY_API_URL}/${battleTag}/${heroId}`, true);
+  const res = await request(`${ARMORY_API_URL}/armory/${battleTag}/${heroId}`, true);
   return res;
 }
 
