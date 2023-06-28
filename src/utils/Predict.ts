@@ -1,4 +1,4 @@
-import { Event } from "../types";
+import { Event, HelltideEvent } from "../types";
 
 // Huge thanks to shalzuth
 
@@ -193,16 +193,22 @@ export const getZones = (zone: string) => {
  *
  * @returns - The key of the chest.
  */
-export const getChestsKey = (event: Event) => {
-  const now = Math.floor(Date.now() / 1000);
+
+export const getChestsKey = (event: HelltideEvent) => {
+  const now = new Date().getTime() / 1000;
 
   let hour;
 
   if (event.refresh === 0 || (now > event.timestamp && now < event.refresh)) {
     hour = new Date(event.timestamp * 1000).getUTCHours();
-  } else if (event.refresh > 0 && now > event.refresh) {
+  } else if (event.refresh > 0 && now >= event.refresh) {
     hour = new Date(event.refresh * 1000).getUTCHours();
   }
+
+  console.log(hour, event);
+
+  // Temporary fix
+  if (hour === undefined) hour = new Date().getUTCHours();
 
   const key = getZones(event.zone).map((zone) => {
     const chest = hour % chests[zone].length;

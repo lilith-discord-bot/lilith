@@ -8,9 +8,11 @@ const hu = {
     notifications: {
       NO_PERMISSIONS: "Nincs elegendő jogosultságom, hogy üzenetet küldjek a(z) {channel} csatornába.",
       ALREADY_ENABLED: "A(z) **{event}** nevű eseménynek az értesítései már engedélyezve vannak.",
-      ENABLED: "A(z) **{event}** nevű eseményhez tartozó értesítések engedélyezve lettek, ezeket a jövőben ide fogom küldeni: {channel}.",
+      ENABLED:
+        "A(z) **{event}** nevű eseményhez tartozó értesítések engedélyezve lettek, ezeket a jövőben ide fogom küldeni: {channel}.",
       NOT_ENABLED: "Az értesítések a(z) **{event}** nevű eseményre nincsenek engedélyezve.",
-      UPDATED: "Az értesítéseket a(z) **{event}** nevű eseményhez módosítottam, ezeket a jövőben ide fogom küldeni: {channel}.",
+      UPDATED:
+        "Az értesítéseket a(z) **{event}** nevű eseményhez módosítottam, ezeket a jövőben ide fogom küldeni: {channel}.",
       DISABLED: "Az értesítések a(z) **{event}** nevű eseményre ki lettek kapcsolva.",
       ALREADY_DISABLED: "Az értesítések a(z) **{event}** nevű eseményre már ki lettek kapcsolva.",
       NO_EVENTS: "Nincs engedélyezett esemény.",
@@ -22,9 +24,10 @@ const hu = {
   armory: {
     BAD_FORMAT: "A játékos név, amit megadtál nem megfelelő, próbálkozz az alábbi formátummal: `Player#1234`.",
     PLAYER_NOT_FOUND:
-    "Nem találtam meg a **{player}** nevű játékost, kérlek ellenőrizd, hogy helyesen adtad-e meg a nevet, illetve hogy a játékos létezik-e.",
+      "Nem találtam meg a **{player}** nevű játékost, kérlek ellenőrizd, hogy helyesen adtad-e meg a nevet, illetve hogy a játékos létezik-e.",
     NO_CHARACTERS: "Ennek a játékosnak nincsenek karakterei.",
-    NO_CHARACTER: "Nem találtam meg a keresendő karaktert, kérlek ellenőrizd, hogy helyesen adtad-e meg a nevet, illetve hogy legalább 1 karakter létezik-e.",
+    NO_CHARACTER:
+      "Nem találtam meg a keresendő karaktert, kérlek ellenőrizd, hogy helyesen adtad-e meg a nevet, illetve hogy legalább 1 karakter létezik-e.",
     SELECT_CHARACTER: "Válassz egy karaktert, hogy megnézhesd a felszereléseit.",
     MULTIPLE_CHARACTERS: "Ennek a játékosnak több karaktere is van. Kérlek válassz egyet.",
     PLAYER_CHOICE: "{name} ({characters} karakter)",
@@ -33,7 +36,8 @@ const hu = {
   },
   events: {
     WORLD_BOSS: "{name} várható helye {zone} ({territory}), {time}-kor.\n\nKövetkező  várható boss {nextTime}-kor: {nextName}",
-    HELLTIDE: "Helltide várható helye {zone}, {time}-ig, következő Helltide {nextTime}-kor\n\nHelltide láda frissítés: {refresh}",
+    HELLTIDE:
+      "Helltide várható helye {zone}, {time}-ig, következő Helltide {nextTime}-kor\n\nHelltide láda frissítés: {refresh}",
     LEGION: "Legion kezdete: {time}, következő Legion {nextTime}-kor",
   },
   embeds: {
@@ -50,15 +54,15 @@ const hu = {
     },
     HELP: {
       TITLE: "{username} parancsai",
-      DESCRIPTION:
-        "Itt találhatod a parancsaimat. Hamarosan mégtöbb parancs leírás lesz elérhető!",
+      DESCRIPTION: "Itt találhatod a parancsaimat. Hamarosan mégtöbb parancs leírás lesz elérhető!",
     },
     INFO: {
       STATISTICS_TITLE: "Statisztikák",
       STATISTICS_VALUE: "Szerverek: {servers}\nFelhasználók: {users}",
       DEBUG_TITLE: "Debug",
       DEBUG_VALUE: "Clusterek: {clusters}\nShardok: {shards}\nShardID: {shardId}\nClusterID: {clusterId}",
-      DESCRIPTION: "{username} egy Discord bot, ami különböző információt ad Diablo 4-gyel kapcsolatban, fejlesztette: glazk0 & Marco.",
+      DESCRIPTION:
+        "{username} egy Discord bot, ami különböző információt ad Diablo 4-gyel kapcsolatban, fejlesztette: glazk0 & Marco.",
     },
     SETTINGS: {
       TITLE: "Az értesítés beállításaid",

@@ -29,3 +29,12 @@ model Event {
 
   @@unique([type, channelId])
 }
+
+model Notification {
+  id               String  @id @default(uuid())
+  type             String
+  data             Json
+  timestamp        Int
+  refreshTimestamp Int     @default(0)
+  refreshed        Boolean @default(false)
+}

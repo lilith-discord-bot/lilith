@@ -5,7 +5,7 @@ import { Locales } from "../../i18n/i18n-types";
 
 import { territory } from "../../embeds/EventEmbed";
 
-import { Event } from "../../types";
+import { BossEvent, Event, HelltideEvent } from "../../types";
 
 /**
  * Get the title for an event.
@@ -19,20 +19,23 @@ import { Event } from "../../types";
 export const getTitle = (key: string, event: Event, locale: Locales = "en") => {
   switch (key) {
     case "boss":
+      const boss = event as BossEvent;
       return L[locale].events.WORLD_BOSS({
-        name: event.name,
-        zone: event.zone,
-        territory: event.territory,
-        time: time(event.timestamp, "t"),
-        nextName: event.nextExpectedName,
-        nextTime: time(event.nextExpected, "t"),
+        name: boss.name,
+        zone: boss.zone,
+        territory: boss.territory,
+        time: time(boss.timestamp, "t"),
+        countdown: time(boss.timestamp, "R"),
+        nextName: boss.nextExpectedName,
+        nextTime: time(boss.nextExpected, "t"),
       });
     case "helltide":
+      const helltide = event as HelltideEvent;
       return L[locale].events.HELLTIDE({
-        zone: territory[event.zone],
-        time: time(event.timestamp + 3600, "t"),
-        nextTime: time(event.timestamp + 8100, "t"),
-        refresh: event.refresh > 0 ? time(event.refresh, "R") : "/",
+        zone: territory[helltide.zone],
+        time: time(helltide.timestamp + 3600, "t"),
+        nextTime: time(helltide.timestamp + 8100, "t"),
+        refresh: helltide.refresh > 0 ? time(helltide.refresh, "R") : "/",
       });
     case "legion":
       return L[locale].events.LEGION({

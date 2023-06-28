@@ -29,9 +29,11 @@ const pl = {
     MULTIPLE_CHARACTERS: "This player has multiple characters. Please select one.",
     PLAYER_CHOICE: "{name} ({characters} characters)",
     NOT_TRACKED_YET: '"{player}" isn\'t currently tracked, send to track it.',
+    PLAYER_IN_QUEUE: "The player **{player}** is currently in the queue.",
   },
   events: {
-    WORLD_BOSS: "{name} appears in {zone} ({territory}) at {time}.\n\nNext expected boss is {nextName} at {nextTime}",
+    WORLD_BOSS:
+      "{name} appears in {zone} ({territory}) at {time} ({countdown}).\n\nNext expected boss is {nextName} at {nextTime}",
     HELLTIDE: "Helltide occuring in {zone} until {time}, next helltide at {nextTime}\n\nChests refresh: {refresh}",
     LEGION: "Legion appears {time}, next legion at {nextTime}",
   },

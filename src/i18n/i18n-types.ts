@@ -11,6 +11,7 @@ export type Locales =
 	| 'en'
 	| 'es'
 	| 'fr'
+	| 'hu'
 	| 'it'
 	| 'jp'
 	| 'pl'
@@ -126,12 +127,18 @@ type RootTranslation = {
 		 * @param {unknown} player
 		 */
 		NOT_TRACKED_YET: RequiredParams<'player'>
+		/**
+		 * T​h​e​ ​p​l​a​y​e​r​ ​*​*​{​p​l​a​y​e​r​}​*​*​ ​i​s​ ​c​u​r​r​e​n​t​l​y​ ​i​n​ ​t​h​e​ ​q​u​e​u​e​.
+		 * @param {unknown} player
+		 */
+		PLAYER_IN_QUEUE: RequiredParams<'player'>
 	}
 	events: {
 		/**
-		 * {​n​a​m​e​}​ ​a​p​p​e​a​r​s​ ​i​n​ ​{​z​o​n​e​}​ ​(​{​t​e​r​r​i​t​o​r​y​}​)​ ​a​t​ ​{​t​i​m​e​}​.​
+		 * {​n​a​m​e​}​ ​a​p​p​e​a​r​s​ ​i​n​ ​{​z​o​n​e​}​ ​(​{​t​e​r​r​i​t​o​r​y​}​)​ ​a​t​ ​{​t​i​m​e​}​ ​(​{​c​o​u​n​t​d​o​w​n​}​)​.​
 	​
 	​N​e​x​t​ ​e​x​p​e​c​t​e​d​ ​b​o​s​s​ ​i​s​ ​{​n​e​x​t​N​a​m​e​}​ ​a​t​ ​{​n​e​x​t​T​i​m​e​}
+		 * @param {unknown} countdown
 		 * @param {unknown} name
 		 * @param {unknown} nextName
 		 * @param {unknown} nextTime
@@ -139,7 +146,7 @@ type RootTranslation = {
 		 * @param {unknown} time
 		 * @param {unknown} zone
 		 */
-		WORLD_BOSS: RequiredParams<'name' | 'nextName' | 'nextTime' | 'territory' | 'time' | 'zone'>
+		WORLD_BOSS: RequiredParams<'countdown' | 'name' | 'nextName' | 'nextTime' | 'territory' | 'time' | 'zone'>
 		/**
 		 * H​e​l​l​t​i​d​e​ ​o​c​c​u​r​i​n​g​ ​i​n​ ​{​z​o​n​e​}​ ​u​n​t​i​l​ ​{​t​i​m​e​}​,​ ​n​e​x​t​ ​h​e​l​l​t​i​d​e​ ​a​t​ ​{​n​e​x​t​T​i​m​e​}​
 	​
@@ -365,14 +372,18 @@ export type TranslationFunctions = {
 		 * "{player}" isn't currently tracked, send to track it.
 		 */
 		NOT_TRACKED_YET: (arg: { player: unknown }) => LocalizedString
+		/**
+		 * The player **{player}** is currently in the queue.
+		 */
+		PLAYER_IN_QUEUE: (arg: { player: unknown }) => LocalizedString
 	}
 	events: {
 		/**
-		 * {name} appears in {zone} ({territory}) at {time}.
+		 * {name} appears in {zone} ({territory}) at {time} ({countdown}).
 
 	Next expected boss is {nextName} at {nextTime}
 		 */
-		WORLD_BOSS: (arg: { name: unknown, nextName: unknown, nextTime: unknown, territory: unknown, time: unknown, zone: unknown }) => LocalizedString
+		WORLD_BOSS: (arg: { countdown: unknown, name: unknown, nextName: unknown, nextTime: unknown, territory: unknown, time: unknown, zone: unknown }) => LocalizedString
 		/**
 		 * Helltide occuring in {zone} until {time}, next helltide at {nextTime}
 

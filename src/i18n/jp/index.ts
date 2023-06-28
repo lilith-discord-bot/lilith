@@ -29,9 +29,11 @@ const jp = {
     MULTIPLE_CHARACTERS: "このプレイヤーは複数のキャラクターを持っています。1つ選択してください。",
     PLAYER_CHOICE: "{name} ({characters} キャラクター)",
     NOT_TRACKED_YET: '"{player}" は現在追跡されていません、追跡するには送信してください。',
+    PLAYER_IN_QUEUE: "The player **{player}** is currently in the queue.",
   },
   events: {
-    WORLD_BOSS: "{name} が {zone} ({territory}) に {time} 出現します。\n\n次回のボスは {nextTime} に {nextName} と予測されます。",
+    WORLD_BOSS:
+      "{name} が {zone} ({territory}) に {time} 出現します ({countdown})。\n\n次回のボスは {nextTime} に {nextName} と予測されます。",
     HELLTIDE: "{time} まで {zone} でヘルタイドが発生、次回のヘルタイドは {nextTime}\n\nチェスト更新: {refresh}",
     LEGION: "レギオンは {time} に出現、次回のレギオンは {nextTime} に出現します。",
   },

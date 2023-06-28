@@ -30,9 +30,11 @@ const br = {
     MULTIPLE_CHARACTERS: "Esse jogador possui vários personagens! Por favor, selecione um!",
     PLAYER_CHOICE: "{name} ({characters} personagens)",
     NOT_TRACKED_YET: '"{player}" não está sendo rastreado no momento, envie para rastreá-lo!',
+    PLAYER_IN_QUEUE: "The player **{player}** is currently in the queue.",
   },
   events: {
-    WORLD_BOSS: "{name} aparece em {zone} ({territory}) às {time}.\n\nO próximo chefe esperado é {nextName} às {nextTime}",
+    WORLD_BOSS:
+      "{name} aparece em {zone} ({territory}) às {time} ({countdown}).\n\nO próximo chefe esperado é {nextName} às {nextTime}",
     HELLTIDE: "Helltide ocorrendo em {zone} até {time}, próximo helltide em {nextTime}\n\nAtualização dos baús: {refresh}",
     LEGION: "Legion aparece {time}, próxima legião às {nextTime}",
   },

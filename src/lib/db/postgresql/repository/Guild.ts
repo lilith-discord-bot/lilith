@@ -1,21 +1,12 @@
-import { container } from "tsyringe";
+import { Prisma } from "@prisma/client";
 
-import { Client } from "../../../../core/Client";
-import { clientSymbol } from "../../../../utils/Constants";
-import { Event, Prisma } from "@prisma/client";
+import { Repository } from "./Base";
+
+import { Locales } from "../../../../i18n/i18n-types";
 import { EventsList } from "../../../../types";
 import { Guild } from "../../../../types/Database";
-import { Locales } from "../../../../i18n/i18n-types";
-import { locales } from "../../../../i18n/i18n-util";
 
-export class GuildRepository {
-  /**
-   * The client instance.
-   * @type {Client}
-   * @readonly
-   */
-  private readonly client: Client;
-
+export class GuildRepository extends Repository {
   /**
    * The guilds repository.
    * @type {Prisma.GuildDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>}
@@ -24,7 +15,7 @@ export class GuildRepository {
   private readonly guilds: Prisma.GuildDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>;
 
   constructor() {
-    this.client = container.resolve<Client>(clientSymbol);
+    super();
     this.guilds = this.client.database.guild;
   }
 
@@ -89,7 +80,7 @@ export class GuildRepository {
     type: EventsList,
     data: { channel: string; role: string | null; schedule: boolean }
   ): Promise<void> {
-    let guild = await this.findOrCreate(guildId);
+    let guild = await this.findOrCreate(guildId, true);
 
     if (!guild) return;
 
@@ -111,7 +102,7 @@ export class GuildRepository {
         include: { events: true },
       });
     } catch (error) {
-      this.client.logger.error(error);
+      this.client.logger.error(`Failed to create event ${type} for guild ${guildId}.`, error.message);
     }
 
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
@@ -129,27 +120,37 @@ export class GuildRepository {
     type: EventsList,
     data: { channel: string; role: string | null; schedule: boolean }
   ): Promise<void> {
-    let guild = await this.findOrCreate(guildId);
+    let guild = await this.findOrCreate(guildId, true);
 
     if (!guild) return;
 
     try {
-      await this.client.database.event.update({
+      guild = await this.guilds.update({
         data: {
-          channelId: data.channel,
-          roleId: data.role,
-        },
-        where: {
-          type_channelId: {
-            type,
-            channelId: data.channel,
+          events: {
+            update: {
+              data: {
+                channelId: data.channel,
+                roleId: data.role,
+              },
+              where: {
+                type_channelId: {
+                  type,
+                  channelId: data.channel,
+                },
+              },
+            },
           },
         },
+        where: {
+          guildId: guildId,
+        },
+        include: {
+          events: true,
+        },
       });
-
-      guild = await this.findOrCreate(guildId, true);
     } catch (error) {
-      this.client.logger.error(error);
+      this.client.logger.error(`Failed to update event ${type} for guild ${guildId}.`, error.message);
     }
 
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
@@ -164,26 +165,36 @@ export class GuildRepository {
    * @param messageId - The message ID.
    */
   async updateEventMessageId(guildId: string, type: EventsList, channelId: string, messageId: string): Promise<void> {
-    let guild = await this.findOrCreate(guildId);
+    let guild = await this.findOrCreate(guildId, true);
 
     if (!guild) return;
 
     try {
-      await this.client.database.event.update({
+      guild = await this.guilds.update({
         data: {
-          messageId,
-        },
-        where: {
-          type_channelId: {
-            type,
-            channelId,
+          events: {
+            update: {
+              data: {
+                messageId,
+              },
+              where: {
+                type_channelId: {
+                  type,
+                  channelId,
+                },
+              },
+            },
           },
         },
+        where: {
+          guildId,
+        },
+        include: {
+          events: true,
+        },
       });
-
-      guild = await this.findOrCreate(guildId, true);
     } catch (error) {
-      this.client.logger.error(error);
+      this.client.logger.error(`Failed to update event ${type} for guild ${guildId}.`, error.message);
     }
 
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
@@ -197,16 +208,31 @@ export class GuildRepository {
    * @param channelId - The channel ID.
    */
   async removeEvent(guildId: string, type: EventsList, channelId: string): Promise<void> {
-    let guild = await this.findOrCreate(guildId);
+    let guild = await this.findOrCreate(guildId, true);
 
     if (!guild) return;
 
     try {
-      await this.client.database.event.delete({ where: { type_channelId: { type, channelId } } });
-
-      guild = await this.findOrCreate(guildId, true);
+      guild = await this.guilds.update({
+        data: {
+          events: {
+            delete: {
+              type_channelId: {
+                type,
+                channelId,
+              },
+            },
+          },
+        },
+        where: {
+          guildId,
+        },
+        include: {
+          events: true,
+        },
+      });
     } catch (error) {
-      this.client.logger.error(error);
+      this.client.logger.error(`Failed to remove event ${type} for guild ${guildId}.`, error.message);
     }
 
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
@@ -224,18 +250,19 @@ export class GuildRepository {
     if (!guild) return;
 
     try {
-      await this.guilds.update({
+      guild = await this.guilds.update({
         data: {
           locale,
         },
         where: {
           guildId,
         },
+        include: {
+          events: true,
+        },
       });
-
-      guild = await this.findOrCreate(guildId, true);
     } catch (error) {
-      this.client.logger.error(error);
+      this.client.logger.error(`Failed to update locale for guild ${guildId}.`, error.message);
     }
 
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
@@ -257,7 +284,6 @@ export class GuildRepository {
    * @returns - The guilds.
    */
   async getAllByEvent(event: EventsList): Promise<Guild[]> {
-    const guilds = await this.guilds.findMany({ where: { events: { some: { type: event } } }, include: { events: true } });
-    return guilds;
+    return await this.guilds.findMany({ where: { events: { some: { type: event } } }, include: { events: true } });
   }
 }

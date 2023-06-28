@@ -10,3 +10,6 @@ dist/
 
 # Logs
 logs/
+
+# IDE
+.idea

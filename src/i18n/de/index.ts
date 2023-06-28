@@ -29,12 +29,13 @@ const de = {
     MULTIPLE_CHARACTERS: "Dieser BattleTag hat mehrere Charaktere. Bitte einen auswählen.",
     PLAYER_CHOICE: "{name} ({characters} Charaktere)",
     NOT_TRACKED_YET: '"{player}" ist aktuell nicht in der Datenbank vorhanden, bestätigen zum Hinzufügen.',
+    PLAYER_IN_QUEUE: "Der Spieler **{player}** befindet sich derzeit in der Warteschlange.",
   },
   events: {
     WORLD_BOSS:
-      "{name} erscheint in {zone} ({territory}) um {time} Uhr.\n\nDanach wird wahrscheinlich {nextName} erscheinen um {nextTime} Uhr",
+      "{name} erscheint in {zone} ({territory}) um {time} Uhr ({countdown}).\n\nDanach wird wahrscheinlich {nextName} erscheinen um {nextTime} Uhr",
     HELLTIDE:
-      "Die Höllenflut erscheint in {zone} bis {time} Uhr. Die nächste Höllenflut erscheint um {nextTime} Uhr.\n\nAktualisierung der Kisten: {refresh}.",
+      "Die Höllenflut erscheint in {zone} bis {time} Uhr. Die nächste Höllenflut erscheint um {nextTime} Uhr.\n\nStandortaktualisierung der Truhen: {refresh}.",
     LEGION: "Standortaktualisierung der Legion: {time}, die nächste Legion erscheint danach um {nextTime} Uhr.",
   },
   embeds: {

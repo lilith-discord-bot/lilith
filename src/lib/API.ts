@@ -1,4 +1,4 @@
-import { Classes, Events, Modes, Player, PlayerArmory, PlayerResearch, Stats, Status } from "../types";
+import { Classes, Events, Modes, Player, PlayerArmory, PlayerResearch, RawEvents, Stats, Status } from "../types";
 
 import { request } from "../utils/Commons";
 import { ARMORY_API_URL, ARMORY_URL } from "../utils/Constants";
@@ -8,7 +8,7 @@ import { ARMORY_API_URL, ARMORY_URL } from "../utils/Constants";
  *
  * @returns {Promise<Events | null>} The events.
  */
-export async function getEvents(): Promise<Events | null> {
+export async function getEvents(): Promise<RawEvents | null> {
   const res = await request(`${ARMORY_API_URL}/events/recent`, true);
   return res;
 }
@@ -44,7 +44,7 @@ export async function getLeaderboard(classe: Classes = "allclasses", mode: Modes
  * @returns {Promise<PlayerResearch | null>} The player.
  */
 export async function getPlayer(battleTag: string): Promise<PlayerResearch | null> {
-  const res = await request(`${ARMORY_API_URL}/${battleTag}`, true);
+  const res = await request(`${ARMORY_API_URL}/armory/${battleTag}`, true);
   return res;
 }
 
@@ -56,7 +56,7 @@ export async function getPlayer(battleTag: string): Promise<PlayerResearch | nul
  * @returns {PlayerArmory | null} The player.
  */
 export async function getPlayerArmory(battleTag: string, heroId: string): Promise<PlayerArmory | null> {
-  const res = await request(`${ARMORY_API_URL}/${battleTag}/${heroId}`, true);
+  const res = await request(`${ARMORY_API_URL}/armory/${battleTag}/${heroId}`, true);
   return res;
 }
 
