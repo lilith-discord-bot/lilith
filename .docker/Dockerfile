@@ -25,6 +25,6 @@ FROM node:18-alpine
 WORKDIR /bot
 
 COPY --from=builder /bot/node_modules ./node_modules
-COPY --from=builder /bot/package.json /bot/dist ./
+COPY --from=builder /bot/package.json /bot/dist /bot/prisma /bot/.docker/docker-entrypoint.sh ./
 
-ENTRYPOINT [ "npm", "start" ]
+ENTRYPOINT [ "/bot/docker-entrypoint.sh" ]
