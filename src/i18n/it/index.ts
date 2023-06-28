@@ -29,7 +29,7 @@ const it = {
     SELECT_CHARACTER: "Seleziona un personaggio per cui ottenere l'armeria.",
     MULTIPLE_CHARACTERS: "Sono presenti più personaggi associati al giocatore. Selezionane uno.",
     PLAYER_CHOICE: "{name} ({characters} characters)",
-    NOT_TRACKED_YET: '"{player}" è attualmente monitorato, invia per monitorarlo.',
+    NOT_TRACKED_YET: '"{player}" non è attualmente monitorato, invia per monitorarlo.',
     PLAYER_IN_QUEUE: "Il giocatore **{player}** è attualmente in coda.",
   },
   events: {
