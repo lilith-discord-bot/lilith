@@ -35,7 +35,8 @@ const hu = {
     PLAYER_IN_QUEUE: "A **{player}** nevű játékos jelenleg sorban áll.",
   },
   events: {
-    WORLD_BOSS: "{name} várható helye {zone} ({territory}), {time}-kor.\n\nKövetkező  várható boss {nextTime}-kor: {nextName}",
+    WORLD_BOSS:
+      "{name} várható helye {zone} ({territory}), {time}-kor ({countdown}).\n\nKövetkező  várható boss {nextTime}-kor: {nextName}",
     HELLTIDE:
       "Helltide várható helye {zone}, {time}-ig, következő Helltide {nextTime}-kor\n\nHelltide láda frissítés: {refresh}",
     LEGION: "Legion kezdete: {time}, következő Legion {nextTime}-kor",
