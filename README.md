@@ -56,6 +56,13 @@ REDIS_PASSWORD=redis_password
 npm run bot:up
 ```
 
+6. Init Prisma migration (will be handled by us directly through the Docker)
+
+```bash
+docker cp /local/path/to/schema.prisma lilith-discord-bot:/schema.prisma
+docker exec -it lilith-discord-bot npx prisma migrate dev --name init_migration --schema /schema.prisma
+```
+
 If you're running docker, you can just use
 
 ```bash
