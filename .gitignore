@@ -4,6 +4,7 @@ node_modules/
 # Environments
 .env
 .env.production
+**/*.env
 
 # Build
 dist/
