@@ -30,16 +30,15 @@ const hu = {
       "Nem találtam meg a keresendő karaktert, kérlek ellenőrizd, hogy helyesen adtad-e meg a nevet, illetve hogy legalább 1 karakter létezik-e.",
     SELECT_CHARACTER: "Válassz egy karaktert, hogy megnézhesd a felszereléseit.",
     MULTIPLE_CHARACTERS: "Ennek a játékosnak több karaktere is van. Kérlek válassz egyet.",
-    PLAYER_CHOICE: "{name} ({characters} karakterei)",
+    PLAYER_CHOICE: "{name} ({characters} karakter)",
     NOT_TRACKED_YET: '"{player}" jelenleg még nincs nyomon követve, próbáld meg beküldeni a nyomon követéshez.',
     PLAYER_IN_QUEUE: "A **{player}** nevű játékos jelenleg sorban áll.",
   },
   events: {
-    WORLD_BOSS:
-      "{name} várható helye {zone} ({territory}), {time}-kor ({countdown}).\n\nKövetkező  várható boss {nextTime}-kor: {nextName}",
+    WORLD_BOSS: "{name} várható helye {zone} ({territory}), {time}-kor.\n\nKövetkező  várható boss {nextTime}-kor: {nextName}",
     HELLTIDE:
-      "Helltide várható helye {zone}, {time}-ig, következő Helltide {nextTime}-kor\n\nHelltide láda frissülve: {refresh}",
-    LEGION: "Legion várható ideje {time}-kor, következő Legion {nextTime}-kor",
+      "Helltide várható helye {zone}, {time}-ig, következő Helltide {nextTime}-kor\n\nHelltide láda frissítés: {refresh}",
+    LEGION: "Legion kezdete: {time}, következő Legion {nextTime}-kor",
   },
   embeds: {
     ARMORY: {
