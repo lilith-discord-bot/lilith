@@ -1,6 +1,6 @@
 import { container } from "tsyringe";
 
-import { Client } from "../core/Client";
+import { Client } from "../structures/Client";
 import { request, wait } from "../utils/Commons";
 import { DATABASE_URL, MAP_API_URL, clientSymbol, languages } from "../utils/Constants";
 import { getLeaderboard, getPlayer } from "./API";
@@ -71,7 +71,7 @@ export class Worker {
 
       const playerObj = {
         battleTag: player.battleTag,
-        name: (user && user.characters.sort((a, b) => b.level - a.level)[0].name) || player.name,
+        name: player.battleTag.split("-")[0],
         characters: user?.characters.map((character) => character.name),
       };
 

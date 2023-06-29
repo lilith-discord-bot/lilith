@@ -2,7 +2,7 @@ import { Collection } from "discord.js";
 
 import { Embed } from "./Embed";
 
-import { Context, Interaction } from "../core/Interaction";
+import { Context, Interaction } from "../structures/Interaction";
 
 export class HelpEmbed extends Embed {
   constructor(commands: Collection<string, Interaction>, { i18n }: Context) {

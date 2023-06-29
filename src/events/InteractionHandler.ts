@@ -4,8 +4,8 @@ import { join, resolve } from "node:path";
 import { CacheType, Collection, CommandInteraction, Events, REST, Routes, StringSelectMenuInteraction } from "discord.js";
 import { container } from "tsyringe";
 
-import { Event } from "../core/Event";
-import { Context, Interaction } from "../core/Interaction";
+import { Event } from "../structures/Event";
+import { Context, Interaction } from "../structures/Interaction";
 
 import L from "../i18n/i18n-node";
 

@@ -1,6 +1,6 @@
 import { Events } from "discord.js";
 
-import { Event } from "../core/Event";
+import { Event } from "../structures/Event";
 import { Worker } from "../lib/Worker";
 import { EventNotifier } from "../lib/notifications/EventNotifier";
 
@@ -11,9 +11,10 @@ export default class Ready extends Event {
 
   async run(): Promise<void> {
     if (this.client.cluster.id === 0) {
-      new EventNotifier();
       new Worker();
     }
+
+    new EventNotifier();
 
     const shards =
       [...this.client.cluster.ids.keys()].length > 1

@@ -7,7 +7,7 @@ import { container } from "tsyringe";
 
 import { EventHandler } from "../events/EventHandler";
 
-import { Logger } from "../lib/Logger";
+import { Logger, createLogger } from "../lib/Logger";
 import { registerClientEvents } from "../lib/RegisterEvents";
 import { GuildRepository } from "../lib/db/postgresql/repository/Guild";
 import { redis } from "../lib/db/redis/Redis";
@@ -92,7 +92,7 @@ export class Client extends DiscordClient {
       guild: new GuildRepository(),
     };
 
-    this.logger = Logger;
+    this.logger = createLogger(this.cluster.id.toString());
   }
 
   /**

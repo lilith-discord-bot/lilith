@@ -2,6 +2,7 @@ import { Classes, Events, Modes, Player, PlayerArmory, PlayerResearch, RawEvents
 
 import { request } from "../utils/Commons";
 import { ARMORY_API_URL, ARMORY_URL } from "../utils/Constants";
+import * as querystring from "querystring";
 
 /**
  * Gets the events.
@@ -32,7 +33,8 @@ export async function getStats(): Promise<Stats | null> {
  * @returns {Promise<Player[] | null>} The leaderboard.
  */
 export async function getLeaderboard(classe: Classes = "allclasses", mode: Modes = "allmodes"): Promise<Player[] | null> {
-  const res = await request(`${ARMORY_API_URL}/leaderboard/${classe}/${mode}`, true);
+  const query: string = querystring.stringify({ classe, mode })
+  const res = await request(`${ARMORY_API_URL}/leaderboard?${query}`, true);
   return res;
 }
 

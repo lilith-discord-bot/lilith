@@ -1,7 +1,7 @@
 import { Events, Guild } from "discord.js";
 
-import { Client } from "../core/Client";
-import { Event } from "../core/Event";
+import { Client } from "../structures/Client";
+import { Event } from "../structures/Event";
 
 export default class GuildDelete extends Event {
   constructor() {

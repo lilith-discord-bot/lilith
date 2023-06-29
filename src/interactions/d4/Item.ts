@@ -10,8 +10,8 @@ import {
 } from "discord.js";
 import { inject, injectable } from "tsyringe";
 
-import { Client } from "../../core/Client";
-import { Context, Interaction } from "../../core/Interaction";
+import { Client } from "../../structures/Client";
+import { Context, Interaction } from "../../structures/Interaction";
 
 import { DATABASE_URL, clientSymbol, discordToLanguage } from "../../utils/Constants";
 @injectable()

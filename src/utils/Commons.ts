@@ -1,6 +1,6 @@
-import { Guild, NewsChannel, Snowflake, TextChannel, TimestampStylesString, time } from "discord.js";
+import { Guild, NewsChannel, ShardClientUtil, Snowflake, TextChannel, TimestampStylesString, time } from "discord.js";
 import { Logger } from "../lib/Logger";
-import { Client } from "../core/Client";
+import { Client } from "../structures/Client";
 import { ARMORY_URL } from "./Constants";
 
 /**
@@ -166,4 +166,47 @@ export const getChannel = async (client: Client, channelId: Snowflake): Promise<
     context: { channelId },
   })) as (NewsChannel | TextChannel | undefined)[];
   return evalResult.find((channel) => channel !== null);
+};
+
+/**
+ * Get the ClusterId based of the ShardId. Thanks to https://github.com/Tomato6966/Codes/blob/main/hybridUtils/customEvaluates.js
+ *
+ * @param client - The client.
+ * @param shardId - The shard id.
+ *
+ * @returns - The cluster id.
+ */
+export const clusterIdOfShardId = (client: Client, shardId: number): number => {
+  if (typeof shardId === "undefined" || typeof shardId !== "number" || isNaN(shardId))
+    throw new Error("No valid ShardId Provided");
+  if (Number(shardId) > client.cluster.info.TOTAL_SHARDS) throw new Error("Provided ShardId, is bigger than all Shard Ids");
+  const middlePart =
+    Number(shardId) === 0
+      ? 0
+      : Number(shardId) / Math.ceil(client.cluster.info.TOTAL_SHARDS / client.cluster.info.CLUSTER_COUNT);
+  return Number(shardId) === 0 ? 0 : Math.ceil(middlePart) - (middlePart % 1 !== 0 ? 1 : 0);
+};
+/**
+ * Get the ClusterId based of the GuildId
+ *
+ * @param client - The client.
+ * @param guildId - The guild id.
+ *
+ * @returns - The cluster id.
+ */
+export const clusterIdOfGuildId = (client: Client, guildId: Snowflake): number => {
+  if (!guildId || !/^(?<id>\d{17,20})$/.test(guildId)) throw new Error("Provided GuildId, is not a valid GuildId");
+  return clusterIdOfShardId(client, shardIdOfGuildId(client, guildId));
+};
+/**
+ * Get the shardId based of the GuildId
+ *
+ * @param client - The client.
+ * @param guildId - The guild id.
+ *
+ * @returns - The shard id.
+ */
+export const shardIdOfGuildId = (client: Client, guildId: Snowflake): number => {
+  if (!guildId || !/^(?<id>\d{17,20})$/.test(guildId)) throw new Error("Provided GuildId, is not a valid GuildId");
+  return ShardClientUtil.shardIdForGuildId(guildId, client.cluster.info.TOTAL_SHARDS);
 };

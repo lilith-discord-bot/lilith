@@ -1,5 +1,5 @@
 import { container } from "tsyringe";
-import { Client } from "../../../../core/Client";
+import { Client } from "../../../../structures/Client";
 import { clientSymbol } from "../../../../utils/Constants";
 
 export class Repository {
