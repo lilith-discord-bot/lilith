@@ -2,11 +2,11 @@ import { CronJob } from "cron";
 import { Message, MessageCreateOptions, MessagePayload } from "discord.js";
 import { container } from "tsyringe";
 
-import { Client } from "../../core/Client";
 import { EventEmbed } from "../../embeds/EventEmbed";
 import { Locales } from "../../i18n/i18n-types";
+import { Client } from "../../structures/Client";
 import { Events, EventsList, HelltideEvent } from "../../types";
-import { duration } from "../../utils/Commons";
+import { clusterIdOfGuildId, duration } from "../../utils/Commons";
 import { clientSymbol } from "../../utils/Constants";
 import { getEvents, getStatus } from "../API";
 import { Broadcaster } from "./Broadcaster";
@@ -64,6 +64,7 @@ export class EventNotifier {
         where: {
           type: key,
           timestamp: event.timestamp,
+          clusterId: this.client.cluster.id,
         },
       });
 
@@ -89,17 +90,18 @@ export class EventNotifier {
                 data: event,
                 timestamp: event.timestamp,
                 refreshTimestamp: refreshTimestamp,
+                clusterId: this.client.cluster.id,
               },
             });
           } catch (error) {
             this.client.logger.error(`Failed to create event ${key}: ${error.message}`);
           }
 
-          // If the event is too old, skip it
-          if (now > eventDate + duration.minutes(5)) {
-            this.client.logger.info(`Event ${key} is too old, skipping...`);
-            continue;
-          }
+          // // If the event is too old, skip it
+          // if (now > eventDate + duration.minutes(5)) {
+          //   this.client.logger.info(`Event ${key} is too old, skipping...`);
+          //   continue;
+          // }
         }
 
         // If it exists but it's not refreshed, refresh it
@@ -129,7 +131,7 @@ export class EventNotifier {
           }
         }
 
-        const settings = await this.client.database.event.findMany({
+        let settings = await this.client.database.event.findMany({
           where: {
             type: key,
           },
@@ -142,22 +144,23 @@ export class EventNotifier {
           },
         });
 
-        if (!settings || settings.length === 0) continue;
+        if (!settings || !settings.length) continue;
 
         const embed = new EventEmbed(key, event);
 
-        let message: string | MessagePayload | MessageCreateOptions = {
-          content: null,
-          embeds: [embed],
-        };
+        let message: string | MessagePayload | MessageCreateOptions;
 
-        for (let setting of settings) {
-          message = {
-            content: getTitle(key, event, setting.Guild.locale as Locales),
-            ...message,
-          };
+        settings = settings.filter((s) => clusterIdOfGuildId(this.client, s.guildId) === this.client.cluster.id);
 
+        // WIP need to refactor this
+
+        const sendPromises = settings.map((setting) => {
           this.client.logger.info(`Event ${key} is enabled, broadcasting to guild ${setting.guildId}...`);
+
+          message = {
+            embeds: [embed],
+            content: getTitle(key, event, setting.Guild.locale as Locales),
+          };
 
           if (setting.roleId) {
             message.content += ` - <@&${setting.roleId}>`;
@@ -170,29 +173,56 @@ export class EventNotifier {
           //   // TODO: Implement schedule
           // }
 
-          if (!setting.channelId) {
-            this.client.logger.info(`Event ${key} has no channel set, skipping...`);
-            continue;
-          }
+          return this.send(setting.channelId, message, setting.messageId);
+        });
 
-          const response = (await this.broadcaster.broadcast(
-            setting.channelId,
-            message,
-            setting.messageId
-          )) as (Message<true> | null)[];
+        const sendResponses = await Promise.all(sendPromises);
 
-          if (response && response.length >= 1) {
-            await this.client.repository.guild.updateEventMessageId(
-              setting.guildId,
-              key as EventsList,
-              setting.channelId,
-              response[0]?.id
-            );
+        for (let i = 0; i < settings.length; i++) {
+          const response = sendResponses[i];
+          const setting = settings[i];
+
+          if (response) {
+            try {
+              await this.client.repository.guild.updateEventMessageId(
+                setting.guildId,
+                key as EventsList,
+                setting.channelId,
+                response.id
+              );
+            } catch (error) {
+              this.client.logger.error("Error updating message:", error);
+            }
           }
         }
 
         this.client.logger.info(`Event ${key} has been broadcasted to ${settings.length} guilds.`);
       }
     }
+  }
+
+  private async send(
+    channelId: string,
+    message: string | MessagePayload | MessageCreateOptions,
+    oldMessageId: string | null
+  ): Promise<Message<true> | null> {
+    let channel = this.client.channels.cache.get(channelId);
+
+    if (!channel || !channel.isTextBased()) return;
+
+    const oldMessage = oldMessageId
+      ? ((await channel.messages.fetch(oldMessageId).catch((e) => {
+          console.error(`Unable to send fetch message ${oldMessageId}:`, e.message);
+          return null;
+        })) as Message<true>)
+      : null;
+
+    if (oldMessage)
+      await oldMessage.delete().catch((e) => console.error(`Unable to remove message with id: ${oldMessageId}`, e.message));
+
+    return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch((e) => {
+      console.error(`Unable to send message`, e.message);
+      return null;
+    });
   }
 }
