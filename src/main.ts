@@ -12,11 +12,11 @@ import { database } from "./lib/db/postgresql/Database";
 
 database.$connect();
 
-const manager = new ClusterManager(join(resolve("core", "Client.js")), {
+const manager = new ClusterManager(join(resolve("structures", "Client.js")), {
   totalShards: "auto",
   totalClusters: "auto",
   mode: "process",
-  shardsPerClusters: 2,
+  shardsPerClusters: 3,
   token: process.env.TOKEN,
 });
 
