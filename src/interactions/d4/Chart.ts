@@ -10,6 +10,7 @@ import {
 import { Interaction } from "../../structures/Interaction";
 
 import { CDN } from "../../utils/Constants";
+import { Embed } from "../../embeds/Embed";
 
 export default class Chart extends Interaction {
   public readonly enabled = true;
@@ -54,6 +55,11 @@ export default class Chart extends Interaction {
 
   public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<true>> {
     const choice = interaction.options.getString("show", true);
-    return await interaction.reply(`${CDN}/game_data/charts_graphs/${choice}.png`);
+
+    const embed = new Embed().setImage(`${CDN}/game_data/charts_graphs/${choice}.png`);
+
+    return await interaction.reply({
+      embeds: [embed],
+    });
   }
 }

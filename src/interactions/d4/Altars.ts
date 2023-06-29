@@ -9,6 +9,7 @@ import {
 
 import { Interaction } from "../../structures/Interaction";
 import { CDN } from "../../utils/Constants";
+import { Embed } from "../../embeds/Embed";
 
 export default class Altars extends Interaction {
   public readonly enabled = true;
@@ -61,6 +62,11 @@ export default class Altars extends Interaction {
 
   public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
     const choice = interaction.options.getString("show", true);
-    return await interaction.reply(`${CDN}/map_data/altars/${choice}.png`);
+
+    const embed = new Embed().setImage(`${CDN}/map_data/altars/${choice}.png`);
+
+    return await interaction.reply({
+      embeds: [embed],
+    });
   }
 }
