@@ -37,4 +37,5 @@ model Notification {
   timestamp        Int
   refreshTimestamp Int     @default(0)
   refreshed        Boolean @default(false)
+  clusterId        Int
 }
