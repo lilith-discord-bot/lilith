@@ -97,11 +97,11 @@ export class EventNotifier {
             this.client.logger.error(`Failed to create event ${key}: ${error.message}`);
           }
 
-          // // If the event is too old, skip it
-          // if (now > eventDate + duration.minutes(5)) {
-          //   this.client.logger.info(`Event ${key} is too old, skipping...`);
-          //   continue;
-          // }
+          // If the event is too old, skip it
+          if (now > eventDate + duration.minutes(5)) {
+            this.client.logger.info(`Event ${key} is too old, skipping...`);
+            continue;
+          }
         }
 
         // If it exists but it's not refreshed, refresh it
