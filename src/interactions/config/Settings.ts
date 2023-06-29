@@ -83,7 +83,12 @@ export default class Settings extends Interaction {
                 type: ApplicationCommandOptionType.Channel,
                 name: "channel",
                 description: "The channel to send notifications to.",
-                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
+                channelTypes: [
+                  ChannelType.GuildAnnouncement,
+                  ChannelType.GuildText,
+                  ChannelType.GuildForum,
+                  ChannelType.PublicThread,
+                ],
                 required: true,
               },
               {
@@ -114,7 +119,12 @@ export default class Settings extends Interaction {
                 type: ApplicationCommandOptionType.Channel,
                 name: "channel",
                 description: "The channel to send notifications to.",
-                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
+                channelTypes: [
+                  ChannelType.GuildAnnouncement,
+                  ChannelType.GuildText,
+                  ChannelType.GuildForum,
+                  ChannelType.PublicThread,
+                ],
                 required: true,
               },
               {
@@ -140,7 +150,12 @@ export default class Settings extends Interaction {
                 type: ApplicationCommandOptionType.Channel,
                 name: "channel",
                 description: "The channel to disable notifications to.",
-                channelTypes: [ChannelType.GuildAnnouncement, ChannelType.GuildText],
+                channelTypes: [
+                  ChannelType.GuildAnnouncement,
+                  ChannelType.GuildText,
+                  ChannelType.GuildForum,
+                  ChannelType.PublicThread,
+                ],
                 required: true,
               },
             ],
