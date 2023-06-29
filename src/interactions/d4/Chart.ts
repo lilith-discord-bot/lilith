@@ -6,14 +6,11 @@ import {
   ChatInputCommandInteraction,
   InteractionResponse,
 } from "discord.js";
-import { inject, injectable } from "tsyringe";
 
 import { Interaction } from "../../structures/Interaction";
-import { Client } from "../../structures/Client";
 
-import { CDN, clientSymbol } from "../../utils/Constants";
+import { CDN } from "../../utils/Constants";
 
-@injectable()
 export default class Chart extends Interaction {
   public readonly enabled = true;
 
@@ -26,61 +23,37 @@ export default class Chart extends Interaction {
     options: [
       {
         type: ApplicationCommandOptionType.String,
-        name: "get",
-        description: "The chart to get.",
+        name: "show",
+        description: "The chart to show.",
         required: true,
         choices: [
           {
             name: "Glyph XP",
-            value: "glyph",
+            value: "glyph_xp",
           },
           {
             name: "XP",
-            value: "xp",
+            value: "xp_101",
           },
           {
             name: "Sigil Farm",
-            value: "sigil",
+            value: "sigil_farm",
           },
           {
             name: "Nightmare Affixes",
-            value: "nightmare",
+            value: "nightmare_affixes",
           },
           {
             name: "Map",
-            value: "map",
+            value: "blank_map",
           },
         ],
       },
     ],
   };
 
-  constructor(@inject(clientSymbol) private client: Client) {
-    super();
-  }
-
-  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<any> {
-    const option = interaction.options.get("get")?.value;
-
-    switch (option) {
-      case "glyph":
-        await interaction.reply(`${CDN}/game_data/charts_graphs/glyph_xp.png`);
-        break;
-      case "xp":
-        await interaction.reply(`${CDN}/game_data/charts_graphs/xp_101.png`);
-        break;
-      case "sigil":
-        await interaction.reply(`${CDN}/game_data/charts_graphs/sigil_farm.png`);
-        break;
-      case "nightmare":
-        await interaction.reply(`${CDN}/game_data/charts_graphs/nightmare_affixes.png`);
-        break;
-      case "map":
-        await interaction.reply(`${CDN}/game_data/charts_graphs/blank_map.png`);
-        break;
-      default:
-        await interaction.reply("Invalid chart.");
-        break;
-    }
+  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<true>> {
+    const choice = interaction.options.getString("show", true);
+    return await interaction.reply(`${CDN}/game_data/charts_graphs/${choice}.png`);
   }
 }
