@@ -212,16 +212,18 @@ export class EventNotifier {
 
     const oldMessage = oldMessageId
       ? ((await channel.messages.fetch(oldMessageId).catch((e) => {
-          console.error(`Unable to send fetch message ${oldMessageId}:`, e.message);
+          this.client.logger.error(`Unable to send fetch message ${oldMessageId}:`, e.message);
           return null;
         })) as Message<true>)
       : null;
 
     if (oldMessage)
-      await oldMessage.delete().catch((e) => console.error(`Unable to remove message with id: ${oldMessageId}`, e.message));
+      await oldMessage
+        .delete()
+        .catch((e) => this.client.logger.error(`Unable to remove message with id: ${oldMessageId}`, e.message));
 
     return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch((e) => {
-      console.error(`Unable to send message`, e.message);
+      this.client.logger.error(`Unable to send message`, e.message);
       return null;
     });
   }
