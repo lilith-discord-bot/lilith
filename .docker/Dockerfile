@@ -27,4 +27,6 @@ WORKDIR /bot
 COPY --from=builder /bot/node_modules ./node_modules
 COPY --from=builder /bot/package.json /bot/dist /bot/prisma /bot/.docker/docker-entrypoint.sh ./
 
+RUN chmod +x docker-entrypoint.sh
+
 ENTRYPOINT [ "/bot/docker-entrypoint.sh" ]
