@@ -186,6 +186,7 @@ export const clusterIdOfShardId = (client: Client, shardId: number): number => {
       : Number(shardId) / Math.ceil(client.cluster.info.TOTAL_SHARDS / client.cluster.info.CLUSTER_COUNT);
   return Number(shardId) === 0 ? 0 : Math.ceil(middlePart) - (middlePart % 1 !== 0 ? 1 : 0);
 };
+
 /**
  * Get the ClusterId based of the GuildId
  *
@@ -198,6 +199,7 @@ export const clusterIdOfGuildId = (client: Client, guildId: Snowflake): number =
   if (!guildId || !/^(?<id>\d{17,20})$/.test(guildId)) throw new Error("Provided GuildId, is not a valid GuildId");
   return clusterIdOfShardId(client, shardIdOfGuildId(client, guildId));
 };
+
 /**
  * Get the shardId based of the GuildId
  *

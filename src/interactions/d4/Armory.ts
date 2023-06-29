@@ -44,7 +44,7 @@ export default class Armory extends Interaction {
       {
         type: ApplicationCommandOptionType.String,
         name: "player",
-        description: "The player to get the armory of.",
+        description: "The player to get the armory of. It can be a battletag or a username.",
         required: true,
         autocomplete: true,
       },

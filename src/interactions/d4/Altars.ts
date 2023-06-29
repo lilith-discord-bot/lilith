@@ -8,55 +8,62 @@ import {
 } from "discord.js";
 
 import { Interaction } from "../../structures/Interaction";
-
 import { CDN } from "../../utils/Constants";
 import { Embed } from "../../embeds/Embed";
 
-export default class Chart extends Interaction {
+export default class Altars extends Interaction {
   public readonly enabled = true;
 
   public readonly category = "Diablo 4";
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "chart",
-    description: "Displays a specific chart.",
+    name: "altars",
+    description: "Displays information about Lilith's Altars.",
     options: [
       {
         type: ApplicationCommandOptionType.String,
         name: "show",
-        description: "The chart to show.",
+        description: "The region to show.",
         required: true,
         choices: [
           {
-            name: "Glyph XP",
-            value: "glyph_xp",
+            name: "Full Map",
+            value: "fullmap",
           },
           {
-            name: "XP",
-            value: "xp_101",
+            name: "Full Map & Pathing",
+            value: "fullmap-route",
           },
           {
-            name: "Sigil Farm",
-            value: "sigil_farm",
+            name: "Scosglen",
+            value: "scosglen",
           },
           {
-            name: "Nightmare Affixes",
-            value: "nightmare_affixes",
+            name: "Dry Steppes",
+            value: "drysteppes",
           },
           {
-            name: "Map",
-            value: "blank_map",
+            name: "Kehjistan",
+            value: "kehjistan",
+          },
+          {
+            name: "Hawezar",
+            value: "hawezar",
+          },
+          {
+            name: "Fractured Peaks",
+            value: "fracturedpeaks",
           },
         ],
       },
     ],
   };
 
-  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<true>> {
+  public async run(interaction: ChatInputCommandInteraction<CacheType>): Promise<InteractionResponse<boolean>> {
     const choice = interaction.options.getString("show", true);
 
-    const embed = new Embed().setImage(`${CDN}/game_data/charts_graphs/${choice}.png`);
+    const embed = new Embed().setImage(`${CDN}/map_data/altars/${choice}.png`);
 
     return await interaction.reply({
       embeds: [embed],
