@@ -60,6 +60,7 @@ export class EventNotifier {
     }
 
     for (let [key, event] of Object.entries(events)) {
+      if (key === "whispers") continue;
       const exist = await this.client.database.notification.findFirst({
         where: {
           type: key,
