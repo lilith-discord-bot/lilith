@@ -15,6 +15,7 @@ import { HelpEmbed } from "../../embeds/HelpEmbed";
 import { clientSymbol } from "../../utils/Constants";
 
 import { helpersButtons } from "./About";
+import { commands } from "../../i18n";
 
 @injectable()
 export default class Help extends Interaction {
@@ -24,8 +25,7 @@ export default class Help extends Interaction {
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "help",
-    description: "Displays all Lilith's commands.",
+    ...commands["help"],
   };
 
   constructor(@inject(clientSymbol) private client: Client) {

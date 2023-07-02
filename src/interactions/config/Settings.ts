@@ -31,6 +31,7 @@ import { EventEmbed } from "../../embeds/EventEmbed";
 import { getTitle } from "../../lib/notifications/NotifierUtils";
 import { Event as D4Event, EventsList } from "../../types";
 import { clientSymbol, eventsChoices, localesMap } from "../../utils/Constants";
+import { commands } from "../../i18n";
 
 @injectable()
 export default class Settings extends Interaction {
@@ -40,20 +41,17 @@ export default class Settings extends Interaction {
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "settings",
-    description: "Manage your guild settings.",
+    ...commands["settings"],
     defaultMemberPermissions: PermissionFlagsBits.ManageGuild,
     dmPermission: false,
     options: [
       {
         type: ApplicationCommandOptionType.Subcommand,
-        name: "locale",
-        description: `Change the locale of Lilith for your guild.`,
+        ...commands["settings.locale"],
         options: [
           {
             type: ApplicationCommandOptionType.String,
-            name: "value",
-            description: "What locale do you want to set?",
+            ...commands["settings.locale.value"],
             required: true,
             choices: locales.map((locale) => ({
               name: localesMap[locale],
@@ -64,25 +62,21 @@ export default class Settings extends Interaction {
       },
       {
         type: ApplicationCommandOptionType.SubcommandGroup,
-        name: "notifications",
-        description: "Manage your notifications settings.",
+        ...commands["settings.notifications"],
         options: [
           {
             type: ApplicationCommandOptionType.Subcommand,
-            name: "enable",
-            description: "Enable notifications for a given event.",
+            ...commands["settings.notifications.enable"],
             options: [
               {
                 type: ApplicationCommandOptionType.String,
-                name: "event",
-                description: "The event to enable notifications for.",
+                ...commands["settings.notifications.enable.event"],
                 choices: eventsChoices,
                 required: true,
               },
               {
                 type: ApplicationCommandOptionType.Channel,
-                name: "channel",
-                description: "The channel to send notifications to.",
+                ...commands["settings.notifications.enable.channel"],
                 channelTypes: [
                   ChannelType.GuildAnnouncement,
                   ChannelType.GuildText,
@@ -93,32 +87,23 @@ export default class Settings extends Interaction {
               },
               {
                 type: ApplicationCommandOptionType.Role,
-                name: "role",
-                description: "The role to mention in the notification.",
+                ...commands["settings.notifications.enable.role"],
               },
-              // {
-              //   type: ApplicationCommandOptionType.Boolean,
-              //   name: 'schedule',
-              //   description: 'Do you want to create a Discord scheduled event?',
-              // },
             ],
           },
           {
             type: ApplicationCommandOptionType.Subcommand,
-            name: "update",
-            description: "Update notifications for a given event.",
+            ...commands["settings.notifications.update"],
             options: [
               {
                 type: ApplicationCommandOptionType.String,
-                name: "event",
-                description: "The event to update notifications for.",
+                ...commands["settings.notifications.update.event"],
                 choices: eventsChoices,
                 required: true,
               },
               {
                 type: ApplicationCommandOptionType.Channel,
-                name: "channel",
-                description: "The channel to send notifications to.",
+                ...commands["settings.notifications.update.channel"],
                 channelTypes: [
                   ChannelType.GuildAnnouncement,
                   ChannelType.GuildText,
@@ -129,27 +114,23 @@ export default class Settings extends Interaction {
               },
               {
                 type: ApplicationCommandOptionType.Role,
-                name: "role",
-                description: "The role to mention in the notification.",
+                ...commands["settings.notifications.update.role"],
               },
             ],
           },
           {
             type: ApplicationCommandOptionType.Subcommand,
-            name: "disable",
-            description: "Disable notifications for a given event.",
+            ...commands["settings.notifications.disable"],
             options: [
               {
                 type: ApplicationCommandOptionType.String,
-                name: "event",
-                description: "The event to disable notifications for.",
+                ...commands["settings.notifications.disable.event"],
                 choices: eventsChoices,
                 required: true,
               },
               {
                 type: ApplicationCommandOptionType.Channel,
-                name: "channel",
-                description: "The channel to disable notifications to.",
+                ...commands["settings.notifications.disable.channel"],
                 channelTypes: [
                   ChannelType.GuildAnnouncement,
                   ChannelType.GuildText,
@@ -162,25 +143,21 @@ export default class Settings extends Interaction {
           },
           {
             type: ApplicationCommandOptionType.Subcommand,
-            name: "list",
-            description: "List all notifications enabled.",
+            ...commands["settings.notifications.list"],
           },
           {
             type: ApplicationCommandOptionType.Subcommand,
-            name: "refresh",
-            description: "Refresh notifications for a given event.",
+            ...commands["settings.notifications.refresh"],
             options: [
               {
                 type: ApplicationCommandOptionType.String,
-                name: "event",
-                description: "The event to refresh notifications for.",
+                ...commands["settings.notifications.refresh.event"],
                 choices: eventsChoices,
                 required: true,
               },
               {
                 type: ApplicationCommandOptionType.String,
-                name: "data",
-                description: "The data to refresh notifications for. We're showing the last 2 events.",
+                ...commands["settings.notifications.refresh.data"],
                 autocomplete: true,
                 required: true,
               },

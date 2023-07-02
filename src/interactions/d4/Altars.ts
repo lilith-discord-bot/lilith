@@ -10,6 +10,7 @@ import {
 import { Interaction } from "../../structures/Interaction";
 import { CDN } from "../../utils/Constants";
 import { Embed } from "../../embeds/Embed";
+import { commands } from "../../i18n";
 
 export default class Altars extends Interaction {
   public readonly enabled = true;
@@ -18,13 +19,11 @@ export default class Altars extends Interaction {
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "altars",
-    description: "Displays information about Lilith's Altars.",
+    ...commands["altars"],
     options: [
       {
         type: ApplicationCommandOptionType.String,
-        name: "show",
-        description: "The region to show.",
+        ...commands["altars.show"],
         required: true,
         choices: [
           {

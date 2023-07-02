@@ -11,6 +11,7 @@ import { Interaction } from "../../structures/Interaction";
 
 import { CDN } from "../../utils/Constants";
 import { Embed } from "../../embeds/Embed";
+import { commands } from "../../i18n";
 
 export default class Chart extends Interaction {
   public readonly enabled = true;
@@ -19,13 +20,11 @@ export default class Chart extends Interaction {
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "chart",
-    description: "Displays a specific chart.",
+    ...commands["chart"],
     options: [
       {
         type: ApplicationCommandOptionType.String,
-        name: "show",
-        description: "The chart to show.",
+        ...commands["chart.show"],
         required: true,
         choices: [
           {

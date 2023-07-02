@@ -5,26 +5,63 @@ import { initFormatters } from './formatters'
 import type { Locales, Translations } from './i18n-types'
 import { loadedFormatters, loadedLocales, locales } from './i18n-util'
 
-import br from './br'
 import de from './de'
 import en from './en'
 import es from './es'
 import fr from './fr'
 import hu from './hu'
 import it from './it'
-import jp from './jp'
+import ja from './ja'
 import pl from './pl'
+import pt from './pt'
+
+import de_commands from './de/commands'
+import en_commands from './en/commands'
+import es_commands from './es/commands'
+import fr_commands from './fr/commands'
+import hu_commands from './hu/commands'
+import it_commands from './it/commands'
+import ja_commands from './ja/commands'
+import pl_commands from './pl/commands'
+import pt_commands from './pt/commands'
 
 const localeTranslations = {
-	br,
-	de,
-	en,
-	es,
-	fr,
-	hu,
-	it,
-	jp,
-	pl,
+	de: {
+		...de,
+		commands: de_commands
+	},
+	en: {
+		...en,
+		commands: en_commands
+	},
+	es: {
+		...es,
+		commands: es_commands
+	},
+	fr: {
+		...fr,
+		commands: fr_commands
+	},
+	hu: {
+		...hu,
+		commands: hu_commands
+	},
+	it: {
+		...it,
+		commands: it_commands
+	},
+	ja: {
+		...ja,
+		commands: ja_commands
+	},
+	pl: {
+		...pl,
+		commands: pl_commands
+	},
+	pt: {
+		...pt,
+		commands: pt_commands
+	},
 }
 
 export const loadLocale = (locale: Locales): void => {
