@@ -24,6 +24,7 @@ import { PlayerArmory } from "../../types";
 import { ArmoryEmbed } from "../../embeds/ArmoryEmbed";
 import { getArmoryLink } from "../../utils/Commons";
 import { clientSymbol } from "../../utils/Constants";
+import { commands } from "../../i18n";
 
 const armoryLink = (battleTag: string, heroId: string) =>
   new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -38,13 +39,11 @@ export default class Armory extends Interaction {
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "armory",
-    description: "Displays the armory of a given player.",
+    ...commands["armory"],
     options: [
       {
         type: ApplicationCommandOptionType.String,
-        name: "player",
-        description: "The player to get the armory of. It can be a battletag or a username.",
+        ...commands["armory.player"],
         required: true,
         autocomplete: true,
       },

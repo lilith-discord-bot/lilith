@@ -190,15 +190,65 @@ export const discordToLanguage = {
 } as Record<Locale, string>;
 
 /**
- * Match locales to their names.
+ * List of Discord locales.
+ * @type {Locale[]}
+ */
+export const DiscordLocales = [
+  "vi",
+  "da",
+  "he",
+  "zh-TW",
+  "ja",
+  "th",
+  "hi",
+  "ru",
+  "pl",
+  "fr",
+  "lt",
+  "en-GB",
+  "pt-BR",
+  "it",
+  "cs",
+  "bg",
+  "hr",
+  "tr",
+  "hu",
+  "ro",
+  "ar",
+  "de",
+  "ko",
+  "el",
+  "en-US",
+  "no",
+  "sv-SE",
+  "uk",
+  "zh-CN",
+  "nl",
+  "es-ES",
+  "fi",
+] as Locale[];
+
+/**
+ * Match short locales to Discord locales.
+ * @type {Record<string, Locale>}
+ */
+export const LocalDiscordLocaleMappings = {
+  en: "en-US",
+  es: "es-ES",
+  pt: "pt-BR",
+} as Record<string, Locale>;
+
+/**
+ * Lilith locales to their full name.
+ * @type {Record<string, string>}
  */
 export const localesMap = {
   en: "English",
   fr: "Français",
   de: "Deutsch",
   it: "Italiano",
-  jp: "日本語",
-  br: "Português",
+  ja: "日本語",
+  pt: "Português",
   es: "Español",
   pl: "Polski",
   hu: "Magyar",

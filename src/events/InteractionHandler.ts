@@ -10,6 +10,7 @@ import { Context, Interaction } from "../structures/Interaction";
 import L from "../i18n/i18n-node";
 
 import { Guild } from "../types/Database";
+import { initLocales } from "../i18n";
 
 export default class InteractionHandler extends Event {
   /**
@@ -32,6 +33,9 @@ export default class InteractionHandler extends Event {
    * Initializes the interaction handler.
    */
   async init(): Promise<void> {
+    // REFACTOR
+    await initLocales();
+
     const dir = readdirSync(join(resolve("interactions")));
 
     this.client.logger.info(`Loading ${dir.length} interactions categories.`);

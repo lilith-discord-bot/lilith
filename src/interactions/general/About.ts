@@ -16,6 +16,7 @@ import { Context, Interaction } from "../../structures/Interaction";
 import { InfoEmbed } from "../../embeds/InfoEmbed";
 
 import { BOT_INVITE, SUPPORT_SERVER, clientSymbol } from "../../utils/Constants";
+import { commands } from "../../i18n";
 
 export const helpersButtons = new ActionRowBuilder<ButtonBuilder>({
   components: [
@@ -45,8 +46,7 @@ export default class About extends Interaction {
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "about",
-    description: "Displays Lilith's info.",
+    ...commands["about"],
   };
 
   constructor(@inject(clientSymbol) private client: Client) {

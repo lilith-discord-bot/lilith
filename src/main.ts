@@ -1,8 +1,8 @@
 import "reflect-metadata";
 
+import { ClusterManager } from "discord-hybrid-sharding";
 import { config } from "dotenv";
 import { join, resolve } from "node:path";
-import { ClusterManager } from "discord-hybrid-sharding";
 
 config();
 

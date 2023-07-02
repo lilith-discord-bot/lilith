@@ -14,6 +14,7 @@ import { Context, Interaction } from "../../structures/Interaction";
 
 import { clientSymbol } from "../../utils/Constants";
 import { MapEmbed } from "../../embeds/MapEmbed";
+import { commands } from "../../i18n";
 
 const nodes = [
   {
@@ -82,20 +83,17 @@ export default class Map extends Interaction {
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "map",
-    description: "Give information about specific things on the map.",
+    ...commands["map"],
     options: [
       {
         type: ApplicationCommandOptionType.String,
-        name: "type",
-        description: "The type of thing you want to know about.",
+        ...commands["map.type"],
         choices: nodes,
         required: true,
       },
       {
         type: ApplicationCommandOptionType.String,
-        name: "query",
-        description: "The name of the thing you want to know about.",
+        ...commands["map.query"],
         required: true,
         autocomplete: true,
       },

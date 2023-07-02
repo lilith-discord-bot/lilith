@@ -14,6 +14,7 @@ import { Client } from "../../structures/Client";
 import { Context, Interaction } from "../../structures/Interaction";
 
 import { DATABASE_URL, clientSymbol, discordToLanguage } from "../../utils/Constants";
+import { commands } from "../../i18n";
 @injectable()
 export default class Item extends Interaction {
   public readonly enabled = true;
@@ -22,13 +23,11 @@ export default class Item extends Interaction {
 
   public readonly command: ApplicationCommandData = {
     type: ApplicationCommandType.ChatInput,
-    name: "item",
-    description: "Give information about specific item.",
+    ...commands["item"],
     options: [
       {
         type: ApplicationCommandOptionType.String,
-        name: "query",
-        description: "The name of the thing you want to know about.",
+        ...commands["item.query"],
         required: true,
         autocomplete: true,
       },
