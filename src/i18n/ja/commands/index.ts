@@ -109,7 +109,7 @@ export default {
   },
   map: {
     name: "マップ",
-    description: "マップ上の特定のマーカーやクエストなどの情報を調べます。",
+    description: "マップ上の特定のマーカーやクエストなどの情報を検索します。",
   },
   ["map.type"]: {
     name: "タイプ",
