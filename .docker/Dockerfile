@@ -1,6 +1,8 @@
 # Create the image based on the official Node 16 image from Dockerhub
 FROM node:18-alpine as builder
 
+RUN apk add dos2unix
+
 # Change directory so that our commands run inside this new directory
 WORKDIR /bot
 
@@ -28,6 +30,6 @@ COPY --from=builder /bot/node_modules ./node_modules
 COPY --from=builder /bot/package.json /bot/dist /bot/.docker/docker-entrypoint.sh ./
 COPY --from=builder /bot/prisma ./prisma
 
-RUN chmod +x docker-entrypoint.sh
+RUN dos2unix docker-entrypoint.sh && chmod +x docker-entrypoint.sh
 
 ENTRYPOINT [ "/bot/docker-entrypoint.sh" ]
