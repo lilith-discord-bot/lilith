@@ -1,6 +1,8 @@
-# Lilith Discord Bot
+# Lilith Discord Bot <img src="https://s3.glazk0.dev/lilith/lilith_logo_data/LilithSticker.png" height="40" width="40" alt="Lilith's logo" />
 
 A [Discord.js](https://discord.js.org/#/) bot for Diablo 4 that allows tracking events, news and more.
+
+[![Discord](https://img.shields.io/discord/1116374937389764698.svg?logo=discord)](https://discord.gg/Mv2yCrJK87)
 
 ## Contributing
 
@@ -8,7 +10,7 @@ If you want to contribute to this project, please mind joining the [Discord serv
 
 ## Installation
 
-We recommend using our hosted version of [Lilith](https://lilith.mom), but if you want to host it yourself, follow the instructions below.
+We recommend using our hosted version of [Lilith](https://lilith.mom/invite), but if you want to host it yourself, follow the instructions below.
 
 ### Requirements
 
@@ -17,8 +19,6 @@ We recommend using our hosted version of [Lilith](https://lilith.mom), but if yo
 - [Docker](https://www.docker.com/)
 
 ### Setup
-
-> **Don't forget about the `.env` file !**
 
 1. Clone the repository
 
@@ -32,22 +32,10 @@ git clone https://github.com/lilith-discord-bot/lilith.git
 npm install
 ```
 
-3. Create a `.env` file in the root directory and add the following:
+3. Create a `.env` file in the root directory with the `.env.template` and refer to the [Environment variables](#environment-variables) section for more information:
 
-```env
-TOKEN=your_token_here
-
-#Database
-POSTGRES_HOST=postgres_database_host # Doesn't need to be set if running with Docker.
-POSTGRES_USER=postgres_database_user
-POSTGRES_PASSWORD=postgres_database_password
-POSTGRES_DATABASE=postgres_database
-DATABASE_URL="postgresql://user:password@host:5432/database"
-
-#Cache
-REDIS_HOST=redis_host # Doesn't need to be set if running with Docker.
-REDIS_PORT=0000 # Doesn't need to be set if running with Docker.
-REDIS_PASSWORD=redis_password
+```bash
+cp .env.template .env
 ```
 
 5. Start the bot
@@ -56,26 +44,43 @@ REDIS_PASSWORD=redis_password
 npm run bot:up
 ```
 
-6. Init Prisma migration (will be handled by us directly through the Docker)
-
-```bash
-docker cp /local/path/to/schema.prisma lilith-discord-bot:/schema.prisma
-docker exec -it lilith-discord-bot npx prisma migrate dev --name init_migration --schema /schema.prisma
-```
-
-If you're running docker, you can just use
-
-```bash
-docker run --name bot -e REDIS_HOST=redis -e REDIS_PASSWORD=password -e DATABASE_URL=something://user:password@host:port/database ghcr.io/lilith-discord-bot/lilith:latest
-```
-
-> you still have to run Redis and a database, if you don't wanna bother with that, `npm run bot:up` sets everything up for you using compose
-
 ### Other commands:
 
 - `npm run bot:stop` - Stop the bot
 - `npm run bot:restart` - Restart the bot
 - `npm run bot:rebuild` - Rebuild the bot
+
+---
+
+If you're running docker, you can just use this, but you still have to run Redis and a database, if you don't wanna bother with that, `npm run bot:up` sets everything up for you using compose.
+
+```bash
+docker run --name bot \
+    -e TOKEN=your_token \
+    -e POSTGRES_DATABASE=your_database \
+    -e POSTGRES_HOST=your_host \
+    -e POSTGRES_PASSWORD=your_password \
+    -e POSTGRES_USER=your_user \
+    -e POSTGRES_PORT=your_port \
+    -e DATABASE_URL=your_database_url \
+    -e REDIS_HOST=your_redis_host \
+    -e REDIS_PASSWORD=your_redis_password \
+    -d ghcr.io/lilith-discord-bot/lilith:main
+```
+
+#### Environment variables
+
+| Environment Variable | Description                                                       | Example                                                                    | Default |
+| -------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------- | ------- |
+| TOKEN                | Your Discord application bot token                                | `MODcxMTY4MgwMFA1MTExNzkzY0.YGm7oQ.AXHbbfpSxi_Cpk1B1Vz_DGV0A0i62NS_XPBCpf` | N\A     |
+| POSTGRES_DATABASE    | Postgres database name                                            | `lilith`                                                                   | N\A     |
+| POSTGRES_HOST        | Hostname for conneting to Postgres (empty if running with Docker) | `lilith`                                                                   | N\A     |
+| POSTGRES_PASSWORD    | Postgres database connection password                             | `lilith`                                                                   | N\A     |
+| POSTGRES_USER        | Postgres database connection user                                 | `lilith`                                                                   | N\A     |
+| POSTGRES_PORT        | Postgres database connection port                                 | 5432                                                                       | 5432    |
+| DATABASE_URL         | Prisma database connection URL                                    | `postgresql://user:password@host:5432/database`                            | N\A     |
+| REDIS_HOST           | Hostname for conneting to Redis (empty if running with Docker)    | `lilith`                                                                   | N\A     |
+| REDIS_PASSWORD       | Redis database connection password                                | `lilith`                                                                   | N\A     |
 
 ## Issues
 
