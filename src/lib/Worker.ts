@@ -71,7 +71,7 @@ export class Worker {
 
       const playerObj = {
         battleTag: player.battleTag,
-        name: player.battleTag.split("-")[0],
+        character: user?.characters.reduce((prev, current) => (prev.level > current.level ? prev : current)).name,
         characters: user?.characters.map((character) => character.name),
       };
 
