@@ -57,7 +57,7 @@ export class ArmoryEmbed extends Embed {
       if (uniques.length) {
         this.data.fields.push({
           name: "Unique(s)",
-          value: uniques.length > 1 ? uniques.map((item) => item.name).join(", ") : uniques[0].name,
+          value: uniques.map((item) => item.name).join("\n"),
           inline: false,
         });
       }
