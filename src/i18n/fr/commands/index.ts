@@ -73,7 +73,7 @@ export default {
   },
   ["settings.notifications.refresh.data"]: {
     name: "données",
-    description: "Pour quel ensemble de données souhaitez-vous actualiser les notifications?",
+    description: "Pour quel ensemble de données voulez-vous actualiser les notifs? Les 2 dernières seront affichées.",
   },
   altars: {
     name: "autels",
@@ -89,7 +89,7 @@ export default {
   },
   ["armory.player"]: {
     name: "joueur",
-    description: "Le joueur pour lequel des informations doivent être obtenues.",
+    description: "Le joueur sur lequel vous voulez obtenir des infos. Il peut s'agir d'un BattleTag ou d'un pseudo.",
   },
   chart: {
     name: "fiche",
