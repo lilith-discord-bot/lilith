@@ -3,20 +3,20 @@ import type { Translation } from "../i18n-types";
 const jp = {
   settings: {
     locale: {
-      SUCCESS: "あなたのDiscordサーバーのロケールが **{locale}** に更新されました。",
+      SUCCESS: "サーバーのロケールが **{locale}** に更新されました。",
     },
     notifications: {
       NO_PERMISSIONS: "{channel} でメッセージを送信する権限がありません。",
       ALREADY_ENABLED: "**{event}** に対する通知は既に有効になっています。",
       ENABLED: "**{event}** の通知が有効になり、{channel} に送信されます。",
       NOT_ENABLED: "**{event}** に対する通知は有効になっていません。",
-      UPDATED: "**{event}** の通知が更新され、{channel} に送信されます。",
+      UPDATED: "**{event}** の通知がアップデートされ、{channel} に送信されます。",
       DISABLED: "**{event}** の通知は無効になりました。",
       ALREADY_DISABLED: "**{event}** に対する通知は既に無効になっています。",
       NO_EVENTS: "有効なイベントはありません。",
       NO_EVENTS_IN_CHANNEL: "{channel} で有効になっているイベントはありません。",
       EVENTS_WORKING: "**{event}** の通知は機能しており、{channel} に送信されます。",
-      REFRESHED: "Notifications for **{event}** have been refreshed and will be sent to {channels}.",
+      REFRESHED: "**{event}** の通知が更新され、{channels} に送信されます。",
     },
   },
   armory: {
@@ -29,11 +29,11 @@ const jp = {
     MULTIPLE_CHARACTERS: "このプレイヤーは複数のキャラクターを持っています。1つ選択してください。",
     PLAYER_CHOICE: "{name} ({characters} キャラクター)",
     NOT_TRACKED_YET: '"{player}" は現在追跡されていません、追跡するには送信してください。',
-    PLAYER_IN_QUEUE: "The player **{player}** is currently in the queue.",
+    PLAYER_IN_QUEUE: "プレイヤー **{player}** は現在待機中です。",
   },
   events: {
     WORLD_BOSS:
-      "{name} が {zone} ({territory}) に {time} 出現します ({countdown})。\n\n次回のボスは {nextTime} に {nextName} と予測されます。",
+      "{name} が {zone} ({territory}) に {time} ({countdown}) 出現します。\n\n次回のボスは {nextTime} に {nextName} と予測されます。",
     HELLTIDE: "{time} まで {zone} でヘルタイドが発生、次回のヘルタイドは {nextTime}\n\nチェスト更新: {refresh}",
     LEGION: "レギオンは {time} に出現、次回のレギオンは {nextTime} に出現します。",
   },
@@ -45,7 +45,7 @@ const jp = {
       CHARACTER_CREATION_TITLE: "キャラクター作成",
       LAST_PLAYED_TITLE: "最後のプレイ",
       PLAYED_TIME_TITLE: "プレイ時間",
-      EQUIPPED_ITEMS_TITLE: "装備品",
+      EQUIPPED_ITEMS_TITLE: "装備アイテム",
       STATUS_TITLE: "ステータス",
       MODE_TITLE: "モード",
     },
@@ -69,7 +69,7 @@ const jp = {
     INVALID_QUERY: "無効なクエリです。",
     NO_DATE_FOUND: "データが見つかりません。",
     NO_PLAYED_TIME: "プレイ時間が見つかりません。",
-    NO_EQUIPPED_ITEMS: "装備品が見つかりません。",
+    NO_EQUIPPED_ITEMS: "装備アイテムが見つかりません。",
   },
 } satisfies Translation;
 
