@@ -38,9 +38,7 @@ export default class Help extends Interaction {
   ): Promise<InteractionResponse<boolean>> {
     let commands = this.client.interactions;
 
-    commands = commands.filter(
-      (command) => command.enabled && interaction.memberPermissions.has(command.command.defaultMemberPermissions)
-    );
+    commands = commands.filter((command) => command.enabled);
 
     const embed = new HelpEmbed(commands, ctx);
 
