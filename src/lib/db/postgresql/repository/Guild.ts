@@ -5,6 +5,7 @@ import { Repository } from "./Base";
 import { Locales } from "../../../../i18n/i18n-types";
 import { EventsList } from "../../../../types";
 import { Guild } from "../../../../types/Database";
+import { Snowflake } from "discord.js";
 
 export class GuildRepository extends Repository {
   /**
@@ -56,7 +57,7 @@ export class GuildRepository extends Repository {
    *
    * @param guildId - The guild ID.
    */
-  async delete(guildId: string): Promise<void> {
+  async delete(guildId: Snowflake): Promise<void> {
     const guild = await this.guilds.findUnique({ where: { guildId } });
 
     if (!guild) return;
@@ -76,7 +77,7 @@ export class GuildRepository extends Repository {
    * @param data - The event data.
    */
   async createEvent(
-    guildId: string,
+    guildId: Snowflake,
     type: EventsList,
     data: { channel: string; role: string | null; schedule: boolean }
   ): Promise<void> {
@@ -116,7 +117,7 @@ export class GuildRepository extends Repository {
    * @param data - The event data.
    */
   async updateEvent(
-    guildId: string,
+    guildId: Snowflake,
     type: EventsList,
     data: { channel: string; role: string | null; schedule: boolean }
   ): Promise<void> {
@@ -164,7 +165,12 @@ export class GuildRepository extends Repository {
    * @param channelId - The channel ID.
    * @param messageId - The message ID.
    */
-  async updateEventMessageId(guildId: string, type: EventsList, channelId: string, messageId: string): Promise<void> {
+  async updateEventMessageId(
+    guildId: Snowflake,
+    type: EventsList,
+    channelId: Snowflake,
+    messageId: Snowflake
+  ): Promise<void> {
     let guild = await this.findOrCreate(guildId, true);
 
     if (!guild) return;
@@ -207,7 +213,7 @@ export class GuildRepository extends Repository {
    * @param type - The event type.
    * @param channelId - The channel ID.
    */
-  async removeEvent(guildId: string, type: EventsList, channelId: string): Promise<void> {
+  async removeEvent(guildId: Snowflake, type: EventsList, channelId: string): Promise<void> {
     let guild = await this.findOrCreate(guildId, true);
 
     if (!guild) return;
@@ -244,8 +250,8 @@ export class GuildRepository extends Repository {
    * @param guildId - The guild ID.
    * @param locale - The locale.
    */
-  async updateLocale(guildId: string, locale: Locales): Promise<void> {
-    let guild = await this.findOrCreate(guildId);
+  async updateLocale(guildId: Snowflake, locale: Locales): Promise<void> {
+    let guild = await this.findOrCreate(guildId, true);
 
     if (!guild) return;
 
@@ -263,6 +269,40 @@ export class GuildRepository extends Repository {
       });
     } catch (error) {
       this.client.logger.error(`Failed to update locale for guild ${guildId}.`, error.message);
+    }
+
+    await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));
+  }
+
+  /**
+   * Delete a configured channel.
+   *
+   * @param guildId - The guild ID.
+   * @param channelId - The channel ID.
+   */
+  async deleteChannel(guildId: Snowflake, channelId: Snowflake): Promise<void> {
+    let guild = await this.findOrCreate(guildId, true);
+
+    if (!guild) return;
+
+    try {
+      guild = await this.guilds.update({
+        data: {
+          events: {
+            deleteMany: {
+              channelId,
+            },
+          },
+        },
+        where: {
+          guildId,
+        },
+        include: {
+          events: true,
+        },
+      });
+    } catch (error) {
+      this.client.logger.error(`Failed to delete channel ${channelId} for guild ${guildId}.`, error.message);
     }
 
     await this.client.cache.set(`guilds:${guildId}`, JSON.stringify(guild));

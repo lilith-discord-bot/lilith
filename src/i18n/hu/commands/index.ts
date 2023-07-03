@@ -1,130 +1,130 @@
 export default {
   settings: {
     name: "settings",
-    description: "Manage your clans server settings.",
+    description: "Lilith bot beállítások módosítása.",
   },
   ["settings.locale"]: {
     name: "locale",
-    description: "Change the locale of Lilith for your clans server.",
+    description: "Lilith bot nyelvének módosítása.",
   },
   ["settings.locale.value"]: {
     name: "value",
-    description: "Which locale do you want to set for your server?",
+    description: "Melyik nyelvet szeretnéd választani a Lilith botnak?",
   },
   ["settings.notifications"]: {
     name: "notifications",
-    description: "Manage your clans notifications.",
+    description: "Lilith bot értesítéseinek módosítása.",
   },
   ["settings.notifications.enable"]: {
     name: "enable",
-    description: "Enable notifications for a given event.",
+    description: "Értesítés engedélyezése egy adott eventhez.",
   },
   ["settings.notifications.enable.event"]: {
     name: "event",
-    description: "Which event do you want to enable notifications for?",
+    description: "Melyik eseményhez szeretnéd engedélyezni az értesítéseket?",
   },
   ["settings.notifications.enable.channel"]: {
     name: "channel",
-    description: "Which channel do you want to send notifications to?",
+    description: "Melyik csatornára szeretnéd irányítani az értesítéseket?",
   },
   ["settings.notifications.enable.role"]: {
     name: "role",
-    description: "Which role do you want to ping?",
+    description: "Melyik rangot szeretnéd értesíteni az eseményről?",
   },
   ["settings.notifications.update"]: {
     name: "update",
-    description: "Update the notification settings for a given event.",
+    description: "Adott event értesítéseinek módosítása.",
   },
   ["settings.notifications.update.event"]: {
     name: "event",
-    description: "Which event do you want to update the notification setting for?",
+    description: "Melyik esemény értesítéseit szeretnéd módosítani?",
   },
   ["settings.notifications.update.channel"]: {
     name: "channel",
-    description: "Which channel do you want to send notifications to?",
+    description: "Melyik csatornára szeretnéd irányítani az értesítéseket?",
   },
   ["settings.notifications.update.role"]: {
     name: "role",
-    description: "Which role do you want to ping?",
+    description: "Melyik rangot szeretnéd értesíteni az eseményről?",
   },
   ["settings.notifications.disable"]: {
     name: "disable",
-    description: "Disable notifications for a given event.",
+    description: "Értesítés kikapcsolása egy adott eventhez.",
   },
   ["settings.notifications.disable.event"]: {
     name: "event",
-    description: "Which event do you want to disable notifications for?",
+    description: "Melyik esemény értesítéseit szeretnéd kikapcsolni?",
   },
   ["settings.notifications.disable.channel"]: {
     name: "channel",
-    description: "Which channel would you like to send notifications to?",
+    description: "Melyik csatornára szeretnéd irányítani az értesítéseket?",
   },
   ["settings.notifications.list"]: {
     name: "list",
-    description: "List all the current notification settings for your clans server.",
+    description: "Kilistázza az összes jelenlegi értesítést a szervereden.",
   },
   ["settings.notifications.refresh"]: {
     name: "refresh",
-    description: "Refresh notifications for a given event.",
+    description: "Értesítések frissítése az adott eventhez.",
   },
   ["settings.notifications.refresh.event"]: {
     name: "event",
-    description: "Which event do you want to refresh the notifications for?",
+    description: "Melyik event értesítéseit szeretnéd frissíteni?",
   },
   ["settings.notifications.refresh.data"]: {
     name: "data",
-    description: "Which set of data do you want to refresh notifications for? The last 2 will be displayed.",
+    description: "Mely értesítések adatait szeretnéd frissíteni? Az utolsó 2 kerül megjelenítésre.",
   },
   altars: {
     name: "altars",
-    description: "Displays information about the Altars of Lilith.",
+    description: "Altars of Lilith-ek mutatása.",
   },
   ["altars.show"]: {
     name: "show",
-    description: "The specified region to show.",
+    description: "Megmutatja az Altarokat a választott mapon.",
   },
   armory: {
     name: "armory",
-    description: "Displays information about a given player.",
+    description: "Információk mutatása egy adott játékosról.",
   },
   ["armory.player"]: {
     name: "player",
-    description: "The player to get information for. It can be a battletag or a username.",
+    description: "A játékos, akiről többet szeretnél tudni. Battletag-et vagy felhasználó nevet is megadhatsz.",
   },
   chart: {
     name: "chart",
-    description: "Displays one of the created charts.",
+    description: "Különböző táblázatok listázása.",
   },
   ["chart.show"]: {
     name: "show",
-    description: "The specific chart to show.",
+    description: "Adott táblázat mutatása.",
   },
   item: {
     name: "item",
-    description: "Lookup information about specific item.",
+    description: "Információ egy adott item-ről.",
   },
   ["item.query"]: {
     name: "query",
-    description: "The name of the thing you want to know about.",
+    description: "Információ lekérése adott dologról.",
   },
   map: {
     name: "map",
-    description: "Lookup information about specific markers, quests etc on the map.",
+    description: "Információ lekérése adott enemyről, helyekről, küldetésekről, stb. a mapon.",
   },
   ["map.type"]: {
     name: "type",
-    description: "The type of thing you want to know about.",
+    description: "Információ lekérése adott dologról, típus alapján.",
   },
   ["map.query"]: {
     name: "query",
-    description: "The name of the thing you want to know about.",
+    description: "Információ lekérése adott dologról, név alapján.",
   },
   about: {
     name: "about",
-    description: "Displays information about Lilith.",
+    description: "Információ Lilith-ről.",
   },
   help: {
     name: "help",
-    description: "Displays all of Lilith's commands.",
+    description: "Lilith összes parancsának kilistázása.",
   },
 };
