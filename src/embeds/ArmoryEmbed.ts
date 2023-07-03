@@ -43,20 +43,36 @@ export class ArmoryEmbed extends Embed {
         value: secondsToDhms(character.secondsPlayed) || i18n.misc.NO_PLAYED_TIME(),
         inline: false,
       },
-      {
-        name: underscore(i18n.embeds.ARMORY.EQUIPPED_ITEMS_TITLE()),
-        value:
-          character.equipment.map((item) => `${item.name} (${item.quality_level} ${item.itemtype})`).join("\n") ||
-          i18n.misc.NO_EQUIPPED_ITEMS(),
-      },
-      {
+    ];
+
+    if (character.skills.length)
+      this.data.fields.push({
+        name: underscore(i18n.embeds.ARMORY.SKILLS_TITLE()),
+        value: character.skills.map((skill) => skill.name).join("\n"),
+        inline: false,
+      });
+
+    if (character.equipment.length) {
+      const uniques = character.equipment.filter((item) => item.quality_level === "Unique");
+      if (uniques.length) {
+        this.data.fields.push({
+          name: "Unique(s)",
+          value: uniques.length > 1 ? uniques.map((item) => item.name).join(", ") : uniques[0].name,
+          inline: false,
+        });
+      }
+    }
+
+    this.data.fields.push({
+      name: underscore(i18n.embeds.ARMORY.MODE_TITLE()),
+      value: character.hardcore ? "Hardcore" : "Softcore",
+    });
+
+    if (character.hardcore) {
+      this.data.fields.push({
         name: underscore(i18n.embeds.ARMORY.STATUS_TITLE()),
         value: character.dead ? "Dead" : "Alive",
-      },
-      {
-        name: underscore(i18n.embeds.ARMORY.MODE_TITLE()),
-        value: character.hardcore ? "Hardcore" : "Softcore",
-      },
-    ];
+      });
+    }
   }
 }
