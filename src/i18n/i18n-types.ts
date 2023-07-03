@@ -284,7 +284,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * M​a​n​a​g​e​ ​y​o​u​r​ ​g​u​i​l​d​ ​s​e​t​t​i​n​g​s​.
+     * M​a​n​a​g​e​ ​y​o​u​r​ ​c​l​a​n​s​ ​s​e​r​v​e​r​ ​s​e​t​t​i​n​g​s​.
      */
     description: string;
   };
@@ -294,7 +294,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * C​h​a​n​g​e​ ​t​h​e​ ​l​o​c​a​l​e​ ​o​f​ ​L​i​l​i​t​h​ ​f​o​r​ ​y​o​u​r​ ​g​u​i​l​d​.
+     * C​h​a​n​g​e​ ​t​h​e​ ​l​o​c​a​l​e​ ​o​f​ ​L​i​l​i​t​h​ ​f​o​r​ ​y​o​u​r​ ​c​l​a​n​s​ ​s​e​r​v​e​r​.
      */
     description: string;
   };
@@ -304,7 +304,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​l​o​c​a​l​e​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​s​e​t​?
+     * W​h​i​c​h​ ​l​o​c​a​l​e​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​s​e​t​ ​f​o​r​ ​y​o​u​r​ ​s​e​r​v​e​r​?
      */
     description: string;
   };
@@ -314,7 +314,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * M​a​n​a​g​e​ ​y​o​u​r​ ​g​u​i​l​d​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​.
+     * M​a​n​a​g​e​ ​y​o​u​r​ ​c​l​a​n​s​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​.
      */
     description: string;
   };
@@ -334,7 +334,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​e​v​e​n​t​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​e​n​a​b​l​e​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​?
+     * W​h​i​c​h​ ​e​v​e​n​t​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​e​n​a​b​l​e​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​?
      */
     description: string;
   };
@@ -344,7 +344,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​c​h​a​n​n​e​l​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​s​e​n​d​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​t​o​?
+     * W​h​i​c​h​ ​c​h​a​n​n​e​l​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​s​e​n​d​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​t​o​?
      */
     description: string;
   };
@@ -354,7 +354,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​r​o​l​e​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​p​i​n​g​?
+     * W​h​i​c​h​ ​r​o​l​e​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​p​i​n​g​?
      */
     description: string;
   };
@@ -364,7 +364,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * U​p​d​a​t​e​ ​a​ ​n​o​t​i​f​i​c​a​t​i​o​n​ ​s​e​t​t​i​n​g​ ​f​o​r​ ​a​ ​g​i​v​e​n​ ​e​v​e​n​t​.
+     * U​p​d​a​t​e​ ​t​h​e​ ​n​o​t​i​f​i​c​a​t​i​o​n​ ​s​e​t​t​i​n​g​s​ ​f​o​r​ ​a​ ​g​i​v​e​n​ ​e​v​e​n​t​.
      */
     description: string;
   };
@@ -374,7 +374,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​e​v​e​n​t​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​u​p​d​a​t​e​ ​t​h​e​ ​n​o​t​i​f​i​c​a​t​i​o​n​ ​s​e​t​t​i​n​g​ ​f​o​r​?
+     * W​h​i​c​h​ ​e​v​e​n​t​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​u​p​d​a​t​e​ ​t​h​e​ ​n​o​t​i​f​i​c​a​t​i​o​n​ ​s​e​t​t​i​n​g​ ​f​o​r​?
      */
     description: string;
   };
@@ -384,7 +384,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​c​h​a​n​n​e​l​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​s​e​n​d​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​t​o​?
+     * W​h​i​c​h​ ​c​h​a​n​n​e​l​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​s​e​n​d​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​t​o​?
      */
     description: string;
   };
@@ -394,7 +394,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​r​o​l​e​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​p​i​n​g​?
+     * W​h​i​c​h​ ​r​o​l​e​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​p​i​n​g​?
      */
     description: string;
   };
@@ -414,7 +414,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​e​v​e​n​t​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​d​i​s​a​b​l​e​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​?
+     * W​h​i​c​h​ ​e​v​e​n​t​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​d​i​s​a​b​l​e​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​?
      */
     description: string;
   };
@@ -424,7 +424,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​c​h​a​n​n​e​l​ ​d​o​ ​y​o​u​ ​s​e​n​d​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​t​o​?
+     * W​h​i​c​h​ ​c​h​a​n​n​e​l​ ​w​o​u​l​d​ ​y​o​u​ ​l​i​k​e​ ​t​o​ ​s​e​n​d​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​t​o​?
      */
     description: string;
   };
@@ -434,7 +434,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * L​i​s​t​ ​a​l​l​ ​n​o​t​i​f​i​c​a​t​i​o​n​ ​s​e​t​t​i​n​g​s​ ​f​o​r​ ​y​o​u​r​ ​g​u​i​l​d​.
+     * L​i​s​t​ ​a​l​l​ ​t​h​e​ ​c​u​r​r​e​n​t​ ​n​o​t​i​f​i​c​a​t​i​o​n​ ​s​e​t​t​i​n​g​s​ ​f​o​r​ ​y​o​u​r​ ​c​l​a​n​s​ ​s​e​r​v​e​r​.
      */
     description: string;
   };
@@ -444,7 +444,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * R​e​f​r​e​s​h​ ​n​o​t​i​f​i​c​a​t​i​o​n​ ​f​o​r​ ​a​ ​g​i​v​e​n​ ​e​v​e​n​t​.
+     * R​e​f​r​e​s​h​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​ ​a​ ​g​i​v​e​n​ ​e​v​e​n​t​.
      */
     description: string;
   };
@@ -454,7 +454,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​e​v​e​n​t​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​r​e​f​r​e​s​h​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​?
+     * W​h​i​c​h​ ​e​v​e​n​t​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​r​e​f​r​e​s​h​ ​t​h​e​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​?
      */
     description: string;
   };
@@ -464,7 +464,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * W​h​a​t​ ​d​a​t​a​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​r​e​f​r​e​s​h​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​?​ ​W​e​'​r​e​ ​s​h​o​w​i​n​g​ ​t​h​e​ ​l​a​s​t​ ​2​ ​e​v​e​n​t​s​.
+     * W​h​i​c​h​ ​s​e​t​ ​o​f​ ​d​a​t​a​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​r​e​f​r​e​s​h​ ​n​o​t​i​f​i​c​a​t​i​o​n​s​ ​f​o​r​?​ ​T​h​e​ ​l​a​s​t​ ​2​ ​w​i​l​l​ ​b​e​ ​d​i​s​p​l​a​y​e​d​.
      */
     description: string;
   };
@@ -474,7 +474,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * D​i​s​p​l​a​y​s​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​L​i​l​i​t​h​'​s​ ​A​l​t​a​r​s​.
+     * D​i​s​p​l​a​y​s​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​t​h​e​ ​A​l​t​a​r​s​ ​o​f​ ​L​i​l​i​t​h​.
      */
     description: string;
   };
@@ -484,7 +484,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * T​h​e​ ​r​e​g​i​o​n​ ​t​o​ ​s​h​o​w​.
+     * T​h​e​ ​s​p​e​c​i​f​i​e​d​ ​r​e​g​i​o​n​ ​t​o​ ​s​h​o​w​.
      */
     description: string;
   };
@@ -504,7 +504,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * T​h​e​ ​p​l​a​y​e​r​ ​t​o​ ​g​e​t​ ​t​h​e​ ​i​n​f​o​r​m​a​t​i​o​n​ ​o​f​.​ ​I​t​ ​c​a​n​ ​b​e​ ​a​ ​b​a​t​t​l​e​t​a​g​ ​o​r​ ​a​ ​u​s​e​r​n​a​m​e​.
+     * T​h​e​ ​p​l​a​y​e​r​ ​t​o​ ​g​e​t​ ​i​n​f​o​r​m​a​t​i​o​n​ ​f​o​r​.​ ​I​t​ ​c​a​n​ ​b​e​ ​a​ ​b​a​t​t​l​e​t​a​g​ ​o​r​ ​a​ ​u​s​e​r​n​a​m​e​.
      */
     description: string;
   };
@@ -514,7 +514,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * D​i​s​p​l​a​y​s​ ​a​ ​s​p​e​c​i​f​i​c​ ​c​h​a​r​t​.
+     * D​i​s​p​l​a​y​s​ ​o​n​e​ ​o​f​ ​t​h​e​ ​c​r​e​a​t​e​d​ ​c​h​a​r​t​s​.
      */
     description: string;
   };
@@ -524,7 +524,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * T​h​e​ ​c​h​a​r​t​ ​t​o​ ​s​h​o​w​.
+     * T​h​e​ ​s​p​e​c​i​f​i​c​ ​c​h​a​r​t​ ​t​o​ ​s​h​o​w​.
      */
     description: string;
   };
@@ -534,7 +534,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * G​i​v​e​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​s​p​e​c​i​f​i​c​ ​i​t​e​m​.
+     * L​o​o​k​u​p​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​s​p​e​c​i​f​i​c​ ​i​t​e​m​.
      */
     description: string;
   };
@@ -554,7 +554,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * G​i​v​e​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​s​p​e​c​i​f​i​c​ ​t​h​i​n​g​s​ ​o​n​ ​t​h​e​ ​m​a​p​.
+     * L​o​o​k​u​p​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​s​p​e​c​i​f​i​c​ ​m​a​r​k​e​r​s​,​ ​q​u​e​s​t​s​ ​e​t​c​ ​o​n​ ​t​h​e​ ​m​a​p​.
      */
     description: string;
   };
@@ -594,7 +594,7 @@ export type NamespaceCommandsTranslation = {
      */
     name: string;
     /**
-     * D​i​s​p​l​a​y​s​ ​a​l​l​ ​L​i​l​i​t​h​'​s​ ​c​o​m​m​a​n​d​s​.
+     * D​i​s​p​l​a​y​s​ ​a​l​l​ ​o​f​ ​L​i​l​i​t​h​'​s​ ​c​o​m​m​a​n​d​s​.
      */
     description: string;
   };
@@ -845,7 +845,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Manage your guild settings.
+       * Manage your clans server settings.
        */
       description: () => LocalizedString;
     };
@@ -855,7 +855,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Change the locale of Lilith for your guild.
+       * Change the locale of Lilith for your clans server.
        */
       description: () => LocalizedString;
     };
@@ -865,7 +865,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What locale do you want to set?
+       * Which locale do you want to set for your server?
        */
       description: () => LocalizedString;
     };
@@ -875,7 +875,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Manage your guild notifications.
+       * Manage your clans notifications.
        */
       description: () => LocalizedString;
     };
@@ -895,7 +895,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What event do you want to enable notifications for?
+       * Which event do you want to enable notifications for?
        */
       description: () => LocalizedString;
     };
@@ -905,7 +905,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What channel do you want to send notifications to?
+       * Which channel do you want to send notifications to?
        */
       description: () => LocalizedString;
     };
@@ -915,7 +915,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What role do you want to ping?
+       * Which role do you want to ping?
        */
       description: () => LocalizedString;
     };
@@ -925,7 +925,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Update a notification setting for a given event.
+       * Update the notification settings for a given event.
        */
       description: () => LocalizedString;
     };
@@ -935,7 +935,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What event do you want to update the notification setting for?
+       * Which event do you want to update the notification setting for?
        */
       description: () => LocalizedString;
     };
@@ -945,7 +945,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What channel do you want to send notifications to?
+       * Which channel do you want to send notifications to?
        */
       description: () => LocalizedString;
     };
@@ -955,7 +955,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What role do you want to ping?
+       * Which role do you want to ping?
        */
       description: () => LocalizedString;
     };
@@ -975,7 +975,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What event do you want to disable notifications for?
+       * Which event do you want to disable notifications for?
        */
       description: () => LocalizedString;
     };
@@ -985,7 +985,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What channel do you send notifications to?
+       * Which channel would you like to send notifications to?
        */
       description: () => LocalizedString;
     };
@@ -995,7 +995,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * List all notification settings for your guild.
+       * List all the current notification settings for your clans server.
        */
       description: () => LocalizedString;
     };
@@ -1005,7 +1005,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Refresh notification for a given event.
+       * Refresh notifications for a given event.
        */
       description: () => LocalizedString;
     };
@@ -1015,7 +1015,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What event do you want to refresh notifications for?
+       * Which event do you want to refresh the notifications for?
        */
       description: () => LocalizedString;
     };
@@ -1025,7 +1025,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * What data do you want to refresh notifications for? We're showing the last 2 events.
+       * Which set of data do you want to refresh notifications for? The last 2 will be displayed.
        */
       description: () => LocalizedString;
     };
@@ -1035,7 +1035,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Displays information about Lilith's Altars.
+       * Displays information about the Altars of Lilith.
        */
       description: () => LocalizedString;
     };
@@ -1045,7 +1045,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * The region to show.
+       * The specified region to show.
        */
       description: () => LocalizedString;
     };
@@ -1065,7 +1065,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * The player to get the information of. It can be a battletag or a username.
+       * The player to get information for. It can be a battletag or a username.
        */
       description: () => LocalizedString;
     };
@@ -1075,7 +1075,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Displays a specific chart.
+       * Displays one of the created charts.
        */
       description: () => LocalizedString;
     };
@@ -1085,7 +1085,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * The chart to show.
+       * The specific chart to show.
        */
       description: () => LocalizedString;
     };
@@ -1095,7 +1095,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Give information about specific item.
+       * Lookup information about specific item.
        */
       description: () => LocalizedString;
     };
@@ -1115,7 +1115,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Give information about specific things on the map.
+       * Lookup information about specific markers, quests etc on the map.
        */
       description: () => LocalizedString;
     };
@@ -1155,7 +1155,7 @@ export type TranslationFunctions = {
        */
       name: () => LocalizedString;
       /**
-       * Displays all Lilith's commands.
+       * Displays all of Lilith's commands.
        */
       description: () => LocalizedString;
     };
