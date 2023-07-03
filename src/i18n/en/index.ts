@@ -46,6 +46,7 @@ const en = {
       LAST_PLAYED_TITLE: "Last played",
       PLAYED_TIME_TITLE: "Played time",
       EQUIPPED_ITEMS_TITLE: "Equipped items",
+      SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Status",
       MODE_TITLE: "Mode",
     },

@@ -24,7 +24,8 @@ const pl = {
     PLAYER_NOT_FOUND:
       "Nie znalazłem gracza o nicku **{player}**, upewnij się, że poprawnie wpisano nazwę gracza lub że taki gracz istnieje.",
     NO_CHARACTERS: "Ten gracz nie posiada żadnych postaci.",
-    NO_CHARACTER: "Nie znaleziono postaci, upewnij się, że nazwa została wpisana poprawnie lub istnieje przynajmniej jedna postać.",
+    NO_CHARACTER:
+      "Nie znaleziono postaci, upewnij się, że nazwa została wpisana poprawnie lub istnieje przynajmniej jedna postać.",
     SELECT_CHARACTER: "Proszę wybrać postać, której profil ma zostać wyświetlony.",
     MULTIPLE_CHARACTERS: "Ten gracz posiada wiele postaci. Proszę wybrać jedną z nich.",
     PLAYER_CHOICE: "{name} ({characters} postaci)",
@@ -34,7 +35,8 @@ const pl = {
   events: {
     WORLD_BOSS:
       "{name} pojawi się w {zone} ({territory}) o godzinie {time} ({countdown}).\n\nNastępnie prawdopodobnie pojawi się {nextName} około godziny {nextTime}",
-    HELLTIDE: "Piekielny przypływ występuje w {zone} do {time}, następny Piekielny Przypływ o {nextTime}\n\nOdświeżanie skrzyń: {refresh}",
+    HELLTIDE:
+      "Piekielny przypływ występuje w {zone} do {time}, następny Piekielny Przypływ o {nextTime}\n\nOdświeżanie skrzyń: {refresh}",
     LEGION: "Legion pojawi się o godzinie {time}, kolejny legion o godzinie {nextTime}",
   },
   embeds: {
@@ -46,6 +48,7 @@ const pl = {
       LAST_PLAYED_TITLE: "Ostatnio grano",
       PLAYED_TIME_TITLE: "Czas gry",
       EQUIPPED_ITEMS_TITLE: "Wyposażone przedmioty",
+      SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Status",
       MODE_TITLE: "Tryb",
     },
@@ -59,7 +62,8 @@ const pl = {
       STATISTICS_VALUE: "Serwery: {servers}\nUżytkownicy: {users}",
       DEBUG_TITLE: "Debug",
       DEBUG_VALUE: "Klastry: {clusters}\nShardy: {shards}\nID Shardu: {shardId}\nID Klastra: {clusterId}",
-      DESCRIPTION: "{username} to bot do Discorda, który dostarcza informacji na temat Diablo 4, opracowany przez glazk0 i Marco.",
+      DESCRIPTION:
+        "{username} to bot do Discorda, który dostarcza informacji na temat Diablo 4, opracowany przez glazk0 i Marco.",
     },
     SETTINGS: {
       TITLE: "Ustawienia powiadomień serwera",

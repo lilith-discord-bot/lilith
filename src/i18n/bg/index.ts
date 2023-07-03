@@ -1,5 +1,5 @@
-import type { BaseTranslation } from "../i18n-types";
-  
+import type { Translation } from "../i18n-types";
+
 const bg = {
   settings: {
     locale: {
@@ -46,6 +46,7 @@ const bg = {
       LAST_PLAYED_TITLE: "Последно игран",
       PLAYED_TIME_TITLE: "Изиграно време",
       EQUIPPED_ITEMS_TITLE: "Оборудвани предмети",
+      SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Статус",
       MODE_TITLE: "Режим",
     },
@@ -72,6 +73,6 @@ const bg = {
     NO_PLAYED_TIME: "Не е намерено изиграно време.",
     NO_EQUIPPED_ITEMS: "Не са намерени оборудвани предмети.",
   },
-} satisfies BaseTranslation;
+} satisfies Translation;
 
 export default bg;

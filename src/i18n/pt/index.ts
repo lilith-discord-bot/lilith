@@ -47,6 +47,7 @@ const br = {
       LAST_PLAYED_TITLE: "Última vez jogado",
       PLAYED_TIME_TITLE: "Tempo jogado",
       EQUIPPED_ITEMS_TITLE: "Itens equipados",
+      SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Status",
       MODE_TITLE: "Modo",
     },
