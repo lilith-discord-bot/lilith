@@ -47,6 +47,7 @@ const de = {
       LAST_PLAYED_TITLE: "Zuletzt gespielt",
       PLAYED_TIME_TITLE: "Spielzeit",
       EQUIPPED_ITEMS_TITLE: "Angelegte Gegenstände",
+      SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Status",
       MODE_TITLE: "Modus",
     },

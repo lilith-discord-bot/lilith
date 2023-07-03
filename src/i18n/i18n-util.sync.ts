@@ -5,6 +5,7 @@ import { initFormatters } from './formatters'
 import type { Locales, Translations } from './i18n-types'
 import { loadedFormatters, loadedLocales, locales } from './i18n-util'
 
+import bg from './bg'
 import de from './de'
 import en from './en'
 import es from './es'
@@ -15,6 +16,7 @@ import ja from './ja'
 import pl from './pl'
 import pt from './pt'
 
+import bg_commands from './bg/commands'
 import de_commands from './de/commands'
 import en_commands from './en/commands'
 import es_commands from './es/commands'
@@ -26,6 +28,10 @@ import pl_commands from './pl/commands'
 import pt_commands from './pt/commands'
 
 const localeTranslations = {
+	bg: {
+		...bg,
+		commands: bg_commands
+	},
 	de: {
 		...de,
 		commands: de_commands

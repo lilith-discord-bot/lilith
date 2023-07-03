@@ -47,6 +47,7 @@ const es = {
       LAST_PLAYED_TITLE: "Última partida",
       PLAYED_TIME_TITLE: "Tiempo de juego",
       EQUIPPED_ITEMS_TITLE: "Objetos equipados",
+      SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Estado",
       MODE_TITLE: "Modo",
     },

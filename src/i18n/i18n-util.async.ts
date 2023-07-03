@@ -6,6 +6,7 @@ import type { Locales, Namespaces, Translations } from './i18n-types'
 import { loadedFormatters, loadedLocales, locales } from './i18n-util'
 
 const localeTranslationLoaders = {
+	bg: () => import('./bg'),
 	de: () => import('./de'),
 	en: () => import('./en'),
 	es: () => import('./es'),
@@ -18,6 +19,9 @@ const localeTranslationLoaders = {
 }
 
 const localeNamespaceLoaders = {
+	bg: {
+		commands: () => import('./bg/commands')
+	},
 	de: {
 		commands: () => import('./de/commands')
 	},

@@ -207,13 +207,13 @@ export class EventNotifier {
     message: string | MessagePayload | MessageCreateOptions,
     oldMessageId: string | null
   ): Promise<Message<true> | null> {
-    let channel = this.client.channels.cache.get(channelId);
+    const channel = this.client.channels.cache.get(channelId);
 
     if (!channel || !channel.isTextBased()) return;
 
     const oldMessage = oldMessageId
       ? ((await channel.messages.fetch(oldMessageId).catch((e) => {
-          this.client.logger.error(`Unable to send fetch message ${oldMessageId}:`, e.message);
+          this.client.logger.error(`Unable to send fetch message ${oldMessageId}:`, e);
           return null;
         })) as Message<true>)
       : null;
@@ -221,10 +221,10 @@ export class EventNotifier {
     if (oldMessage)
       await oldMessage
         .delete()
-        .catch((e) => this.client.logger.error(`Unable to remove message with id: ${oldMessageId}`, e.message));
+        .catch((e) => this.client.logger.error(`Unable to remove message with id: ${oldMessageId}`, e));
 
     return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch((e) => {
-      this.client.logger.error(`Unable to send message`, e.message);
+      this.client.logger.error(`Unable to send message`, e);
       return null;
     });
   }

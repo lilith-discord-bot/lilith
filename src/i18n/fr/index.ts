@@ -48,6 +48,7 @@ const fr = {
       LAST_PLAYED_TITLE: "Dernière connexion",
       PLAYED_TIME_TITLE: "Temps de jeu",
       EQUIPPED_ITEMS_TITLE: "Équipement",
+      SKILLS_TITLE: "Compétences",
       STATUS_TITLE: "Statut",
       MODE_TITLE: "Mode",
     },

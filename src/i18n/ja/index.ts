@@ -46,6 +46,7 @@ const jp = {
       LAST_PLAYED_TITLE: "最後のプレイ",
       PLAYED_TIME_TITLE: "プレイ時間",
       EQUIPPED_ITEMS_TITLE: "装備アイテム",
+      SKILLS_TITLE: "Skills",
       STATUS_TITLE: "ステータス",
       MODE_TITLE: "モード",
     },

@@ -252,4 +252,5 @@ export const localesMap = {
   es: "Español",
   pl: "Polski",
   hu: "Magyar",
+  bg: "български",
 } as Record<string, string>;

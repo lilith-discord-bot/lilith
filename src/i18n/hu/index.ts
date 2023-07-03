@@ -50,6 +50,7 @@ const hu = {
       LAST_PLAYED_TITLE: "Utoljára játszott",
       PLAYED_TIME_TITLE: "Játékidő",
       EQUIPPED_ITEMS_TITLE: "Hordott felszerelés",
+      SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Státusz",
       MODE_TITLE: "Mód",
     },
