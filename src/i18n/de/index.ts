@@ -3,7 +3,7 @@ import type { Translation } from "../i18n-types";
 const de = {
   settings: {
     locale: {
-      SUCCESS: "Die Spracheinstellungen für {username} wurden auf folgende Einstellungen aktualisiert: **{locale}**.",
+      SUCCESS: "Die Spracheinstellungen für Lilith wurden auf folgende Einstellungen aktualisiert: **{locale}**.",
     },
     notifications: {
       NO_PERMISSIONS: "{username} hat keine Berechtigung zum Senden von Nachrichten in diesem {channel}.",
