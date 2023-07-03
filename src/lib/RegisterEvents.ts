@@ -53,6 +53,10 @@ export function registerClientEvents(): void {
     client.eventHandler.run(Events.GuildDelete, guild);
   });
 
+  client.on(Events.ChannelDelete, async (channel) => {
+    client.eventHandler.run(Events.ChannelDelete, channel);
+  });
+
   client.on(Events.Error, (error: any) => {
     client.logger.error(error);
   });
