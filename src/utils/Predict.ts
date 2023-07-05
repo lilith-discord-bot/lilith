@@ -205,7 +205,7 @@ export const getChestsKey = (event: HelltideEvent) => {
     hour = new Date(event.refresh * 1000).getUTCHours();
   }
 
-  console.log(hour, event);
+  console.debug(hour, event);
 
   // Temporary fix
   if (hour === undefined) hour = new Date().getUTCHours();
@@ -214,6 +214,8 @@ export const getChestsKey = (event: HelltideEvent) => {
     const chest = hour % chests[zone].length;
     return chests[zone][chest].value;
   });
+
+  console.debug(map[event.zone][key.join("_")], key);
 
   return map[event.zone][key.join("_")];
 };
