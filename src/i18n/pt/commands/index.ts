@@ -32,7 +32,7 @@ export default {
     description: "Qual cargo você deseja mencionar?",
   },
   ["settings.notifications.update"]: {
-    name: "atualizar",
+    name: "alterar",
     description: "Atualizar as configurações de notificação para um evento específico.",
   },
   ["settings.notifications.update.event"]: {
@@ -75,7 +75,7 @@ export default {
     name: "dados",
     description: "Qual conjunto de dados você deseja atualizar as notificações? As últimas 2 serão exibidas.",
   },
-    altars: {
+  altars: {
     name: "altares",
     description: "Exibe informações sobre os Altares de Lilith.",
   },
@@ -83,7 +83,7 @@ export default {
     name: "exibir",
     description: "Exibe a região especificada.",
   },
-    armory: {
+  armory: {
     name: "armazém",
     description: "Exibe informações sobre um jogador específico.",
   },
@@ -91,7 +91,7 @@ export default {
     name: "jogador",
     description: "O jogador para obter informações. Pode ser um battletag ou um nome de usuário",
   },
-    chart: {
+  chart: {
     name: "gráfico",
     description: "Exibe um dos gráficos criados.",
   },
@@ -99,7 +99,7 @@ export default {
     name: "exibir",
     description: "O gráfico específico para mostrar.",
   },
-    item: {
+  item: {
     name: "item",
     description: "Consulte informações sobre um item específico.",
   },
