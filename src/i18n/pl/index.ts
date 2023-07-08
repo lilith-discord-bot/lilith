@@ -30,7 +30,7 @@ const pl = {
     MULTIPLE_CHARACTERS: "Ten gracz posiada wiele postaci. Proszę wybrać jedną z nich.",
     PLAYER_CHOICE: "{name} ({characters} postaci)",
     NOT_TRACKED_YET: 'Profil gracza "{player}" nie jest obecnie śledzony. Wyślij, aby go śledzić.',
-    PLAYER_IN_QUEUE: "Profil gracza **{player}** jest aktualnie w kolejce.",
+    ERROR: 'The player "{player}" is either in the website queue or is in private mode.',
   },
   events: {
     WORLD_BOSS:
@@ -47,10 +47,11 @@ const pl = {
       CHARACTER_CREATION_TITLE: "Tworzenie postaci",
       LAST_PLAYED_TITLE: "Ostatnio grano",
       PLAYED_TIME_TITLE: "Czas gry",
-      EQUIPPED_ITEMS_TITLE: "Wyposażone przedmioty",
+      UNIQUES_TITLE: "Uniques",
       SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Status",
       MODE_TITLE: "Tryb",
+      CLAN_TITLE: "Clan",
     },
     HELP: {
       TITLE: "Komendy użytkownika {username}",

@@ -29,7 +29,7 @@ const en = {
     MULTIPLE_CHARACTERS: "This player has multiple characters. Please select one.",
     PLAYER_CHOICE: "{name} ({characters} characters)",
     NOT_TRACKED_YET: '"{player}" isn\'t currently tracked, send to track it.',
-    PLAYER_IN_QUEUE: "The player **{player}** is currently in the queue.",
+    ERROR: 'The player "{player}" is either in the website queue or is in private mode.',
   },
   events: {
     WORLD_BOSS:
@@ -45,10 +45,11 @@ const en = {
       CHARACTER_CREATION_TITLE: "Character creation",
       LAST_PLAYED_TITLE: "Last played",
       PLAYED_TIME_TITLE: "Played time",
-      EQUIPPED_ITEMS_TITLE: "Equipped items",
+      UNIQUES_TITLE: "Uniques",
       SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Status",
       MODE_TITLE: "Mode",
+      CLAN_TITLE: "Clan",
     },
     HELP: {
       TITLE: "{username}'s commands",

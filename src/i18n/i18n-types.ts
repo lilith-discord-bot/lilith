@@ -132,10 +132,10 @@ type RootTranslation = {
 		 */
 		NOT_TRACKED_YET: RequiredParams<'player'>
 		/**
-		 * T​h​e​ ​p​l​a​y​e​r​ ​*​*​{​p​l​a​y​e​r​}​*​*​ ​i​s​ ​c​u​r​r​e​n​t​l​y​ ​i​n​ ​t​h​e​ ​q​u​e​u​e​.
+		 * T​h​e​ ​p​l​a​y​e​r​ ​"​{​p​l​a​y​e​r​}​"​ ​i​s​ ​e​i​t​h​e​r​ ​i​n​ ​t​h​e​ ​w​e​b​s​i​t​e​ ​q​u​e​u​e​ ​o​r​ ​i​s​ ​i​n​ ​p​r​i​v​a​t​e​ ​m​o​d​e​.
 		 * @param {unknown} player
 		 */
-		PLAYER_IN_QUEUE: RequiredParams<'player'>
+		ERROR: RequiredParams<'player'>
 	}
 	events: {
 		/**
@@ -198,9 +198,9 @@ type RootTranslation = {
 			 */
 			PLAYED_TIME_TITLE: string
 			/**
-			 * E​q​u​i​p​p​e​d​ ​i​t​e​m​s
+			 * U​n​i​q​u​e​s
 			 */
-			EQUIPPED_ITEMS_TITLE: string
+			UNIQUES_TITLE: string
 			/**
 			 * S​k​i​l​l​s
 			 */
@@ -213,6 +213,10 @@ type RootTranslation = {
 			 * M​o​d​e
 			 */
 			MODE_TITLE: string
+			/**
+			 * C​l​a​n
+			 */
+			CLAN_TITLE: string
 		}
 		HELP: {
 			/**
@@ -715,9 +719,9 @@ export type TranslationFunctions = {
 		 */
 		NOT_TRACKED_YET: (arg: { player: unknown }) => LocalizedString
 		/**
-		 * The player **{player}** is currently in the queue.
+		 * The player "{player}" is either in the website queue or is in private mode.
 		 */
-		PLAYER_IN_QUEUE: (arg: { player: unknown }) => LocalizedString
+		ERROR: (arg: { player: unknown }) => LocalizedString
 	}
 	events: {
 		/**
@@ -763,9 +767,9 @@ export type TranslationFunctions = {
 			 */
 			PLAYED_TIME_TITLE: () => LocalizedString
 			/**
-			 * Equipped items
+			 * Uniques
 			 */
-			EQUIPPED_ITEMS_TITLE: () => LocalizedString
+			UNIQUES_TITLE: () => LocalizedString
 			/**
 			 * Skills
 			 */
@@ -778,6 +782,10 @@ export type TranslationFunctions = {
 			 * Mode
 			 */
 			MODE_TITLE: () => LocalizedString
+			/**
+			 * Clan
+			 */
+			CLAN_TITLE: () => LocalizedString
 		}
 		HELP: {
 			/**
