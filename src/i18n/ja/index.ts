@@ -29,11 +29,11 @@ const jp = {
     MULTIPLE_CHARACTERS: "このプレイヤーは複数のキャラクターを持っています。1つ選択してください。",
     PLAYER_CHOICE: "{name} ({characters} キャラクター)",
     NOT_TRACKED_YET: '"{player}" は現在追跡されていません、追跡するには送信してください。',
-    ERROR: 'The player "{player}" is either in the website queue or is in private mode.',
+    ERROR: 'プレイヤー "{player}" はウェブサイトのキューに入っているか、プライベートモードになっています。',
   },
   events: {
     WORLD_BOSS:
-      "{name} が {zone} ({territory}) に {time} ({countdown}) 出現します。\n\n次回のボスは {nextTime} に {nextName} と予測されます。",
+      "{name} が {zone} ({territory}) に {time} ({countdown}) に出現します。\n\n次回のボスは {nextTime} に {nextName} と予測されます。",
     HELLTIDE: "{time} まで {zone} でヘルタイドが発生、次回のヘルタイドは {nextTime}\n\nチェスト更新: {refresh}",
     LEGION: "レギオンは {time} に出現、次回のレギオンは {nextTime} に出現します。",
   },
@@ -45,11 +45,11 @@ const jp = {
       CHARACTER_CREATION_TITLE: "キャラクター作成",
       LAST_PLAYED_TITLE: "最後のプレイ",
       PLAYED_TIME_TITLE: "プレイ時間",
-      UNIQUES_TITLE: "Uniques",
-      SKILLS_TITLE: "Skills",
+      UNIQUES_TITLE: "ユニーク",
+      SKILLS_TITLE: "スキル",
       STATUS_TITLE: "ステータス",
       MODE_TITLE: "モード",
-      CLAN_TITLE: "Clan",
+      CLAN_TITLE: "クラン",
     },
     HELP: {
       TITLE: "{username} コマンド",
