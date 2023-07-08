@@ -4,6 +4,7 @@ import {
   CacheType,
   ChatInputCommandInteraction,
   InteractionResponse,
+  Message,
   StringSelectMenuInteraction,
 } from "discord.js";
 
@@ -45,7 +46,7 @@ export abstract class Interaction implements InteractionInterface {
   public async run(
     interaction: ChatInputCommandInteraction<CacheType>,
     context: Context
-  ): Promise<InteractionResponse<boolean>> {
+  ): Promise<InteractionResponse<boolean> | Message<boolean>> {
     throw new Error(`Command ${this.command.name} not implemented.`);
   }
 

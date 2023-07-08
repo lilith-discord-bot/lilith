@@ -16,6 +16,8 @@ export type PlayerResearch = {
   dungeons_completed: number;
   players_killed: number;
   bosses_killed: number;
+  clan_id: string;
+  clan_tag: string | null;
   characters: [
     {
       name: string;
@@ -28,6 +30,7 @@ export type PlayerResearch = {
 };
 
 export type PlayerArmory = {
+  error?: string;
   character: string;
   queue: number;
   lastUpdate: string;
@@ -46,6 +49,13 @@ export type PlayerArmory = {
   power: number;
   hardcore: boolean;
   dead: boolean;
+  clan: string;
+  // NOT IMPLEMENTED
+  // completed_quests: null;
+  // fog_of_wars: null;
+  // altars: null;
+  // waypoints: null;
+  // skillTree: null;
 };
 
 export type Equipment = {

@@ -13,14 +13,14 @@ export class ArmoryEmbed extends Embed {
     this.data.title = `${character.character} LvL. ${character.level} (${character.class})`;
 
     this.data.thumbnail = {
-      url: this.client.user?.displayAvatarURL() || "",
+      url: this.client.user?.displayAvatarURL(),
     };
 
     const stats = i18n.embeds.ARMORY.STATISTICS_VALUE({
       worldTier: String(character.worldTier + 1),
-      monstersKilled: character.monstersKilled.toLocaleString("en-US"),
-      elitesKilled: character.elitesKilled.toLocaleString("en-US"),
-      goldCollected: character.goldCollected.toLocaleString("en-US"),
+      monstersKilled: character.monstersKilled ? character.monstersKilled.toLocaleString("en-US") : "0",
+      elitesKilled: character.elitesKilled ? character.elitesKilled.toLocaleString("en-US") : "0",
+      goldCollected: character.goldCollected ? character.goldCollected.toLocaleString("en-US") : "0",
     });
 
     this.data.fields = [
@@ -56,7 +56,7 @@ export class ArmoryEmbed extends Embed {
       const uniques = character.equipment.filter((item) => item.quality_level === "Unique");
       if (uniques.length) {
         this.data.fields.push({
-          name: "Unique(s)",
+          name: underscore(i18n.embeds.ARMORY.UNIQUES_TITLE()),
           value: uniques.map((item) => item.name).join("\n"),
           inline: false,
         });
@@ -72,6 +72,13 @@ export class ArmoryEmbed extends Embed {
       this.data.fields.push({
         name: underscore(i18n.embeds.ARMORY.STATUS_TITLE()),
         value: character.dead ? "Dead" : "Alive",
+      });
+    }
+
+    if (character.clan) {
+      this.data.fields.push({
+        name: underscore(i18n.embeds.ARMORY.CLAN_TITLE()),
+        value: character.clan,
       });
     }
   }
