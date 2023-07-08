@@ -32,7 +32,7 @@ const hu = {
     MULTIPLE_CHARACTERS: "Ennek a játékosnak több karaktere is van. Kérlek válassz egyet.",
     PLAYER_CHOICE: "{name} ({characters} karakter)",
     NOT_TRACKED_YET: '"{player}" jelenleg még nincs nyomon követve, próbáld meg beküldeni a nyomon követéshez.',
-    PLAYER_IN_QUEUE: "A **{player}** nevű játékos jelenleg sorban áll.",
+    ERROR: 'The player "{player}" is either in the website queue or is in private mode.',
   },
   events: {
     WORLD_BOSS:
@@ -49,10 +49,11 @@ const hu = {
       CHARACTER_CREATION_TITLE: "Karakter létrehozás dátuma",
       LAST_PLAYED_TITLE: "Utoljára játszott",
       PLAYED_TIME_TITLE: "Játékidő",
-      EQUIPPED_ITEMS_TITLE: "Hordott felszerelés",
+      UNIQUES_TITLE: "Uniques",
       SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Státusz",
       MODE_TITLE: "Mód",
+      CLAN_TITLE: "Clan",
     },
     HELP: {
       TITLE: "{username} parancsai",

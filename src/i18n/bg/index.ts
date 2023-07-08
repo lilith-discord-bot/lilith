@@ -29,7 +29,7 @@ const bg = {
     MULTIPLE_CHARACTERS: "Този играч има няколко герои. Моля, изберете един.",
     PLAYER_CHOICE: "{name} ({characters} герои)",
     NOT_TRACKED_YET: '"{player}" в момента не се проследява, изпратете, за да го проследите.',
-    PLAYER_IN_QUEUE: "Играчът **{player}** в момента е в опашката.",
+    ERROR: 'The player "{player}" is either in the website queue or is in private mode.',
   },
   events: {
     WORLD_BOSS:
@@ -45,10 +45,11 @@ const bg = {
       CHARACTER_CREATION_TITLE: "Създаване на герой",
       LAST_PLAYED_TITLE: "Последно игран",
       PLAYED_TIME_TITLE: "Изиграно време",
-      EQUIPPED_ITEMS_TITLE: "Оборудвани предмети",
+      UNIQUES_TITLE: "Uniques",
       SKILLS_TITLE: "Skills",
       STATUS_TITLE: "Статус",
       MODE_TITLE: "Режим",
+      CLAN_TITLE: "Clan",
     },
     HELP: {
       TITLE: "Команди на {username}",

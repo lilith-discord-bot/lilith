@@ -29,7 +29,7 @@ const jp = {
     MULTIPLE_CHARACTERS: "このプレイヤーは複数のキャラクターを持っています。1つ選択してください。",
     PLAYER_CHOICE: "{name} ({characters} キャラクター)",
     NOT_TRACKED_YET: '"{player}" は現在追跡されていません、追跡するには送信してください。',
-    PLAYER_IN_QUEUE: "プレイヤー **{player}** は現在待機中です。",
+    ERROR: 'The player "{player}" is either in the website queue or is in private mode.',
   },
   events: {
     WORLD_BOSS:
@@ -45,10 +45,11 @@ const jp = {
       CHARACTER_CREATION_TITLE: "キャラクター作成",
       LAST_PLAYED_TITLE: "最後のプレイ",
       PLAYED_TIME_TITLE: "プレイ時間",
-      EQUIPPED_ITEMS_TITLE: "装備アイテム",
+      UNIQUES_TITLE: "Uniques",
       SKILLS_TITLE: "Skills",
       STATUS_TITLE: "ステータス",
       MODE_TITLE: "モード",
+      CLAN_TITLE: "Clan",
     },
     HELP: {
       TITLE: "{username} コマンド",
