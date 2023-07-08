@@ -120,12 +120,12 @@ export default {
     description: "Le nom de la chose à propos de laquelle vous souhaitez obtenir des informations.",
   },
   season: {
-    name: "season",
-    description: "Displays information about the current season.",
+    name: "saison",
+    description: "Affiche des informations sur la saison en cours.",
   },
   ["season.get"]: {
-    name: "get",
-    description: "The information to retrieve.",
+    name: "récupérer",
+    description: "Les informations à récupérer.",
   },
   about: {
     name: "informations",
