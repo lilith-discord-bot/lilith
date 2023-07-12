@@ -119,6 +119,14 @@ export default {
     name: "requête",
     description: "Le nom de la chose à propos de laquelle vous souhaitez obtenir des informations.",
   },
+  season: {
+    name: "saison",
+    description: "Affiche des informations sur la saison en cours.",
+  },
+  ["season.get"]: {
+    name: "récupérer",
+    description: "Les informations à récupérer.",
+  },
   about: {
     name: "informations",
     description: "Affiche des informations sur Lilith.",

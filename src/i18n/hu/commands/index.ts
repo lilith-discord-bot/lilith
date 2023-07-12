@@ -119,6 +119,14 @@ export default {
     name: "query",
     description: "Információ lekérése adott dologról, név alapján.",
   },
+  season: {
+    name: "season",
+    description: "Displays information about the current season.",
+  },
+  ["season.get"]: {
+    name: "get",
+    description: "The information to retrieve.",
+  },
   about: {
     name: "about",
     description: "Információ Lilith-ről.",
