@@ -120,12 +120,12 @@ export default {
     description: "知りたいのはどんなことですか？",
   },
   season: {
-    name: "season",
-    description: "Displays information about the current season.",
+    name: "シーズン",
+    description: "現在のシーズンに関する情報を表示します。",
   },
   ["season.get"]: {
-    name: "get",
-    description: "The information to retrieve.",
+    name: "取得",
+    description: "取得する情報。",
   },
   about: {
     name: "約",
