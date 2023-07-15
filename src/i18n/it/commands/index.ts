@@ -121,11 +121,11 @@ export default {
   },
   season: {
     name: "season",
-    description: "Displays information about the current season.",
+    description: "Mostra le informazioni sulla stagione corrente.",
   },
   ["season.get"]: {
     name: "get",
-    description: "The information to retrieve.",
+    description: "Le informazioni da mostrare.",
   },
   about: {
     name: "about",
