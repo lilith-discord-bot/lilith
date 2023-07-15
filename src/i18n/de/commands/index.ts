@@ -119,6 +119,14 @@ export default {
     name: "liste",
     description: "Der Name der Sache, über die Informationen angezeigt werden sollen.",
   },
+  season: {
+    name: "season",
+    description: "Displays information about the current season.",
+  },
+  ["season.get"]: {
+    name: "get",
+    description: "The information to retrieve.",
+  },
   about: {
     name: "über",
     description: "Zeigt Informationen zum Discord-Bot Lilith an.",

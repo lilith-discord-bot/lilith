@@ -119,6 +119,14 @@ export default {
     name: "query",
     description: "The name of the thing you want to know about.",
   },
+  season: {
+    name: "season",
+    description: "Displays information about the current season.",
+  },
+  ["season.get"]: {
+    name: "get",
+    description: "The information to retrieve.",
+  },
   about: {
     name: "about",
     description: "Displays information about Lilith.",

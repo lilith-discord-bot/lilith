@@ -119,6 +119,14 @@ export default {
     name: "クエリ",
     description: "知りたいのはどんなことですか？",
   },
+  season: {
+    name: "season",
+    description: "Displays information about the current season.",
+  },
+  ["season.get"]: {
+    name: "get",
+    description: "The information to retrieve.",
+  },
   about: {
     name: "約",
     description: "Lilithに関する情報を表示します。",
