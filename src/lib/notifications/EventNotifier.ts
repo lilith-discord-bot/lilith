@@ -12,8 +12,6 @@ import { getEvents, getStatus } from "../API";
 import { Broadcaster } from "./Broadcaster";
 import { getTitle } from "./NotifierUtils";
 
-const refreshInterval = duration.seconds(60);
-
 /**
  * The event notifier handler.
  */
@@ -23,14 +21,14 @@ export class EventNotifier {
    * @type {Client}
    * @readonly
    */
-  readonly client: Client;
+  private readonly client: Client;
 
   /**
    * The broadcaster instance.
    * @type {Broadcaster}
    * @readonly
    */
-  readonly broadcaster: Broadcaster;
+  private readonly broadcaster: Broadcaster;
 
   constructor() {
     this.client = container.resolve<Client>(clientSymbol);
@@ -39,7 +37,7 @@ export class EventNotifier {
     this.init();
   }
 
-  async init() {
+  private async init() {
     this.client.logger.info("Event notifier has been initialized.");
     new CronJob("0 */1 * * * *", () => this.refresh(), null, true, "Europe/Brussels").start();
   }
@@ -61,6 +59,7 @@ export class EventNotifier {
 
     for (let [key, event] of Object.entries(events)) {
       if (key === "whispers") continue;
+
       const exist = await this.client.database.notification.findFirst({
         where: {
           type: key,
@@ -174,7 +173,7 @@ export class EventNotifier {
           //   // TODO: Implement schedule
           // }
 
-          return this.send(setting.channelId, message, setting.messageId);
+          return this.broadcaster.broadcast(setting.channelId, message, setting.messageId);
         });
 
         const sendResponses = await Promise.all(sendPromises);
@@ -200,32 +199,5 @@ export class EventNotifier {
         this.client.logger.info(`Event ${key} has been broadcasted to ${settings.length} guilds.`);
       }
     }
-  }
-
-  private async send(
-    channelId: string,
-    message: string | MessagePayload | MessageCreateOptions,
-    oldMessageId: string | null
-  ): Promise<Message<true> | null> {
-    const channel = this.client.channels.cache.get(channelId);
-
-    if (!channel || !channel.isTextBased()) return;
-
-    const oldMessage = oldMessageId
-      ? ((await channel.messages.fetch(oldMessageId).catch((e) => {
-          this.client.logger.error(`Unable to send fetch message ${oldMessageId}:`, e);
-          return null;
-        })) as Message<true>)
-      : null;
-
-    if (oldMessage)
-      await oldMessage
-        .delete()
-        .catch((e) => this.client.logger.error(`Unable to remove message with id: ${oldMessageId}`, e));
-
-    return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch((e) => {
-      this.client.logger.error(`Unable to send message`, e);
-      return null;
-    });
   }
 }
