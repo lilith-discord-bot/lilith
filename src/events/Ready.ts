@@ -3,6 +3,7 @@ import { Events } from "discord.js";
 import { Event } from "../structures/Event";
 import { Worker } from "../lib/Worker";
 import { EventNotifier } from "../lib/notifications/EventNotifier";
+import { FeedsNotifier } from "../lib/notifications/FeedsNotifier";
 
 export default class Ready extends Event {
   constructor() {
@@ -15,6 +16,7 @@ export default class Ready extends Event {
     }
 
     new EventNotifier();
+    new FeedsNotifier();
 
     const shards =
       [...this.client.cluster.ids.keys()].length > 1
