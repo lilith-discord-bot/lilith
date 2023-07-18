@@ -1,6 +1,6 @@
 import { ActivityType, ClientOptions, GatewayIntentBits, Locale, Partials, PresenceData } from "discord.js";
 
-import { ClassesChoices, ModesChoices, RSSFeed } from "../types";
+import { ClassesChoices, Events, ModesChoices } from "../types";
 
 /**
  * Our CDN.
@@ -97,22 +97,25 @@ export const options: ClientOptions = {
 /**
  * The choices for the events.
  */
-export const eventsChoices = [
+export const eventsChoices: {
+  name: string;
+  value: Events;
+}[] = [
   {
     name: "World Boss",
-    value: "boss",
+    value: Events.WorldBoss,
   },
   {
     name: "Hell Tide",
-    value: "helltide",
+    value: Events.Helltide,
   },
   {
     name: "Legion Invasion",
-    value: "legion",
+    value: Events.Legion,
   },
   {
-    name: "RSS Feed",
-    value: "rss",
+    name: "Blizzard Updates",
+    value: Events.BlizzardUpdates,
   },
 ];
 
@@ -165,20 +168,6 @@ export const modesChoices: ModesChoices[] = [
   {
     name: "PvP",
     value: "pvp",
-  },
-];
-
-/**
- * The different RSS feeds.
- * @type {RSSFeed[]}
- */
-export const RSSFeeds: RSSFeed[] = [
-  {
-    name: "Blue Tracker",
-    url: "https://www.bluetracker.gg/rss/diablo4/",
-    defaultAttach: `${CDN}/logos/blizzard-entertainment.png`,
-    footerAttach: `${CDN}/logos/blizzard.png`,
-    refreshTime: 60000,
   },
 ];
 

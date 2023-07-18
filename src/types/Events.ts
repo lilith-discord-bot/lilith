@@ -31,9 +31,9 @@ export enum Events {
   WorldBoss = "boss",
   Helltide = "helltide",
   Legion = "legion",
-  RSS = "rss",
+  BlizzardUpdates = "blizzard-updates",
 }
 
-export type EventsList = "boss" | "helltide" | "legion" | "rss";
+export type EventsList = "boss" | "helltide" | "legion" | "blizzard-updates";
 
 export type Event = BossEvent | HelltideEvent | LegionEvent;

@@ -23,6 +23,7 @@ import { Context, Interaction } from "../../structures/Interaction";
 
 import { SettingsEmbed } from "../../embeds/SettingsEmbed";
 
+import { commands } from "../../i18n";
 import L from "../../i18n/i18n-node";
 import { Locales } from "../../i18n/i18n-types";
 import { locales } from "../../i18n/i18n-util";
@@ -31,7 +32,6 @@ import { EventEmbed } from "../../embeds/EventEmbed";
 import { getTitle } from "../../lib/notifications/NotifierUtils";
 import { Event as D4Event, EventsList } from "../../types";
 import { clientSymbol, eventsChoices, localesMap } from "../../utils/Constants";
-import { commands } from "../../i18n";
 
 @injectable()
 export default class Settings extends Interaction {
