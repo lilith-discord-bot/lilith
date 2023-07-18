@@ -9,7 +9,7 @@ export class Broadcaster {
   /**
    * The client instance.
    */
-  readonly client: Client;
+  private readonly client: Client;
 
   constructor() {
     this.client = container.resolve<Client>(clientSymbol);
@@ -22,38 +22,31 @@ export class Broadcaster {
    * @param message - The message to broadcast.
    * @param key - The key to use for the message.
    */
-  async broadcast(
+  public async broadcast(
     channelId: string,
     message: string | MessagePayload | MessageCreateOptions,
-    oldMessageId: string | null
-  ): Promise<(Message<true> | null)[]> {
-    return (await this.client.cluster.broadcastEval(
-      async (c, { channelId, message, oldMessageId }) => {
-        let channel = c.channels.cache.get(channelId);
+    oldMessageId: string | null = null
+  ): Promise<Message<true> | null> {
+    const channel = this.client.channels.cache.get(channelId);
 
-        if (!channel || !channel.isTextBased()) return;
+    if (!channel || !channel.isTextBased()) return;
 
-        const oldMessage = oldMessageId
-          ? ((await channel.messages.fetch(oldMessageId).catch((e) => {
-              console.error(`Unable to send fetch message ${oldMessageId}:`, e.message);
-              return null;
-            })) as Message<true>)
-          : null;
-
-        if (oldMessage)
-          await oldMessage
-            .delete()
-            .catch((e) => console.error(`Unable to remove message with id: ${oldMessageId}`, e.message));
-
-        return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch((e) => {
-          console.error(`Unable to send message`, e.message);
+    const oldMessage = oldMessageId
+      ? ((await channel.messages.fetch(oldMessageId).catch((e) => {
+          this.client.logger.error(`Unable to send fetch message ${oldMessageId}:`, e);
           return null;
-        });
-      },
-      {
-        context: { channelId, message, oldMessageId },
-      }
-    )) as (Message<true> | null)[];
+        })) as Message<true>)
+      : null;
+
+    if (oldMessage)
+      await oldMessage
+        .delete()
+        .catch((e) => this.client.logger.error(`Unable to remove message with id: ${oldMessageId}`, e));
+
+    return await channel.send(message as string | MessagePayload | MessageCreateOptions).catch((e) => {
+      this.client.logger.error(`Unable to send message`, e);
+      return null;
+    });
   }
 
   /**
@@ -64,7 +57,7 @@ export class Broadcaster {
    *
    * @returns {Promise<void>} Nothing.
    */
-  async scheduleEvent(guild: Guild, options: GuildScheduledEventCreateOptions): Promise<void> {
+  public async scheduleEvent(guild: Guild, options: GuildScheduledEventCreateOptions): Promise<void> {
     if (!guild) return;
 
     this.client.logger.info(`Creating scheduled event for guild ${guild.id}`);

@@ -95,3 +95,23 @@ export type EventMap = {
   description: string;
   zone: string;
 } & Coordinates;
+
+// Missing stuff but I don't care
+export type RSSFeedItem = {
+  title: string;
+  description: string;
+  link: string;
+  pubDate: string;
+  guid: string;
+  meta: {
+    link: string;
+  };
+};
+
+export type RSSFeed = {
+  name: string;
+  url: string;
+  defaultAttach: string;
+  footerAttach: string;
+  refreshTime: number;
+};
