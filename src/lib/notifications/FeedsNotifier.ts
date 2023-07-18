@@ -104,7 +104,7 @@ export class FeedsNotifier {
 
         let settings = await this.client.database.event.findMany({
           where: {
-            type: Events.RSS,
+            type: Events.BlizzardUpdates,
           },
           include: {
             Guild: {

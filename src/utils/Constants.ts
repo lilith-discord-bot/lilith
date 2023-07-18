@@ -1,6 +1,6 @@
 import { ActivityType, ClientOptions, GatewayIntentBits, Locale, Partials, PresenceData } from "discord.js";
 
-import { ClassesChoices, Events, ModesChoices } from "../types";
+import { ClassesChoices, Events, ModesChoices, RSSFeed } from "../types";
 
 /**
  * Our CDN.
@@ -168,6 +168,20 @@ export const modesChoices: ModesChoices[] = [
   {
     name: "PvP",
     value: "pvp",
+  },
+];
+
+/**
+ * The different RSS feeds.
+ * @type {RSSFeed[]}
+ */
+export const RSSFeeds: RSSFeed[] = [
+  {
+    name: "Blue Tracker",
+    url: "https://www.bluetracker.gg/rss/diablo4/",
+    defaultAttach: `${CDN}/logos/blizzard-entertainment.png`,
+    footerAttach: `${CDN}/logos/blizzard.png`,
+    refreshTime: 60000,
   },
 ];
 
