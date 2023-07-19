@@ -19,7 +19,7 @@ import { Context, Interaction } from "../../structures/Interaction";
 
 import { getPlayer, getPlayerArmory } from "../../lib/API";
 
-import { PlayerArmory } from "../../types";
+import { Character } from "../../types";
 
 import { ArmoryEmbed } from "../../embeds/ArmoryEmbed";
 import { commands } from "../../i18n";
@@ -73,7 +73,7 @@ export default class Armory extends Interaction {
     if (!res) return await interaction.editReply(i18n.armory.PLAYER_NOT_FOUND({ player }));
 
     // Error means the player is in the queue or private
-    if (res.error) return await interaction.editReply(i18n.armory.ERROR({ player }));
+    if ("error" in res) return await interaction.editReply(i18n.armory.ERROR({ player }));
 
     if (!res.characters || res.characters.length <= 0) return await interaction.editReply(i18n.armory.NO_CHARACTERS());
 
@@ -88,14 +88,14 @@ export default class Armory extends Interaction {
       await this.client.cache.set(`players:${player}`, JSON.stringify(playerObj));
     }
 
-    let character: PlayerArmory | null = null;
+    let character: Character | null = null;
 
     if (res.characters.length <= 1) {
       character = await getPlayerArmory(player, res.characters[0].id);
 
       if (!character) return await interaction.editReply(i18n.armory.NO_CHARACTER());
 
-      if (character.error) return await interaction.editReply(i18n.armory.ERROR({ player }));
+      if ("error" in character) return await interaction.editReply(i18n.armory.ERROR({ player }));
 
       const embed = new ArmoryEmbed(character, { i18n, guild });
 
@@ -181,7 +181,7 @@ export default class Armory extends Interaction {
 
     if (!character) return await interaction.reply(i18n.armory.NO_CHARACTER());
 
-    if (character.error) return await interaction.reply(i18n.armory.ERROR({ player }));
+    if ("error" in character) return await interaction.reply(i18n.armory.ERROR({ player }));
 
     const embed = new ArmoryEmbed(character, { i18n, guild });
 

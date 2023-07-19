@@ -2,12 +2,12 @@ import { underscore } from "discord.js";
 
 import { Embed } from "./Embed";
 
-import { PlayerArmory } from "../types";
+import { Character } from "../types";
 import { getTimestamp, secondsToDhms } from "../utils/Commons";
 import { Context } from "../structures/Interaction";
 
 export class ArmoryEmbed extends Embed {
-  constructor(character: PlayerArmory, { i18n }: Context) {
+  constructor(character: Character, { i18n }: Context) {
     super();
 
     this.data.title = `${character.character} LvL. ${character.level} (${character.class})`;
