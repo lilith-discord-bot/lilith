@@ -1,30 +1,31 @@
-export type RawEvents = {
-  boss: BossEvent;
-  helltide: HelltideEvent;
-  legion: LegionEvent;
-};
+export interface BaseEvent {
+  timestamp: number;
+  zone: string;
+}
 
-export type BossEvent = {
+export interface BossEvent extends BaseEvent {
   name: string;
   expectedName: string;
   nextExpectedName: string;
-  timestamp: number;
   expected: number;
   nextExpected: number;
   territory: string;
-  zone: string;
-};
+}
 
-export type HelltideEvent = {
-  timestamp: number;
-  zone: string;
+export interface HelltideEvent extends BaseEvent {
   refresh: number;
-};
+}
 
-export type LegionEvent = {
-  timestamp: number;
+export interface LegionEvent extends BaseEvent {
   territory: string;
-  zone: string;
+}
+
+export type Event = BossEvent | HelltideEvent | LegionEvent;
+
+export type RawEvents = {
+  [Events.WorldBoss]: BossEvent;
+  [Events.Helltide]: HelltideEvent;
+  [Events.Legion]: LegionEvent;
 };
 
 export enum Events {
@@ -34,6 +35,4 @@ export enum Events {
   BlizzardUpdates = "blizzard-updates",
 }
 
-export type EventsList = "boss" | "helltide" | "legion" | "blizzard-updates";
-
-export type Event = BossEvent | HelltideEvent | LegionEvent;
+export type EventsList = keyof RawEvents | Events.BlizzardUpdates;

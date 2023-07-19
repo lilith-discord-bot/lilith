@@ -62,7 +62,7 @@ export class EventNotifier {
 
       const exist = await this.client.database.notification.findFirst({
         where: {
-          type: key,
+          type: key as EventsList,
           timestamp: event.timestamp,
           clusterId: this.client.cluster.id,
         },
@@ -87,7 +87,7 @@ export class EventNotifier {
             await this.client.database.notification.create({
               data: {
                 type: key,
-                data: event,
+                data: event as any,
                 timestamp: event.timestamp,
                 refreshTimestamp: refreshTimestamp,
                 clusterId: this.client.cluster.id,

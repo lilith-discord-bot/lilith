@@ -84,52 +84,60 @@ export class FeedsNotifier {
    * @param item - The feed item.
    */
   private async handle(item: RSSFeedItem) {
+    if (!this.isNew(item)) return;
+
     try {
-      if (this.isNew(item)) {
-        this.client.logger.info(`New feed: ${item.title}`);
+      this.client.logger.info(`New feed: ${item.title}`);
 
-        const title = markdinate(item.title);
-        const similar = this.oldItems.find((i) => markdinate(i.title) === title);
+      const title = markdinate(item.title);
+      const similar = this.oldItems.find((i) => markdinate(i.title) === title);
 
-        if (similar) {
-          this.client.logger.info(`Feed is similar to ${similar.title}, skipping...`);
-          return;
-        }
+      if (similar) {
+        this.client.logger.info(`Feed is similar to ${similar.title}, skipping...`);
+        return;
+      }
 
-        this.oldItems.push(item);
+      this.oldItems.push(item);
 
-        const feed = RSSFeeds.find((feed) => feed.url === item.meta.link);
+      const feed = RSSFeeds.find((feed) => feed.url === item.meta.link);
 
-        const embed = new RSSEmbed(item, feed);
+      const embed = new RSSEmbed(item, feed);
 
-        let settings = await this.client.database.event.findMany({
-          where: {
-            type: Events.BlizzardUpdates,
-          },
-          include: {
-            Guild: {
-              select: {
-                locale: true,
-              },
+      let settings = await this.client.database.event.findMany({
+        where: {
+          type: Events.BlizzardUpdates,
+        },
+        include: {
+          Guild: {
+            select: {
+              locale: true,
             },
           },
-        });
+        },
+      });
 
-        if (!settings || !settings.length) return;
+      if (!settings || !settings.length) return;
 
-        const message: string | MessagePayload | MessageCreateOptions = {
-          embeds: [embed],
-        };
+      settings = settings.filter((s) => clusterIdOfGuildId(this.client, s.guildId) === this.client.cluster.id);
 
-        settings = settings.filter((s) => clusterIdOfGuildId(this.client, s.guildId) === this.client.cluster.id);
+      let message: string | MessagePayload | MessageCreateOptions = {
+        embeds: [embed],
+      };
 
-        await Promise.all(
-          settings.map((setting) => {
-            this.client.logger.info(`Feed, broadcasting to guild ${setting.guildId}...`);
-            return this.broadcaster.broadcast(setting.channelId, message);
-          })
-        );
-      }
+      await Promise.all(
+        settings.map((setting) => {
+          message = {
+            content: setting.roleId ? `<@&${setting.roleId}>` : undefined,
+            allowedMentions: {
+              roles: setting.roleId ? [setting.roleId] : undefined,
+            },
+          };
+
+          this.client.logger.info(`Feed, broadcasting to guild ${setting.guildId}...`);
+
+          return this.broadcaster.broadcast(setting.channelId, message);
+        })
+      );
     } catch (error) {
       this.client.logger.error(`Failed to handle feed: ${error}`);
     }

@@ -100,7 +100,7 @@ export class Client extends DiscordClient {
    *
    * @returns {Promise<this>} The client.
    */
-  async init(): Promise<this> {
+  public async init(): Promise<this> {
     await this.eventHandler.init();
 
     await registerClientEvents();
@@ -120,7 +120,7 @@ export class Client extends DiscordClient {
   /**
    * Destroys the client.
    */
-  async destroy(): Promise<void> {
+  public async destroy(): Promise<void> {
     await super.destroy();
     process.exit(0);
   }
@@ -130,7 +130,7 @@ export class Client extends DiscordClient {
    *
    * @param interactions - The interactions.
    */
-  setInteractions(interactions: Collection<string, Interaction>): void {
+  public setInteractions(interactions: Collection<string, Interaction>): void {
     this.interactions = interactions;
   }
 }

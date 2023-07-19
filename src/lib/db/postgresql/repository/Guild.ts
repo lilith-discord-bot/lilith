@@ -10,10 +10,10 @@ import { Snowflake } from "discord.js";
 export class GuildRepository extends Repository {
   /**
    * The guilds repository.
-   * @type {Prisma.GuildDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>}
+   * @type {Prisma.GuildDelegate}
    * @readonly
    */
-  private readonly guilds: Prisma.GuildDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>;
+  private readonly guilds: Prisma.GuildDelegate;
 
   constructor() {
     super();

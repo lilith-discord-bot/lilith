@@ -30,7 +30,7 @@ import { locales } from "../../i18n/i18n-util";
 
 import { EventEmbed } from "../../embeds/EventEmbed";
 import { getTitle } from "../../lib/notifications/NotifierUtils";
-import { Event as D4Event, EventsList } from "../../types";
+import { Event as D4Event, Events, EventsList } from "../../types";
 import { clientSymbol, eventsChoices, localesMap } from "../../utils/Constants";
 
 @injectable()
@@ -152,7 +152,7 @@ export default class Settings extends Interaction {
               {
                 type: ApplicationCommandOptionType.String,
                 ...commands["settings.notifications.refresh.event"],
-                choices: eventsChoices,
+                choices: eventsChoices.filter((event) => event.value !== Events.BlizzardUpdates),
                 required: true,
               },
               {
@@ -332,7 +332,7 @@ export default class Settings extends Interaction {
             await interaction.deferReply({ ephemeral: true });
 
             for (const event of currentEvents) {
-              const embed = new EventEmbed(event.type, notification.data as D4Event);
+              const embed = new EventEmbed(event.type, notification.data as any as D4Event);
 
               const channel = interaction.guild.channels.cache.get(event.channelId) as TextChannel | NewsChannel;
 
@@ -345,7 +345,7 @@ export default class Settings extends Interaction {
                 continue;
               }
 
-              let content = getTitle(event.type, notification.data as D4Event, guild.locale as Locales);
+              let content = getTitle(event.type, notification.data as any as D4Event, guild.locale as Locales);
 
               if (event.roleId) {
                 content += ` - <@&${event.roleId}>`;
