@@ -10,7 +10,9 @@ export class ArmoryEmbed extends Embed {
   constructor(character: Character, { i18n }: Context) {
     super();
 
-    this.data.title = `${character.character} LvL. ${character.level} (${character.class})`;
+    this.data.title = `${character.season > 0 ? "🌱" : undefined} ${character.character} LvL. ${character.level} (${
+      character.class
+    })`;
 
     this.data.thumbnail = {
       url: this.client.user?.displayAvatarURL(),
