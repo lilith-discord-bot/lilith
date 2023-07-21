@@ -38,7 +38,7 @@ export class Worker {
       let data;
 
       try {
-        data = await request(`${DATABASE_URL}/i18n/${language}.json`, true);
+        data = await request(`${DATABASE_URL}/i18n/autocomplete_${language}.json`, true);
       } catch (error) {
         this.client.logger.error(`Failed to fetch database data for ${language}.`);
         continue;

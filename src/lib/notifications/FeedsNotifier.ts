@@ -23,18 +23,18 @@ export class FeedsNotifier {
   private readonly client: Client;
 
   /**
-   * The broadcaster instance.
-   * @type {Broadcaster}
-   * @readonly
-   */
-  private readonly broadcaster: Broadcaster;
-
-  /**
    * The feeder instance.
    * @type {RssFeedEmitter}
    * @readonly
    */
   private readonly feeder: RssFeedEmitter;
+
+  /**
+   * The broadcaster instance.
+   * @type {Broadcaster}
+   * @readonly
+   */
+  private broadcaster: Broadcaster = new Broadcaster();
 
   /**
    * The date when the notifier has been started.
@@ -43,9 +43,8 @@ export class FeedsNotifier {
   private start: Date;
 
   /**
-   * The old items that have been sent.
+   * The old items.
    * @type {RSSFeedItem[]}
-   * @private
    */
   private oldItems: RSSFeedItem[] = [];
 
@@ -54,7 +53,7 @@ export class FeedsNotifier {
 
     this.feeder = new RssFeedEmitter({
       userAgent: `Lilith/DiscordBot`,
-      skipFirstLoad: true,
+      skipFirstLoad: false,
     });
 
     RSSFeeds.forEach((feed) => {
@@ -64,16 +63,18 @@ export class FeedsNotifier {
       });
     });
 
+    this.feeder.on("error", (error) => this.client.logger.error(`Feeds notifier error: ${error}`));
+
     this.init();
   }
 
   /**
    * Initializes the notifier.
    */
-  private async init() {
+  private init() {
     this.start = new Date();
 
-    this.feeder.on("new-item", (item) => this.handle(item));
+    this.feeder.on("new-item", async (item) => await this.handle(item));
 
     this.client.logger.info("Feeds notifier has been initialized.");
   }
@@ -84,62 +85,56 @@ export class FeedsNotifier {
    * @param item - The feed item.
    */
   private async handle(item: RSSFeedItem) {
-    if (!this.isNew(item)) return;
+    if (this.isNew(item)) {
+      try {
+        this.client.logger.info(`New feed: ${item.title}`);
 
-    try {
-      this.client.logger.info(`New feed: ${item.title}`);
+        const title = markdinate(item.title);
+        const similar = this.oldItems.find((i) => markdinate(i.title) === title);
 
-      const title = markdinate(item.title);
-      const similar = this.oldItems.find((i) => markdinate(i.title) === title);
+        if (similar) {
+          this.client.logger.info(`Feed is similar to ${similar.title}, skipping...`);
+          return;
+        }
 
-      if (similar) {
-        this.client.logger.info(`Feed is similar to ${similar.title}, skipping...`);
-        return;
-      }
+        this.oldItems.push(item);
 
-      this.oldItems.push(item);
-
-      const feed = RSSFeeds.find((feed) => feed.url === item.meta.link);
-
-      const embed = new RSSEmbed(item, feed);
-
-      let settings = await this.client.database.event.findMany({
-        where: {
-          type: Events.BlizzardUpdates,
-        },
-        include: {
-          Guild: {
-            select: {
-              locale: true,
-            },
+        let settings = await this.client.database.event.findMany({
+          where: {
+            type: Events.BlizzardUpdates,
           },
-        },
-      });
+        });
 
-      if (!settings || !settings.length) return;
+        this.client.logger.info(`Feed, found ${settings.length} settings...`);
 
-      settings = settings.filter((s) => clusterIdOfGuildId(this.client, s.guildId) === this.client.cluster.id);
+        if (!settings || !settings.length) return;
 
-      let message: string | MessagePayload | MessageCreateOptions = {
-        embeds: [embed],
-      };
+        settings = settings.filter((s) => clusterIdOfGuildId(this.client, s.guildId) === this.client.cluster.id);
 
-      await Promise.all(
-        settings.map((setting) => {
-          message = {
-            content: setting.roleId ? `<@&${setting.roleId}>` : undefined,
-            allowedMentions: {
-              roles: setting.roleId ? [setting.roleId] : undefined,
-            },
-          };
+        const feed = RSSFeeds.find((feed) => feed.url === item.meta.link);
 
-          this.client.logger.info(`Feed, broadcasting to guild ${setting.guildId}...`);
+        const embed = new RSSEmbed(item, feed);
 
-          return this.broadcaster.broadcast(setting.channelId, message);
-        })
-      );
-    } catch (error) {
-      this.client.logger.error(`Failed to handle feed: ${error}`);
+        let message: string | MessagePayload | MessageCreateOptions;
+
+        await Promise.all(
+          settings.map((setting) => {
+            message = {
+              embeds: [embed],
+              content: setting.roleId ? `<@&${setting.roleId}>` : undefined,
+              allowedMentions: {
+                roles: setting.roleId ? [setting.roleId] : undefined,
+              },
+            };
+
+            this.client.logger.info(`Feed, broadcasting to guild ${setting.guildId}...`);
+
+            return this.broadcaster.broadcast(setting.channelId, message);
+          })
+        );
+      } catch (error) {
+        this.client.logger.error(`Failed to handle feed: ${error}`);
+      }
     }
   }
 
@@ -151,6 +146,8 @@ export class FeedsNotifier {
    * @returns {boolean} - True if the feed is new, false otherwise.
    */
   private isNew(item: RSSFeedItem) {
-    return new Date(item.pubDate).getTime() >= this.start.getTime();
+    return (
+      new Date(item.pubDate).getTime() >= this.start.getTime() || new Date(item.pubDate).getTime() >= Date.now() - 86400000
+    );
   }
 }

@@ -146,11 +146,11 @@ export class EventNotifier {
 
         if (!settings || !settings.length) continue;
 
+        settings = settings.filter((s) => clusterIdOfGuildId(this.client, s.guildId) === this.client.cluster.id);
+
         const embed = new EventEmbed(key, event);
 
         let message: string | MessagePayload | MessageCreateOptions;
-
-        settings = settings.filter((s) => clusterIdOfGuildId(this.client, s.guildId) === this.client.cluster.id);
 
         // WIP need to refactor this
 
