@@ -53,7 +53,7 @@ export class FeedsNotifier {
 
     this.feeder = new RssFeedEmitter({
       userAgent: `Lilith/DiscordBot`,
-      skipFirstLoad: false,
+      skipFirstLoad: true,
     });
 
     RSSFeeds.forEach((feed) => {
@@ -146,8 +146,6 @@ export class FeedsNotifier {
    * @returns {boolean} - True if the feed is new, false otherwise.
    */
   private isNew(item: RSSFeedItem) {
-    return (
-      new Date(item.pubDate).getTime() >= this.start.getTime() || new Date(item.pubDate).getTime() >= Date.now() - 86400000
-    );
+    return new Date(item.pubDate).getTime() >= this.start.getTime();
   }
 }
