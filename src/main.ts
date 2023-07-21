@@ -16,7 +16,7 @@ const manager = new ClusterManager(join(resolve("structures", "Client.js")), {
   totalShards: "auto",
   totalClusters: "auto",
   mode: "process",
-  shardsPerClusters: 3,
+  shardsPerClusters: 8,
   token: process.env.TOKEN,
 });
 
