@@ -1,8 +1,9 @@
-import { Classes, Events, Modes, Player, PlayerArmory, PlayerResearch, RawEvents, Stats, Status } from "../types";
+import * as querystring from "querystring";
+
+import { Classes, Modes, Leaderboard, Character, Account, RawEvents, Stats, Status } from "../types";
 
 import { request } from "../utils/Commons";
 import { ARMORY_API_URL, ARMORY_URL } from "../utils/Constants";
-import * as querystring from "querystring";
 
 /**
  * Gets the events.
@@ -30,10 +31,13 @@ export async function getStats(): Promise<Stats | null> {
  * @param classe - The class.
  * @param mode - The mode.
  *
- * @returns {Promise<Player[] | null>} The leaderboard.
+ * @returns {Promise<Leaderboard[] | null>} The leaderboard.
  */
-export async function getLeaderboard(classe: Classes = "allclasses", mode: Modes = "allmodes"): Promise<Player[] | null> {
-  const query: string = querystring.stringify({ classe, mode })
+export async function getLeaderboard(
+  classe: Classes = "allclasses",
+  mode: Modes = "allmodes"
+): Promise<Leaderboard[] | null> {
+  const query = querystring.stringify({ classe, mode });
   const res = await request(`${ARMORY_API_URL}/leaderboard?${query}`, true);
   return res;
 }
@@ -43,9 +47,9 @@ export async function getLeaderboard(classe: Classes = "allclasses", mode: Modes
  *
  * @param battleTag - The battle tag of the player.
  *
- * @returns {Promise<PlayerResearch | null>} The player.
+ * @returns {Promise<Account | null>} The player.
  */
-export async function getPlayer(battleTag: string): Promise<PlayerResearch | null> {
+export async function getPlayer(battleTag: string): Promise<Account | null> {
   const res = await request(`${ARMORY_API_URL}/armory/${battleTag}`, true);
   return res;
 }
@@ -55,9 +59,9 @@ export async function getPlayer(battleTag: string): Promise<PlayerResearch | nul
  *
  * @param battleTag - The battle tag.
  * @param heroId  - The hero id.
- * @returns {PlayerArmory | null} The player.
+ * @returns {Character | null} The player.
  */
-export async function getPlayerArmory(battleTag: string, heroId: string): Promise<PlayerArmory | null> {
+export async function getPlayerArmory(battleTag: string, heroId: string): Promise<Character | null> {
   const res = await request(`${ARMORY_API_URL}/armory/${battleTag}/${heroId}`, true);
   return res;
 }

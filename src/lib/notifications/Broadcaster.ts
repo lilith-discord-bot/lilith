@@ -8,6 +8,9 @@ import { clientSymbol } from "../../utils/Constants";
 export class Broadcaster {
   /**
    * The client instance.
+   * @type {Client}
+   * @private
+   * @readonly
    */
   private readonly client: Client;
 
@@ -65,7 +68,7 @@ export class Broadcaster {
     try {
       await guild.scheduledEvents.create(options);
     } catch (error) {
-      this.client.logger.error(error);
+      this.client.logger.error(`Failed to create scheduled event for guild ${guild.id}`, error);
     }
 
     this.client.logger.info(`Scheduled event created for guild ${guild.id}`);

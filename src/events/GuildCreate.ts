@@ -1,6 +1,5 @@
 import { Events, Guild } from "discord.js";
 
-import { Client } from "../structures/Client";
 import { Event } from "../structures/Event";
 
 export default class GuildCreate extends Event {
