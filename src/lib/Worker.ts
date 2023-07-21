@@ -1,10 +1,12 @@
 import { container } from "tsyringe";
 
 import { Client } from "../structures/Client";
+
 import { request, wait } from "../utils/Commons";
 import { DATABASE_URL, MAP_API_URL, clientSymbol, languages } from "../utils/Constants";
+
 import { getLeaderboard, getPlayer } from "./API";
-import { Map } from "../types";
+import { Map, Leaderboard, Account } from "../types";
 
 export class Worker {
   /**
@@ -17,21 +19,30 @@ export class Worker {
   constructor() {
     this.client = container.resolve<Client>(clientSymbol);
 
-    this.refreshDatabase();
-    this.refreshPlayers();
-    this.refreshMap();
+    this.client.logger.info("Worker started.");
+
+    this.refresh();
+  }
+
+  private async refresh() {
+    await Promise.all([this.refreshDatabase(), this.refreshPlayers(), this.refreshMap()]);
   }
 
   /**
    * Refresh the map cache.
    */
-  async refreshDatabase() {
+  private async refreshDatabase() {
     this.client.logger.info(`Refreshing the database cache for ${languages.length} languages.`);
 
     for (const language of languages) {
-      let data = await request(`${DATABASE_URL}/i18n/autocomplete_${language}.json`, true);
+      let data;
 
-      if (!data) continue;
+      try {
+        data = await request(`${DATABASE_URL}/i18n/autocomplete_${language}.json`, true);
+      } catch (error) {
+        this.client.logger.error(`Failed to fetch database data for ${language}.`);
+        continue;
+      }
 
       let cache = await this.client.cache.get(`database:${language}`);
 
@@ -44,26 +55,40 @@ export class Worker {
 
       this.client.logger.info(`Added ${data.length} entries to the database cache for ${language}.`);
 
-      await wait(1000);
+      await wait(250);
     }
   }
 
   /**
    * Refresh the player cache.
    */
-  async refreshPlayers() {
-    const data = await getLeaderboard();
+  private async refreshPlayers() {
+    this.client.logger.info("Refreshing the player cache.");
 
-    if (!data) return this.client.logger.error("Failed to fetch leaderboard data.");
+    let data: Leaderboard[];
+
+    try {
+      data = await getLeaderboard();
+    } catch (error) {
+      this.client.logger.error("Failed to fetch leaderboard data.");
+      return;
+    }
 
     for (const player of data) {
-      const isCached = await this.client.cache.exists(`players:${player.battleTag}`);
+      const cache = await this.client.cache.exists(`players:${player.battleTag}`);
 
-      if (isCached) continue;
+      if (cache) continue;
 
-      const user = await getPlayer(player.battleTag);
+      let user: Account;
 
-      if (!user || !user?.characters || !user?.characters.length) continue;
+      try {
+        user = await getPlayer(player.battleTag);
+      } catch (error) {
+        this.client.logger.error(`Failed to fetch player data for ${player.battleTag}.`);
+        continue;
+      }
+
+      if (!user || "error" in user || !user?.characters || !user?.characters.length) continue;
 
       this.client.logger.info(`Adding ${player.battleTag} to cache with ${user?.characters.length} characters.`);
 
@@ -75,23 +100,27 @@ export class Worker {
 
       await this.client.cache.set(`players:${player.battleTag}`, JSON.stringify(playerObj));
 
-      await wait(1000);
+      await wait(250);
     }
   }
 
   /**
    * Refresh the map cache.
    */
-  async refreshMap() {
-    const data = (await request(MAP_API_URL, true)) as Map;
+  private async refreshMap() {
+    this.client.logger.info("Refreshing the map cache.");
 
-    if (!data) return this.client.logger.error("Failed to fetch map data.");
+    let data: Map;
 
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        const value = data[key as keyof typeof data];
-        await this.client.cache.set(`map:${key}`, JSON.stringify(value));
-      }
+    try {
+      data = await request(MAP_API_URL, true);
+    } catch (error) {
+      this.client.logger.error("Failed to fetch map data.");
+      return;
+    }
+
+    for (const [key, value] of Object.entries(data)) {
+      await this.client.cache.set(`map:${key}`, JSON.stringify(value));
     }
   }
 }

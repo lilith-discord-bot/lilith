@@ -1,4 +1,4 @@
-import { Channel, ChannelType, DMChannel, Events, Guild, GuildChannel } from "discord.js";
+import { ChannelType, DMChannel, Events, GuildChannel } from "discord.js";
 
 import { Event } from "../structures/Event";
 

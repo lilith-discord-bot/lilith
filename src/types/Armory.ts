@@ -1,4 +1,4 @@
-export type Player = {
+export type Leaderboard = {
   battleTag: string;
   heroId: string;
   name: string;
@@ -11,26 +11,28 @@ export type Player = {
   lastUpdate: number;
 };
 
-export type PlayerResearch = {
-  error?: string;
+export type Account = SuccessfulAccount | ErrorAccount;
+
+export interface SuccessfulAccount {
   dungeons_completed: number;
   players_killed: number;
   bosses_killed: number;
   clan_id: string;
   clan_tag: string | null;
-  characters: [
-    {
-      name: string;
-      id: string;
-      class: string;
-      level: number;
-      lastUpdate: string;
-    }
-  ];
-};
+  characters: AccountCharacter[];
+}
 
-export type PlayerArmory = {
-  error?: string;
+export interface AccountCharacter {
+  name: string;
+  id: string;
+  class: string;
+  level: number;
+  lastUpdate: string;
+  hardcore: boolean;
+  seasonal: boolean;
+}
+
+export interface Character {
   character: string;
   queue: number;
   lastUpdate: string;
@@ -45,17 +47,23 @@ export type PlayerArmory = {
   createdAt: number;
   monstersKilled: number;
   elitesKilled: number;
+  playersKilled: number;
   goldCollected: number;
   power: number;
   hardcore: boolean;
+  seasonal: boolean;
   dead: boolean;
   clan: string;
-  // NOT IMPLEMENTED
-  // completed_quests: null;
-  // fog_of_wars: null;
-  // altars: null;
-  // waypoints: null;
-  // skillTree: null;
+  season: number;
+}
+
+export interface ErrorAccount {
+  error: string;
+}
+
+export type Skill = {
+  name: string;
+  desc: string;
 };
 
 export type Equipment = {
@@ -70,9 +78,4 @@ export type Equipment = {
   base_affixes: string[];
   strikethrough_affixes: string[];
   added_affixes: string[];
-};
-
-export type Skill = {
-  name: string;
-  desc: string;
 };

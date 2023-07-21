@@ -1,3 +1,4 @@
+import { Snowflake } from "discord.js";
 import { Prisma } from "@prisma/client";
 
 import { Repository } from "./Base";
@@ -5,7 +6,6 @@ import { Repository } from "./Base";
 import { Locales } from "../../../../i18n/i18n-types";
 import { EventsList } from "../../../../types";
 import { Guild } from "../../../../types/Database";
-import { Snowflake } from "discord.js";
 
 export class GuildRepository extends Repository {
   /**

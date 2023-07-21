@@ -27,7 +27,7 @@ export const getTitle = (key: string, event: Event, locale: Locales = "en") => {
         time: time(boss.timestamp, "t"),
         countdown: time(boss.timestamp, "R"),
         nextName: boss.nextExpectedName,
-        nextTime: time(boss.nextExpected, "t"),
+        nextTime: time(boss.nextExpected, "f"),
       });
     case "helltide":
       const helltide = event as HelltideEvent;

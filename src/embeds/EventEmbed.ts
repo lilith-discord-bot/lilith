@@ -1,6 +1,7 @@
 import { Embed } from "./Embed";
 
-import { BossEvent, Event, HelltideEvent, LegionEvent } from "../types";
+import { BossEvent, Event, Events, HelltideEvent, LegionEvent } from "../types";
+
 import { ARMORY_URL, CDN } from "../utils/Constants";
 import { getChestsKey } from "../utils/Predict";
 
@@ -10,7 +11,7 @@ export const territory = {
   step: "Dry Steppes",
   frac: "Fractured Peaks",
   scos: "Scosglen",
-} as Record<string, string>;
+} satisfies Record<string, string>;
 
 export class EventEmbed extends Embed {
   constructor(key: string, event: Event) {
@@ -26,15 +27,15 @@ export class EventEmbed extends Embed {
 
 function getURL(key: string, event: Event) {
   switch (key) {
-    case "boss":
-      const boss = event as BossEvent;
-      return `${CDN}/map_data/worldboss/${normalize(boss.zone, boss.territory!)}.png`;
-    case "helltide":
-      const helltide = event as HelltideEvent;
-      return `${CDN}/map_data/helltide/${helltide.zone}_${getChestsKey(helltide)}.png`;
-    case "legion":
-      const legion = event as LegionEvent;
-      return `${CDN}/map_data/legion/${normalize(legion.zone, legion.territory!)}.png`;
+    case Events.WorldBoss:
+      event = event as BossEvent;
+      return `${CDN}/map_data/worldboss/${normalize(event.zone, event.territory)}.png`;
+    case Events.Helltide:
+      event = event as HelltideEvent;
+      return `${CDN}/map_data/helltide/${event.zone}_${getChestsKey(event)}.png`;
+    case Events.Legion:
+      event = event as LegionEvent;
+      return `${CDN}/map_data/legion/${normalize(event.zone, event.territory!)}.png`;
     default:
       return "https://cdn.discordapp.com/attachments/1117722541209956422/1118197134924185630/no_png.png";
   }
