@@ -28,6 +28,10 @@ export default class Chart extends Interaction {
         required: true,
         choices: [
           {
+            name: "Seasonal Blessings Chart",
+            value: "blessings",
+          },
+          {
             name: "Glyph XP",
             value: "glyph_xp",
           },
