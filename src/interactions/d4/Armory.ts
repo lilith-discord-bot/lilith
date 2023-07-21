@@ -104,16 +104,23 @@ export default class Armory extends Interaction {
         components: [armoryLink(player, res.characters[0].id)],
       });
     } else {
+      const list = res.characters
+        .sort((a, b) => {
+          if (a.seasonal && !b.seasonal) return -1;
+          if (!a.seasonal && b.seasonal) return 1;
+          return 0;
+        })
+        .map((character) => ({
+          label: `${character.name} - ${character.class} (${character.level})`,
+          value: `${player.replace("#", "-")}_${character.id}`,
+          emoji: character.seasonal ? "🌱" : undefined,
+        }));
+
       const characterList = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
         new StringSelectMenuBuilder()
           .setCustomId("armory_character_select")
           .setPlaceholder(i18n.armory.SELECT_CHARACTER())
-          .addOptions(
-            res.characters.map((character) => ({
-              label: `${character.name} - ${character.class} (${character.level})`,
-              value: `${player.replace("#", "-")}_${character.id}`,
-            }))
-          )
+          .addOptions(list)
       );
 
       return await interaction.editReply({
