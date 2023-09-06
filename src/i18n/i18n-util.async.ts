@@ -16,6 +16,7 @@ const localeTranslationLoaders = {
 	ja: () => import('./ja'),
 	pl: () => import('./pl'),
 	pt: () => import('./pt'),
+	tr: () => import('./tr'),
 }
 
 const localeNamespaceLoaders = {
@@ -48,6 +49,9 @@ const localeNamespaceLoaders = {
 	},
 	pt: {
 		commands: () => import('./pt/commands')
+	},
+	tr: {
+		commands: () => import('./tr/commands')
 	}
 }
 

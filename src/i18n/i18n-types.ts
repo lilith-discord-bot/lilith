@@ -16,6 +16,7 @@ export type Locales =
 	| 'ja'
 	| 'pl'
 	| 'pt'
+	| 'tr'
 
 export type Translation = RootTranslation & DisallowNamespaces
 
@@ -597,6 +598,26 @@ export type NamespaceCommandsTranslation = {
 		 */
 		description: string
 	}
+	season: {
+		/**
+		 * s​e​a​s​o​n
+		 */
+		name: string
+		/**
+		 * D​i​s​p​l​a​y​s​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​t​h​e​ ​c​u​r​r​e​n​t​ ​s​e​a​s​o​n​.
+		 */
+		description: string
+	}
+	'season.get': {
+		/**
+		 * g​e​t
+		 */
+		name: string
+		/**
+		 * T​h​e​ ​i​n​f​o​r​m​a​t​i​o​n​ ​t​o​ ​r​e​t​r​i​e​v​e​.
+		 */
+		description: string
+	}
 	about: {
 		/**
 		 * a​b​o​u​t
@@ -1151,6 +1172,26 @@ export type TranslationFunctions = {
 			name: () => LocalizedString
 			/**
 			 * The name of the thing you want to know about.
+			 */
+			description: () => LocalizedString
+		}
+		season: {
+			/**
+			 * season
+			 */
+			name: () => LocalizedString
+			/**
+			 * Displays information about the current season.
+			 */
+			description: () => LocalizedString
+		}
+		'season.get': {
+			/**
+			 * get
+			 */
+			name: () => LocalizedString
+			/**
+			 * The information to retrieve.
 			 */
 			description: () => LocalizedString
 		}
