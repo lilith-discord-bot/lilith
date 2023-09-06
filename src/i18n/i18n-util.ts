@@ -20,7 +20,8 @@ export const locales: Locales[] = [
 	'it',
 	'ja',
 	'pl',
-	'pt'
+	'pt',
+	'tr'
 ]
 
 export const namespaces: Namespaces[] = [

@@ -15,6 +15,7 @@ import it from './it'
 import ja from './ja'
 import pl from './pl'
 import pt from './pt'
+import tr from './tr'
 
 import bg_commands from './bg/commands'
 import de_commands from './de/commands'
@@ -26,6 +27,7 @@ import it_commands from './it/commands'
 import ja_commands from './ja/commands'
 import pl_commands from './pl/commands'
 import pt_commands from './pt/commands'
+import tr_commands from './tr/commands'
 
 const localeTranslations = {
 	bg: {
@@ -67,6 +69,10 @@ const localeTranslations = {
 	pt: {
 		...pt,
 		commands: pt_commands
+	},
+	tr: {
+		...tr,
+		commands: tr_commands
 	},
 }
 
