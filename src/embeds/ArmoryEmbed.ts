@@ -10,7 +10,7 @@ export class ArmoryEmbed extends Embed {
   constructor(character: Character, { i18n }: Context) {
     super();
 
-    this.data.title = `${character.season > 0 ? "🌱" : undefined} ${character.character} LvL. ${character.level} (${
+    this.data.title = `${character.season > 0 ? "🌱": ""} ${character.character} LvL. ${character.level} (${
       character.class
     })`;
 
