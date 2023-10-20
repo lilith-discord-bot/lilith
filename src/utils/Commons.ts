@@ -1,5 +1,5 @@
 import { Guild, NewsChannel, ShardClientUtil, Snowflake, TextChannel, TimestampStylesString, time } from "discord.js";
-import { Logger } from "../lib/Logger";
+import { logger } from "../lib/Logger";
 import { Client } from "../structures/Client";
 import { ARMORY_URL } from "./Constants";
 
@@ -130,7 +130,7 @@ export async function request(
       if (json) return await req.json();
       else return await req.text();
     } catch (error) {
-      Logger.error(error);
+      logger.error(error);
       req = null;
     }
 

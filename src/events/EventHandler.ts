@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import path from "node:path";
+import path, { join, resolve } from "node:path";
 
 import { Collection, Events } from "discord.js";
 import { container } from "tsyringe";
@@ -8,25 +8,20 @@ import { Client } from "../structures/Client";
 import { Event } from "../structures/Event";
 
 import { clientSymbol } from "../utils/Constants";
+import { readdirSync } from "node:fs";
 
 export class EventHandler {
   /**
    * The client.
-   * @type {Client}
    * @readonly
    */
-  readonly client: Client;
+  private readonly client: Client;
   /**
    * The event handlers.
-   * @type {Collection<string, Event>}
    * @readonly
    */
-  readonly handlers: Collection<Events, Event>;
-  /**
-   * Creates a new event handler.
-   *
-   * @param client - The client.
-   */
+  public readonly handlers: Collection<Events, Event>;
+
   constructor() {
     this.client = container.resolve<Client>(clientSymbol);
 
@@ -36,18 +31,13 @@ export class EventHandler {
   /**
    * Initializes the event handlers.
    */
-  async init(): Promise<void> {
-    const dir = path.join(__dirname, "..", "events");
+  public async init(): Promise<void> {
+    let files = readdirSync(join(resolve(), "events"));
 
-    let files = await fs.readdir(dir);
-
-    files = files.filter((file) => file.endsWith(".js") && !file.startsWith("EventHandler"));
-
-    if (this.handlers.size > 0) this.handlers.clear();
+    files = files.filter((file) => file.endsWith(".js") && /handler/i.test(file));
 
     for (const file of files) {
-      const handler = new (await import(path.join(dir, file))).default() as Event;
-
+      const handler = new (await import(join(resolve(), "events", file))).default() as Event;
       this.handlers.set(handler.event, handler);
     }
 
@@ -60,7 +50,7 @@ export class EventHandler {
    * @param id - The event identifier.
    * @param args - The arguments.
    */
-  async run(event: Events, ...args: any[]): Promise<void> {
+  public async run(event: Events, ...args: any[]): Promise<void> {
     const handler = this.handlers.get(event);
 
     if (!handler) throw new Error(`Event handler ${event} doesn't exist`);

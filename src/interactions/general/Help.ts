@@ -36,7 +36,7 @@ export default class Help extends Interaction {
     interaction: ChatInputCommandInteraction<CacheType>,
     ctx: Context
   ): Promise<InteractionResponse<boolean>> {
-    let commands = this.client.interactions;
+    let commands = this.client.interactions.clone();
 
     commands = commands.filter((command) => command.enabled);
 

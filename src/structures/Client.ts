@@ -1,53 +1,55 @@
 import "reflect-metadata";
 
 import { PrismaClient } from "@prisma/client";
-import { ClusterClient, getInfo } from "discord-hybrid-sharding";
-import { ClientOptions, Collection, Client as DiscordClient } from "discord.js";
+import { ClientOptions, Collection, Client as DiscordClient, Events, RESTEvents } from "discord.js";
 import { container } from "tsyringe";
+import { type Logger } from "pino";
 
 import { EventHandler } from "../events/EventHandler";
 
-import { Logger, createLogger } from "../lib/Logger";
-import { registerClientEvents } from "../lib/RegisterEvents";
 import { GuildRepository } from "../lib/db/postgresql/repository/Guild";
 import { redis } from "../lib/db/redis/Redis";
 import { database } from "../lib/db/postgresql/Database";
 
-import { clientSymbol, options } from "../utils/Constants";
+import { clientSymbol } from "../utils/Constants";
 
 import { Interaction } from "./Interaction";
+import { Cluster } from "./Cluster";
+import InteractionHandler from "../events/InteractionHandler";
 
 export class Client extends DiscordClient {
   /**
    * The cluster client.
-   * @type {ClusterClient<DiscordClient>}
    * @readonly
    */
-  public readonly cluster: ClusterClient<DiscordClient>;
+  public readonly cluster: Cluster;
 
   /**
    * The event handler.
-   * @type {EventHandler}
    * @readonly
    */
   public readonly eventHandler: EventHandler;
 
   /**
+   * The interaction handler.
+   * @readonly
+   */
+  public readonly interactionHandler: InteractionHandler;
+
+  /**
    * Redis cache.
-   * @type {typeof redis}
    * @readonly
    */
   public readonly cache: typeof redis;
 
   /**
    * The datasource
-   * @type {PrismaClient}
+   * @readonly
    */
   public readonly database: PrismaClient;
 
   /**
    * Differents repositories.
-   * @type {object}
    * @readonly
    */
   public readonly repository: {
@@ -56,9 +58,9 @@ export class Client extends DiscordClient {
 
   /**
    * The logger class.
-   * @type {typeof Logger}
+   * @readonly
    */
-  public readonly logger: typeof Logger;
+  public readonly logger: Logger;
 
   /**
    * The client's interactions.
@@ -72,17 +74,14 @@ export class Client extends DiscordClient {
    * @param options - The client options.
    */
   constructor(options: ClientOptions) {
-    super({
-      shards: getInfo().SHARD_LIST,
-      shardCount: getInfo().TOTAL_SHARDS,
-      ...options,
-    });
+    super(options);
 
     container.register(clientSymbol, { useValue: this });
 
-    this.cluster = new ClusterClient(this);
+    this.cluster = new Cluster(this);
 
     this.eventHandler = new EventHandler();
+    this.interactionHandler = new InteractionHandler();
 
     this.cache = redis;
 
@@ -92,7 +91,7 @@ export class Client extends DiscordClient {
       guild: new GuildRepository(),
     };
 
-    this.logger = createLogger(this.cluster.id.toString());
+    this.logger = this.cluster.logger;
   }
 
   /**
@@ -100,29 +99,54 @@ export class Client extends DiscordClient {
    *
    * @returns {Promise<this>} The client.
    */
-  public async init(): Promise<this> {
-    await this.eventHandler.init();
+  public async init(): Promise<void> {
+    this.registerEvents();
 
-    await registerClientEvents();
-
-    await this.cache.connect();
-
-    try {
-      await super.login(process.env.TOKEN);
-    } catch (err) {
-      this.logger.error(err);
+    Promise.all([
+      this.interactionHandler.init(),
+      this.eventHandler.init(),
+      this.cache.connect(),
+      this.login(process.env.TOKEN),
+    ]).catch((err) => {
+      this.logger.error("Failed to login", err);
       process.exit(1);
-    }
-
-    return this;
+    });
   }
 
-  /**
-   * Destroys the client.
-   */
-  public async destroy(): Promise<void> {
-    await super.destroy();
-    process.exit(0);
+  private registerEvents(): void {
+    this.once(Events.ClientReady, () => this.eventHandler.run(Events.ClientReady));
+
+    this.on(Events.ShardReady, (id) => this.logger.info(`Shard #${id} ready on cluster #${this.cluster.id}`));
+
+    this.on(Events.ShardReconnecting, (id) => this.logger.warn(`Shard #${id} reconnecting for cluster #${this.cluster.id}`));
+
+    this.on(Events.ShardResume, (id, replayed) =>
+      this.logger.info(`Shard #${id} resumed with ${replayed} replayed events for cluster #${this.cluster.id}`)
+    );
+
+    this.on(Events.ShardError, (error, id) =>
+      this.logger.error(`Shard #${id} error for cluster #${this.cluster.id}`, error)
+    );
+
+    this.on(Events.ShardDisconnect, (event: any, id) =>
+      this.logger.warn(`Shard #${id} disconnected with code ${event.code} for cluster #${this.cluster.id}`)
+    );
+
+    this.on(Events.InteractionCreate, (interaction) => this.eventHandler.run(Events.InteractionCreate, interaction));
+
+    this.on(Events.GuildCreate, (guild) => this.eventHandler.run(Events.GuildCreate, guild));
+
+    this.on(Events.GuildDelete, (guild) => this.eventHandler.run(Events.GuildDelete, guild));
+
+    this.on(Events.ChannelDelete, (channel) => this.eventHandler.run(Events.ChannelDelete, channel));
+
+    this.on(Events.Error, (error) => this.logger.error(error));
+
+    this.on(Events.Warn, (message) => this.logger.warn(message));
+
+    this.on(Events.Debug, (message) => this.logger.debug(message));
+
+    this.rest.on(RESTEvents.Debug, (rateLimitData) => this.logger.debug(`Rate limit hit: ${rateLimitData}`));
   }
 
   /**
@@ -134,13 +158,3 @@ export class Client extends DiscordClient {
     this.interactions = interactions;
   }
 }
-
-/**
- * Let the ClusterManager spawn the client.
- *
- * TODO : Change this to a better way to spawn the client.
- */
-(async () => {
-  const bot = new Client(options);
-  await bot.init();
-})();

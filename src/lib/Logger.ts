@@ -16,4 +16,4 @@ export const createLogger = (clusterId?: string) => {
   });
 };
 
-export const Logger = createLogger();
+export const logger = createLogger();

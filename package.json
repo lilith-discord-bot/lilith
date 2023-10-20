@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node main",
     "dev": "npm run build && NODE_ENV=development node dist/main.js",
-    "build": "rm -rf dist && tsc",
+    "build": "tsc",
     "bot:up": "docker-compose -p lilith --env-file .env -f .docker/docker-compose.yml up --build -d",
     "bot:restart": "docker-compose -p lilith -f .docker/docker-compose.yml restart",
     "bot:update": "docker-compose -p lilith -f .docker/docker-compose.yml exec bot sh -c 'npm install'",
@@ -41,7 +41,7 @@
     "@prisma/client": "^4.16.2",
     "cron": "^2.3.1",
     "discord-hybrid-sharding": "^2.1.3",
-    "discord.js": "^14.11.0",
+    "discord.js": "^14.13.0",
     "dotenv": "^16.1.4",
     "pino": "^8.14.1",
     "pino-pretty": "^10.0.0",
