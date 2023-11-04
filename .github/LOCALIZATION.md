@@ -54,7 +54,7 @@ Sorry if I missed anyone, please let me know if you contributed and I forgot to 
 
 ## License
 
-The Lilith Discord Bot Translation Project is licensed under [LICENSE], and by contributing, you agree that your contributions will be subject to the terms of this license.
+The Lilith Discord Bot Translation Project is licensed under [[MIT](https://github.com/lilith-discord-bot/lilith/blob/main/LICENSE), and by contributing, you agree that your contributions will be subject to the terms of this license.
 
 We look forward to your contributions and thank you for your support in making Lilith accessible to users in different languages. If you have any questions or need assistance, please don't hesitate to reach out.
 
