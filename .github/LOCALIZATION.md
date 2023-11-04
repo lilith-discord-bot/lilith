@@ -1,30 +1,30 @@
-# Lilith Дискорд бот
+# Lilith Discord Bot
 
-Добро пожаловать, этот раздел призван предложить переводы бота Lilith на несколько языков, делая его доступным и полезным для пользователей по всему миру.
+Welcome, this part aims to provide translations for the Lilith Discord bot into multiple languages, making it accessible and useful for users worldwide.
 
-## Как внести вклад
+## How to Contribute
 
-Мы ценим ваш интерес к участию в работе над переводом. Для начала работы выполните следующие действия:
+We appreciate your interest in contributing to the translation efforts. Follow the steps below to get started:
 
-1. Форкните этот репозиторий на свою учетную запись GitHub.
-2. Клонируйте форк репозитория на локальный компьютер.
-3. Откройте каталог "src/i18n", в котором находятся языковые папки для каждого поддерживаемого языка.
-4. Выберите язык, на который вы хотите перевести Lilith, или создайте новую папку, если нужный вам язык отсутствует.
-5. Откройте файл и переведите предоставленный английский текст на язык перевода.
-6. После завершения перевода отправьте запрос на притяжение (pull request) для объединения изменений с основным репозиторием.
+1. Fork this repository to your GitHub account.
+2. Clone the forked repository to your local machine.
+3. Navigate to the "src/i18n" directory, where you'll find language folders for each supported language.
+4. Choose the language you want to translate Lilith into or create a new folder if your desired language is not present.
+5. Open the file and translate the provided English text into your target language.
+6. Once you have completed the translation, submit a pull request to merge your changes into the main repository.
 
-## Рекомендации по переводу
+## Guidelines for Translations
 
-Для обеспечения последовательности и качества переводов следует придерживаться следующих рекомендаций:
+To ensure consistency and quality across translations, please adhere to the following guidelines:
 
-- Сохранять исходный смысл и контекст английского текста.
-- Использовать правильную грамматику, пунктуацию и языковые нормы, характерные для языка перевода.
-- Если вы встретите термины или фразы, характерные для Diablo 4 или Дискорд, постарайтесь использовать общепринятые переводы или при необходимости дать пояснения к переводу.
-- Если у вас возникнут вопросы или потребуются разъяснения по каким-либо аспектам перевода, не стесняйтесь открыть вопрос в этом репозитории, чтобы получить рекомендации от сопровождающих проекта.
+- Maintain the original meaning and context of the English text.
+- Use proper grammar, punctuation, and language conventions specific to your target language.
+- If you encounter any terms or phrases that are specific to Diablo 4 or Discord, try to use commonly accepted translations or provide a translation explanation if needed.
+- If you have any questions or need clarification on any translation aspects, feel free to open an issue in this repository to seek guidance from the project maintainers.
 
-## Поддерживаемые языки
+## Supported Languages
 
-Ниже приведен список поддерживаемых в настоящее время языков:
+Here is a list of currently supported languages for translation:
 
 - English (en)
 - Spanish (es)
@@ -37,18 +37,25 @@
 - Japanese (ja)
 - Russian (ru)
 
-Если нужный вам язык не указан в списке, вы можете внести свой перевод, создав новую папку с соответствующим кодом языка и выполнив следующие действияion steps mentioned above.
+If your desired language is not listed above, you can contribute a translation by creating a new folder with the appropriate language code and following the contribution steps mentioned above.
 
-## Участники
+## Contributors
 
-Мы высоко ценим усилия всех авторов, которые помогают сделать Lilith доступной для широкой аудитории. Ваш вклад будет отмечен в списке авторов здесь.
+We greatly appreciate the efforts of all contributors who help make Lilith accessible to a wider audience. Your contributions will be acknowledged in the list of contributors here.
 
-- [Fa1con Eye#3519]
+- [fa1con_eye](discord://-/users/244230771232757760) - Russian
+- [kasui92](discord://-/users/273172350923702284) - Italian
+- [ey4we](discord://-/users/137223586535440384) - Japanese
+- [cicada3301.](discord://-/users/300936296598339584) - Bulgarian
+- [judhy](discord://-/users/452338987441586178) - French
+- [gordon_b](discord://-/users/403557456514646019) - German
 
-## Лицензия
+Sorry if I missed anyone, please let me know if you contributed and I forgot to add you.
 
-Проект перевода бота Lilith Дискорд Бот лицензирован под [LICENSE], и, внося свой вклад, вы соглашаетесь с тем, что на ваш вклад будут распространяться условия данной лицензии.
+## License
 
-Мы с нетерпением ждем вашего вклада и благодарим вас за поддержку в деле обеспечения доступности Lilith для пользователей на разных языках. Если у вас возникнут вопросы или потребуется помощь, пожалуйста, обращайтесь.
+The Lilith Discord Bot Translation Project is licensed under [LICENSE], and by contributing, you agree that your contributions will be subject to the terms of this license.
 
-Успешного перевода!
+We look forward to your contributions and thank you for your support in making Lilith accessible to users in different languages. If you have any questions or need assistance, please don't hesitate to reach out.
+
+Happy translating!
