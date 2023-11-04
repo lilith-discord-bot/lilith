@@ -5,14 +5,14 @@
   "scripts": {
     "start": "node main",
     "dev": "npm run build && NODE_ENV=development node dist/main.js",
-    "build": "rm -rf dist && tsc",
+    "build": "tsc",
     "bot:up": "docker-compose -p lilith --env-file .env -f .docker/docker-compose.yml up --build -d",
     "bot:restart": "docker-compose -p lilith -f .docker/docker-compose.yml restart",
     "bot:update": "docker-compose -p lilith -f .docker/docker-compose.yml exec bot sh -c 'npm install'",
     "bot:stop": "docker-compose -p lilith -f .docker/docker-compose.yml stop",
     "bot:clean": "docker-compose -p lilith -f .docker/docker-compose.yml down",
     "bot:rebuild": "npm run bot:clean && npm run bot:up",
-    "typesafe-i18n": "typesafe-i18n"
+    "i18n": "typesafe-i18n"
   },
   "repository": {
     "type": "git",

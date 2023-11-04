@@ -16,6 +16,7 @@ export type Locales =
 	| 'ja'
 	| 'pl'
 	| 'pt'
+	| 'ru'
 	| 'tr'
 
 export type Translation = RootTranslation & DisallowNamespaces
