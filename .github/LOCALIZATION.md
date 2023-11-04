@@ -35,6 +35,7 @@ Here is a list of currently supported languages for translation:
 - Hungarian (hu)
 - Italian (it)
 - Japanese (ja)
+- Russian (ru)
 
 If your desired language is not listed above, you can contribute a translation by creating a new folder with the appropriate language code and following the contribution steps mentioned above.
 
@@ -42,7 +43,14 @@ If your desired language is not listed above, you can contribute a translation b
 
 We greatly appreciate the efforts of all contributors who help make Lilith accessible to a wider audience. Your contributions will be acknowledged in the list of contributors here.
 
-- [Add your name here]
+- [fa1con_eye](discord://-/users/244230771232757760) - Russian
+- [kasui92](discord://-/users/273172350923702284) - Italian
+- [ey4we](discord://-/users/137223586535440384) - Japanese
+- [cicada3301.](discord://-/users/300936296598339584) - Bulgarian
+- [judhy](discord://-/users/452338987441586178) - French
+- [gordon_b](discord://-/users/403557456514646019) - German
+
+Sorry if I missed anyone, please let me know if you contributed and I forgot to add you.
 
 ## License
 
