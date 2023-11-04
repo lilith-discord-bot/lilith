@@ -1,4 +1,4 @@
-import type { BaseTranslation } from "../i18n-types";
+import type { Translation } from "../i18n-types";
 
 const ru = {
   settings: {
@@ -21,8 +21,7 @@ const ru = {
   },
   armory: {
     BAD_FORMAT: "Указанный Вами игрок не подходит, он должен быть указан в формате, указанном ниже: `Player#1234`.",
-    PLAYER_NOT_FOUND:
-      "Я не нашел игрока **{player}**, убедитесь, что вы правильно ввели имя или что игрок существует.",
+    PLAYER_NOT_FOUND: "Я не нашел игрока **{player}**, убедитесь, что вы правильно ввели имя или что игрок существует.",
     NO_CHARACTERS: "У игрока нет ни одного персонажа.",
     NO_CHARACTER: "Персонаж не найден, убедитесь, что вы правильно набрали имя или что имеется хотя бы один символ.",
     SELECT_CHARACTER: "Выберите персонажа, чтобы открыть ивентарь.",
@@ -74,6 +73,6 @@ const ru = {
     NO_PLAYED_TIME: "Не найдено время игры.",
     NO_EQUIPPED_ITEMS: "Не найдено ни одного надетого предмета.",
   },
-} satisfies BaseTranslation;
+} satisfies Translation;
 
 export default ru;
