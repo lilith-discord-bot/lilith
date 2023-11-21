@@ -28,20 +28,12 @@ export default class Chart extends Interaction {
         required: true,
         choices: [
           {
-            name: "Seasonal Blessings Chart",
-            value: "blessings",
-          },
-          {
             name: "Glyph XP",
             value: "glyph_xp",
           },
           {
-            name: "XP",
-            value: "xp_101",
-          },
-          {
             name: "Sigil Farm",
-            value: "sigil_farm",
+            value: "s2nightmare",
           },
           {
             name: "Nightmare Affixes",
