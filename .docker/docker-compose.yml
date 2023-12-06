@@ -28,8 +28,6 @@ services:
     command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
       - network
-    ports:
-      - "6379"
     volumes:
       - redisdata:/data
 
@@ -41,8 +39,6 @@ services:
       - POSTGRES_DATABASE=${POSTGRES_DATABASE}
     networks:
       - network
-    ports:
-      - "5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
