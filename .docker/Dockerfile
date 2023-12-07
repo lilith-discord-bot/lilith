@@ -1,5 +1,5 @@
 # Create the image based on the official Node 16 image from Dockerhub
-FROM node:18-alpine as builder
+FROM node:21-alpine as builder
 
 RUN apk add dos2unix
 
@@ -22,7 +22,7 @@ RUN npm run build
 
 RUN npm prune --production
 
-FROM node:18-alpine
+FROM node:21-alpine
 
 WORKDIR /bot
 
