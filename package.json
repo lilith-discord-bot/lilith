@@ -49,7 +49,7 @@
     "reflect-metadata": "^0.1.13",
     "rss-feed-emitter": "^3.2.3",
     "tsyringe": "^4.7.0",
-    "typesafe-i18n": "^5.24.3"
+    "typesafe-i18n": "^5.26.2"
   },
   "devDependencies": {
     "@types/cron": "^2.0.1",
