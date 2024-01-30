@@ -51,7 +51,7 @@ export default class Item extends Interaction {
     const [url, label] = query.split(":");
 
     return await interaction.reply(
-      hyperlink(`See ${label} on Diablo 4 Database`, `${DATABASE_URL}/${url}`, "Click here to see the Diablo 4 Database")
+      hyperlink(`See ${label} on Diablo 4 Database`, `${DATABASE_URL}/${encodeURI(url)}`, "Click here to see the Diablo 4 Database")
     );
   }
 
