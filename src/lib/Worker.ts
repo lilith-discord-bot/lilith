@@ -108,7 +108,7 @@ export class Worker {
    * Refresh the map cache.
    */
   private async refreshMap() {
-    this.client.logger.info("Refreshing the map cache.");
+  /**  this.client.logger.info("Refreshing the map cache.");
 
     let data: Map;
 
@@ -122,5 +122,5 @@ export class Worker {
     for (const [key, value] of Object.entries(data)) {
       await this.client.cache.set(`map:${key}`, JSON.stringify(value));
     }
-  }
+  } **/
 }
