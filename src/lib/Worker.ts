@@ -121,6 +121,6 @@ export class Worker {
 
     for (const [key, value] of Object.entries(data)) {
       await this.client.cache.set(`map:${key}`, JSON.stringify(value));
-    }
-  } **/
-}
+    }**/
+  } 
+} 
